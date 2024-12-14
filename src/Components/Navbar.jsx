@@ -1,13 +1,8 @@
-import React from 'react'
-import AccountDetail from './AccountDetail'
+import React from "react";
+import AccountDetail from "./AccountDetail";
 
 const Navbar = () => {
-  return (
-    <div>Navbar
-      <AccountDetail/>
-    </div>
+  return <div>Navbar</div>;
+};
 
-  )
-}
-
-export default Navbar
+export default Navbar;
