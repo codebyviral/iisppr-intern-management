@@ -1,29 +1,10 @@
-import React, { useState } from "react";
-import "./App.css";
 
-const FilterOption = ({ filters, onToggle, onMarkAll, onClearAll }) => {
-  return (
-    <div className="filter-option-container">
-      <h3>Filter Options</h3>
-      <div>
-        {Object.keys(filters).map((filter) => (
-          <div key={filter} className="filter-option">
-            <label>{filter.charAt(0).toUpperCase() + filter.slice(1)}</label>
-            <input
-              type="checkbox"
-              checked={filters[filter]}
-              onChange={() => onToggle(filter)}
-            />
-          </div>
-        ))}
-      </div>
-      <div className="actions">
-        <button onClick={onMarkAll}>Mark all</button>
-        <button onClick={onClearAll}>Clear all</button>
-      </div>
-    </div>
-  );
-};
+// src/App.jsx
+import React, { useState } from 'react';
+import "./App.css";
+import FilterOption from "./components/FilterOption";
+import Notification from "./components/Notification";
+
 
 const App = () => {
   const [filters, setFilters] = useState({
@@ -65,8 +46,10 @@ const App = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex flex-col items-center h-screen">
+      <Notification />
       <FilterOption
+      
         filters={filters}
         onToggle={handleFilterToggle}
         onMarkAll={markAllFilters}
