@@ -1,3 +1,3 @@
 import Navbar from "./Navbar";
-
-export { Navbar }
+import TopNavbar from "./TopNavbar";
+export { Navbar, TopNavbar }

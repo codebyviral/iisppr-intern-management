@@ -1,8 +1,11 @@
-import React from "react";
-import AccountDetail from "./AccountDetail";
+import { TopNavbar } from "./compIndex";
 
 const Navbar = () => {
-  return <div>Navbar</div>;
+  return (
+    <>
+      <TopNavbar />
+    </>
+  );
 };
 
 export default Navbar;
