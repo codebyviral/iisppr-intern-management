@@ -53,6 +53,19 @@ export default {
           5: "hsl(var(--chart-5))",
         },
       },
+      animation: {
+        'bg-ease': 'color 10s ease-in-out infinite',
+      },
+      keyframes: {
+        color: {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
+        },
+      },
+      backgroundSize: {
+        '300%': '300% 300%',
+      },
     },
   },
   plugins: [tailwindcssAnimate],
