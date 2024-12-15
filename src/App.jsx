@@ -1,10 +1,10 @@
-
-// src/App.jsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import { Home } from "./Pages/pageIndex";
+import Logup from "./Pages/Logup";
 import "./App.css";
 import FilterOption from "./components/FilterOption";
 import Notification from "./components/Notification";
-
 
 const App = () => {
   const [filters, setFilters] = useState({
@@ -49,12 +49,15 @@ const App = () => {
     <div className="flex flex-col items-center h-screen">
       <Notification />
       <FilterOption
-      
         filters={filters}
         onToggle={handleFilterToggle}
         onMarkAll={markAllFilters}
         onClearAll={clearAllFilters}
       />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signup" element={<Logup />} />
+      </Routes>
     </div>
   );
 };
