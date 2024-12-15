@@ -1,5 +1,5 @@
 import {Navbar, Sidebar} from "../Components/compIndex";
-import SideBarCSS from "../Sidebar.css";
+import "../Sidebar.css";
 
 
 const Home = () => {
