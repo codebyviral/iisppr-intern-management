@@ -1,5 +1,6 @@
 import {Navbar, Sidebar} from "../Components/compIndex";
 
+
 const Home = () => {
   return (
     <>
