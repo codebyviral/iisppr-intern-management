@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Responsive Header</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100">
+    <!-- Header Section -->
+    <header class="bg-white shadow-sm w-full">
+      <div
+        class="flex flex-wrap items-center justify-between px-4 py-2 md:px-6 lg:px-12"
+      >
+        <!-- Left Section -->
+        <div class="flex items-center space-x-4 lg:space-x-8">
+          <!-- Title -->
+          <h1 class="text-gray-700 text-lg sm:text-xl font-semibold">
+            InternHub Set
+          </h1>
+
+          <!-- Search Input -->
+          <div class="relative flex-1 max-w-xs sm:max-w-md md:max-w-lg">
+            <input
+              type="text"
+              placeholder="Search"
+              class="w-full py-2 pl-4 pr-10 border border-gray-300 rounded-lg text-sm md:text-base focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            />
+            <!-- Search Icon -->
+            <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5 text-gray-400"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Section -->
+        <div class="flex items-center space-x-3 sm:space-x-4 md:space-x-6 mt-2 sm:mt-0">
+          <!-- Icons -->
+          <button class="text-gray-600 hover:text-blue-500 focus:outline-none">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h4M4 10h4M4 14h4M4 18h4M12 6h4M12 10h4M12 14h4M12 18h4"
+              />
+            </svg>
+          </button>
+          <button class="text-gray-600 hover:text-blue-500 focus:outline-none">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.1V11a6.002 6.002 0 00-4-5.659V4a2 2 0 10-4 0v1.341C7.67 6.165 6 8.388 6 11v3.1c0 .538-.214 1.055-.595 1.495L4 17h5m6 0a3 3 0 11-6 0"
+              />
+            </svg>
+          </button>
+
+          <!-- Avatar -->
+          <img
+            src="https://via.placeholder.com/40"
+            alt="User Avatar"
+            class="w-8 h-8 md:w-10 md:h-10 rounded-full border"
+          />
+        </div>
+      </div>
+    </header>
+  </body>
+</html>
