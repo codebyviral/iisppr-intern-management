@@ -91,7 +91,7 @@ const TopNavbar = () => {
         <div className="hidden md:flex items-center justify-between w-full">
           {/* Desktop Title */}
           <Link to="/">
-            <span className="text-lg font-semibold">Home</span>
+            <span className="text-lg font-semibold"></span>
           </Link>
 
           {/* Desktop Search Bar */}

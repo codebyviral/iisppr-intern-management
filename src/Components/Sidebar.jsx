@@ -1,171 +1,121 @@
-import React, { useState, useEffect } from 'react';
-import { Home, Users, Clipboard, Calendar, Settings, ChevronDown, Bell, LogOut, User, Search, Moon, Sun, Briefcase, BarChart, Star, Plus } from 'lucide-react';
-import './Sidebar.css';
+import React, { useState, useEffect } from "react";
+import "./Sidebar.css";
 
-export default function Sidebar() {
-  const [isTasksOpen, setIsTasksOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
+function Sidebar() {
+  const [activeItem, setActiveItem] = useState("Home");
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false); // Track Settings submenu state
+
+  const menuItems = [
+    { name: "Home", icon: "🏠" },
+    { name: "Interns", icon: "👥" },
+    { name: "Tasks", icon: "📋" },
+    { name: "Schedule", icon: "📅" },
+    { name: "Reports", icon: "📊" },
+    { name: "Settings", icon: "⚙️" },
+    { name: "Notification", icon: "🔔" },
+  ];
+
+  const settingsOptions = [
+    "Support Options",
+    "Contact",
+    "Issues",
+    "Help",
+    "Delete Account",
+    "Complaint",
+  ];
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle('dark');
+  useEffect(() => {
+    document.body.classList.toggle("dark-mode", isDarkMode);
+  }, [isDarkMode]);
+
+  const formatTime = (date) =>
+    date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+  const handleMenuClick = (item) => {
+    setActiveItem(item.name);
+    if (item.name === "Settings") {
+      setIsSettingsOpen(!isSettingsOpen);
+    } else {
+      setIsSettingsOpen(false); // Close Settings submenu if another menu is clicked
+    }
   };
 
-  const recentActivity = [
-    { id: 1, text: "John completed Project Alpha", time: "2 hours ago" },
-    { id: 2, text: "Sarah updated Q3 Projections", time: "4 hours ago" },
-    { id: 3, text: "New partnership with TechCorp", time: "1 day ago" },
-  ];
-
-  const quickStats = [
-    { label: "Projects", value: 12, icon: Briefcase },
-    { label: "Revenue", value: "$2.4M", icon: BarChart },
-    { label: "Team", value: 24, icon: Users },
-  ];
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   return (
-    <div className={`sidebar ${isDarkMode ? 'dark' : 'light'}`}>
-      <div className="sidebar-header">
-        <div className="logo">
-          <span>U</span>
+    <div className={`app-container ${isSidebarOpen ? "sidebar-open" : "sidebar-closed"}`}>
+      {/* Hamburger Menu */}
+      <button className="hamburger-menu" onClick={toggleSidebar}>
+        <span className="bar"></span>
+        <span className="bar"></span>
+        <span className="bar"></span>
+      </button>
+
+      {/* Sidebar */}
+      <div className={`sidebar ${isSidebarOpen ? "" : "hidden"}`}>
+        <div className="sidebar-header">
+          <div className="time-display">{formatTime(currentTime)}</div>
         </div>
-        <h1>UltraDash</h1>
-      </div>
-
-      <div className="search-bar">
-        <Search size={18} />
-        <input 
-          type="text" 
-          placeholder="Search..." 
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </div>
-
-      <div className="quick-stats">
-        {quickStats.map((stat, index) => (
-          <div key={index} className="stat-item">
-            <stat.icon size={24} />
-            <div>
-              <h3>{stat.value}</h3>
-              <p>{stat.label}</p>
+        <nav className="sidebar-nav">
+          <ul>
+            {menuItems.map((item) => (
+              <li key={item.name}>
+                <button
+                  className={`menu-item ${activeItem === item.name ? "active" : ""}`}
+                  onClick={() => handleMenuClick(item)}
+                >
+                  <span className="icon">{item.icon}</span>
+                  <span className="menu-text">{item.name}</span>
+                </button>
+                {item.name === "Settings" && isSettingsOpen && (
+                  <ul className="sub-menu">
+                    {settingsOptions.map((option) => (
+                      <li key={option}>
+                        <button className="sub-item">{option}</button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div className="sidebar-footer">
+          <button
+            className="theme-toggle"
+            onClick={() => setIsDarkMode(!isDarkMode)}
+          >
+            {isDarkMode ? "☀️" : "🌙"}
+          </button>
+          <div className="user-section">
+            <div className="user-info">
+              <div className="user-avatar">
+                <img src="https://i.pravatar.cc/100" alt="User Avatar" />
+              </div>
+              <div className="user-details">
+                <p className="user-name">John Doe</p>
+                <p className="user-role">Admin</p>
+              </div>
             </div>
           </div>
-        ))}
-      </div>
-
-      <nav className="sidebar-nav">
-        <ul>
-          <li>
-            <a href="/" className="nav-item">
-              <Home size={20} />
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li>
-            <a href="/team" className="nav-item">
-              <Users size={20} />
-              <span>Team</span>
-            </a>
-          </li>
-          <li>
-            <button 
-              onClick={() => setIsTasksOpen(!isTasksOpen)}
-              className="nav-item tasks-button"
-            >
-              <div>
-                <Clipboard size={20} />
-                <span>Projects</span>
-              </div>
-              <ChevronDown 
-                size={16} 
-                className={`chevron ${isTasksOpen ? 'rotate' : ''}`}
-              />
-            </button>
-            {isTasksOpen && (
-              <ul className="subtasks">
-                <li>
-                  <a href="/projects/active" className="nav-item">
-                    <Star size={16} />
-                    <span>Active Projects</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="/projects/completed" className="nav-item">
-                    <Clipboard size={16} />
-                    <span>Completed Projects</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="/projects/new" className="nav-item">
-                    <Plus size={16} />
-                    <span>New Project</span>
-                  </a>
-                </li>
-              </ul>
-            )}
-          </li>
-          <li>
-            <a href="/schedule" className="nav-item">
-              <Calendar size={20} />
-              <span>Schedule</span>
-            </a>
-          </li>
-          <li>
-            <a href="/settings" className="nav-item">
-              <Settings size={20} />
-              <span>Settings</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-
-      <div className="recent-activity">
-        <h2>Recent Activity</h2>
-        <ul>
-          {recentActivity.map((activity) => (
-            <li key={activity.id} className="activity-item">
-              <p>{activity.text}</p>
-              <span>{activity.time}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="sidebar-footer">
-        <div className="notifications nav-item">
-          <Bell size={20} />
-          <span>Notifications</span>
-          <span className="notification-badge">3</span>
-        </div>
-        <div className="divider"></div>
-        <div className="user-profile">
-          <div className="user-avatar">
-            <img src="/placeholder.svg?height=60&width=60" alt="User Avatar" />
-          </div>
-          <div className="user-info">
-            <p className="user-name">Alexis Laurent</p>
-            <p className="user-role">Chief Executive Officer</p>
-          </div>
-        </div>
-        <button className="logout-button nav-item">
-          <LogOut size={20} />
-          <span>Logout</span>
-        </button>
-        <div className="footer-actions">
-          <button className="theme-toggle" onClick={toggleDarkMode}>
-            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+          <button className="logout-button">
+            <span className="icon">🚪</span>
+            <span className="btn-text">Logout</span>
           </button>
-          <div className="current-time">{currentTime.toLocaleTimeString()}</div>
         </div>
       </div>
     </div>
   );
 }
+
+export default Sidebar;
