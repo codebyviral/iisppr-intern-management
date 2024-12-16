@@ -1,3 +1,3 @@
 import Home from "./Home";
-
-export { Home }
+import Notifications from "./Notifications";
+export { Home, Notifications }
