@@ -16,10 +16,25 @@ import {
 
 const TopNavbar = () => {
   const navigate = useNavigate();
-
-  const { dashboard } = useAppContext();
-
+  const { dashboard, setDashboard } = useAppContext();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [activeItem, setActiveItem] = useState("Home");
+
+  // Menu Items (from SideNav)
+  const menuItems = [
+    { name: "Home", icon: "bi-house" },
+    { name: "Projects", icon: "bi-people" },
+    { name: "Categories", icon: "bi-list-task" },
+    { name: "Stores", icon: "bi-shop" },
+    { name: "Reports", icon: "bi-bar-chart" },
+    { name: "Settings", icon: "bi-gear" },
+  ];
+
+  const handleMenuClick = (item) => {
+    setActiveItem(item);
+    setDashboard(item);
+    navigate("/" + item.toLowerCase());
+  };
 
   return (
     <div className="sticky top-0 z-50 bg-white">
@@ -34,8 +49,24 @@ const TopNavbar = () => {
               </Button>
             </SheetTrigger>
             <SheetContent side="left">
-              <div className="flex flex-col space-y-4 mt-8">
-                <div className="flex items-center space-x-2">
+              {/* Sidenav Items in Mobile */}
+              <div className="flex flex-col mt-8 space-y-4">
+                {menuItems.map((item) => (
+                  <div
+                    key={item.name}
+                    onClick={() => handleMenuClick(item.name)}
+                    className={`flex items-center space-x-2 cursor-pointer py-3 px-4 rounded-lg ${
+                      activeItem === item.name
+                        ? "bg-blue-500 text-white"
+                        : "hover:bg-blue-600 text-gray-700"
+                    }`}
+                  >
+                    <i className={`bi ${item.icon} text-lg`} />
+                    <span className="text-sm">{item.name}</span>
+                  </div>
+                ))}
+                {/* Search Section */}
+                <div className="flex items-center space-x-2 mt-6">
                   <Search className="h-5 w-5 text-gray-500" />
                   <input
                     type="text"
@@ -43,20 +74,23 @@ const TopNavbar = () => {
                     className="w-full px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                   />
                 </div>
+                {/* Notifications */}
                 <div
                   onClick={() => {
                     navigate("/notifications");
                   }}
-                  className="flex items-center space-x-2 cursor-pointer"
+                  className="flex items-center space-x-2 cursor-pointer mt-6"
                 >
                   <Bell className="h-5 w-5 text-gray-500" />
                   <span>Notifications</span>
                 </div>
-                <div className="flex items-center space-x-2 cursor-pointer">
+                {/* Messages */}
+                <div className="flex items-center space-x-2 cursor-pointer mt-4">
                   <MessageSquare className="h-5 w-5 text-gray-500" />
                   <span>Messages</span>
                 </div>
-                <div className="flex items-center space-x-2 cursor-pointer">
+                {/* Profile */}
+                <div className="flex items-center space-x-2 cursor-pointer mt-4">
                   <img
                     src={user}
                     alt="Profile"
@@ -71,9 +105,10 @@ const TopNavbar = () => {
           {/* Title */}
           <Link to="/">
             <span className="text-lg font-semibold">
-              {dashboard + ` Workspace `}
+              {dashboard + ` Workspace`}
             </span>
           </Link>
+
           {/* Search Toggle */}
           <Button
             variant="ghost"
@@ -105,7 +140,7 @@ const TopNavbar = () => {
           {/* Desktop Title */}
           <Link to="/">
             <span className="text-lg font-semibold">
-              {dashboard + ` Workspace  `}
+              {dashboard + ` Workspace`}
             </span>
           </Link>
 

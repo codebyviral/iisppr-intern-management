@@ -1,3 +1,4 @@
 import Home from "./Home";
 import Notifications from "./Notifications";
-export { Home, Notifications }
+import Settings from "./Settings";
+export { Home, Notifications, Settings }

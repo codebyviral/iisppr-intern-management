@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { Home, Notifications } from "./Pages/pageIndex";
+import { Home, Notifications, Settings } from "./Pages/pageIndex";
 import Logup from "./Pages/Logup";
 import "./App.css";
 
@@ -8,6 +8,7 @@ const App = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/signup" element={<Logup />} />
+      <Route path="/settings" element={<Settings />} />
       <Route path="/notifications" element={<Notifications />} />
     </Routes>
   );

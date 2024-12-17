@@ -57,7 +57,7 @@ const SideNav = () => {
       {/* SideNav */}
       <div
         id="sidebar"
-        className="bg-slate-800 h-screen fixed sidenav-container lg:w-60 w-10 duration-300 text-slate-100 flex flex-col justify-between"
+        className="bg-blue-500 h-screen fixed sidenav-container lg:w-32 w-10 duration-300 text-slate-100 flex flex-col justify-between"
       >
         {/* SideNav Items */}
         <div className="mt-4">
@@ -68,8 +68,8 @@ const SideNav = () => {
                 onClick={() => handleMenuClick(item.name)}
                 className={`flex items-center py-4 px-2 cursor-pointer ${
                   activeItem === item.name
-                    ? "bg-slate-700"
-                    : "hover:bg-slate-600"
+                    ? "bg-blue-700"
+                    : "hover:bg-blue-600"
                 }`}
               >
                 <i className={`bi ${item.icon} text-lg`}></i>
@@ -88,7 +88,7 @@ const SideNav = () => {
               <li
                 key={item.name}
                 onClick={() => handleMenuClick(item.name)}
-                className="flex items-center py-4 px-2 hover:bg-slate-600 cursor-pointer"
+                className="flex items-center py-4 px-2 hover:bg-blue-600 cursor-pointer"
               >
                 <i className={`bi ${item.icon} text-lg`}></i>
                 <span className="ml-4 text-sm whitespace-nowrap hidden md:inline">

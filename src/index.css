@@ -305,6 +305,10 @@ span {
   color: #999;
 }
 
+.taskContainer {
+  z-index: 20 !important;
+}
+
 /*  MOBILE RESPONSIVE CSS CODE  */
 
 @media screen and (max-width: 768px) {
@@ -314,7 +318,10 @@ span {
   .sidenavbar:hover {
     max-width: 2.5rem !important;
   }
-  .tweet-card{
+  .sidenavbar {
+    display: none !important;
+  }
+  .hide-mobile {
     display: none;
   }
 }

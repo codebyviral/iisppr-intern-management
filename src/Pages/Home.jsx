@@ -1,10 +1,10 @@
-import { Navbar, TweetMessage } from "../Components/compIndex";
+import { Navbar, Dashboard } from "../Components/compIndex";
 
 const Home = () => {
   return (
     <>
       <Navbar />
-      <TweetMessage />
+      <Dashboard />
     </>
   );
 };
