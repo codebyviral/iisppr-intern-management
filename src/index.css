@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+
+.tech-support:hover{
+    background-color: #D3D3D3;
+}
+.tech-support:hover .tech-detail {
+    font-weight: 500;
+}
+.tech-support:hover button {
+    font-size: 16px;
+}
