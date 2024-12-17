@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/Components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 import { useNavigate } from "react-router-dom";
 
 const TweetMessage = () => {
