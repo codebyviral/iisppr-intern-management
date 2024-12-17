@@ -1,11 +1,13 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useState, useEffect } from "react";
 import { useAppContext } from "../context/AppContext";
-
+import { useNavigate } from "react-router-dom";
 const SideNav = () => {
-  const [activeItem, setActiveItem] = useState("Home");
-  const [content, setContent] = useState("Content for Home");
   const { dashboard, setDashboard } = useAppContext();
+  const [activeItem, setActiveItem] = useState(dashboard);
+  const [content, setContent] = useState("Content for Home");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const mainContent = document.getElementById("mainContent");
@@ -32,14 +34,21 @@ const SideNav = () => {
 
   // Menu items
   const menuItems = [
-    { name: "Home", icon: "bi-house" },
-    { name: "Projects", icon: "bi-people" },
-    { name: "Categories", icon: "bi-list-task" },
-    { name: "Stores", icon: "bi-shop" },
-    { name: "Reports", icon: "bi-bar-chart" },
-    { name: "Settings", icon: "bi-gear" },
+    { id: 0, name: "Home", icon: "bi-house" },
+    { id: 1, name: "Projects", icon: "bi-people" },
+    { id: 2, name: "Categories", icon: "bi-list-task" },
+    { id: 3, name: "Stores", icon: "bi-shop" },
+    { id: 4, name: "Reports", icon: "bi-bar-chart" },
+    { id: 5, name: "Settings", icon: "bi-gear" },
   ];
-
+  const redirectURLs = [
+    "",
+    "projects",
+    "categories",
+    "stores",
+    "reports",
+    "settings",
+  ];
   const footerItems = [
     { name: "Add Task", icon: "bi-plus-circle" },
     { name: "Log Out", icon: "bi bi-box-arrow-left" },
@@ -65,11 +74,12 @@ const SideNav = () => {
             {menuItems.map((item) => (
               <li
                 key={item.name}
-                onClick={() => handleMenuClick(item.name)}
+                onClick={() => {
+                  handleMenuClick(item.name);
+                  navigate(`/${redirectURLs[item.id]}`);
+                }}
                 className={`flex items-center py-4 px-2 cursor-pointer ${
-                  activeItem === item.name
-                    ? "bg-blue-700"
-                    : "hover:bg-blue-600"
+                  activeItem === item.name ? "bg-blue-600" : "hover:bg-blue-500"
                 }`}
               >
                 <i className={`bi ${item.icon} text-lg`}></i>

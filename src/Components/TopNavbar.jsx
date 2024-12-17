@@ -13,6 +13,7 @@ import {
   ChevronDown,
   X,
 } from "lucide-react";
+import { NotiBadge } from "./compIndex.js";
 
 const TopNavbar = () => {
   const navigate = useNavigate();
@@ -139,7 +140,10 @@ const TopNavbar = () => {
         <div className="hidden md:flex items-center justify-between w-full">
           {/* Desktop Title */}
           <Link to="/">
-            <span className="text-lg font-semibold">
+            <span
+              onClick={() => setDashboard("Home")}
+              className="text-lg font-semibold"
+            >
               {dashboard + ` Workspace`}
             </span>
           </Link>
@@ -158,19 +162,7 @@ const TopNavbar = () => {
 
           {/* Desktop Icons and Profile */}
           <div className="flex items-center space-x-7">
-            {/* Notification Icon */}
-            <div
-              onClick={() => {
-                navigate("/notifications");
-              }}
-              className="relative text-gray-500 mr-5 cursor-pointer"
-            >
-              <Bell className="w-6 h-6" />
-              {/* Notification Badge */}
-              <sup className="absolute top-0 left-7 bg-red-500 text-white text-xs rounded-full px-2 py-0">
-                2+
-              </sup>
-            </div>
+            <NotiBadge count={1} />
 
             {/* Message Icon */}
             <div className="text-gray-500 cursor-pointer">
