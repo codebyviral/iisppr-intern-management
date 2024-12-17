@@ -314,6 +314,9 @@ span {
   .sidenavbar:hover {
     max-width: 2.5rem !important;
   }
+  .tweet-card{
+    display: none;
+  }
 }
 
 /* DESKTOP CSS Large Devices */
@@ -324,8 +327,5 @@ span {
   }
   .adjustCross {
     right: 480px;
-  }
-  .sidenav-container:hover {
-    width: 16rem;
   }
 }

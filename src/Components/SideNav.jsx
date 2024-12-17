@@ -57,7 +57,7 @@ const SideNav = () => {
       {/* SideNav */}
       <div
         id="sidebar"
-        className="bg-slate-800 h-screen fixed sidenav-container lg:w-32 w-10 duration-300 text-slate-100 flex flex-col justify-between"
+        className="bg-slate-800 h-screen fixed sidenav-container lg:w-60 w-10 duration-300 text-slate-100 flex flex-col justify-between"
       >
         {/* SideNav Items */}
         <div className="mt-4">
