@@ -1,13 +1,12 @@
-import {Navbar, Sidebar} from "../Components/compIndex";
+import { Navbar, Dashboard } from "../Components/compIndex";
 
 const Home = () => {
   return (
     <>
       <Navbar />
-      <Sidebar />
+      <Dashboard />
     </>
   );
 };
 
 export default Home;
-//hey thanks man
