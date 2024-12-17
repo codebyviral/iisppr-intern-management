@@ -7,8 +7,9 @@ import {
   Settings,
   Categories,
   Stores,
+  Signin,
+  SignUp
 } from "./Pages/pageIndex";
-import Logup from "./Pages/Logup";
 import "./App.css";
 
 const App = () => {
@@ -16,7 +17,8 @@ const App = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/Home" element={<Home />} />
-      <Route path="/signup" element={<Logup />} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/login" element={<Signin />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/notifications" element={<Notifications />} />
       <Route path="/reports" element={<Reports />} />

@@ -5,7 +5,9 @@ import Reports from "./Reports";
 import Projects from "./Projects";
 import Categories from "./Categories";
 import Stores from "./Stores";
+import Signin from "./Signin";
+import SignUp from "./Signup";
 
 
 
-export { Home, Notifications, Settings, Reports, Projects, Categories, Stores }
+export { Home, Notifications, Settings, Reports, Projects, Categories, Stores, Signin, SignUp }
