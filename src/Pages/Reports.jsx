@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { FileText, Menu, X } from "lucide-react"; // Added Menu and X for mobile menu
+import React, { useState, useEffect } from "react";
+import { FileText, Menu, X } from "lucide-react";
 import { FaFileExcel } from "react-icons/fa";
 import { saveAs } from "file-saver";
 import { jsPDF } from "jspdf";
@@ -7,28 +7,32 @@ import * as XLSX from "xlsx";
 import { Navbar } from "@/Components/compIndex";
 import { reportData } from "@/APIs";
 
+import { Button } from "@/Components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/Components/ui/table";
+import { Checkbox } from "@/Components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/Components/ui/dropdown-menu";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+
 const Reports = () => {
   const [data, setData] = useState([]);
   const [selectedData, setSelectedData] = useState(new Set());
   const [selectAll, setSelectAll] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobileTableView, setIsMobileTableView] = useState(false);
 
-  // Dummy data for intern management
   useEffect(() => {
     setData(reportData);
-
-    // Check screen width and set mobile view
-    const handleResize = () => {
-      setIsMobileTableView(window.innerWidth <= 768);
-    };
-
-    handleResize(); // Initial check
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  // Existing checkbox and download handlers remain the same
 
   const handleCheckboxChange = (id) => {
     const updatedSelectedData = new Set(selectedData);
@@ -51,10 +55,9 @@ const Reports = () => {
   };
 
   const handleDownloadPDF = () => {
-    const doc = new jsPDF({ orientation: "landscape" }); // Landscape for better readability
-    doc.setFontSize(10); // Smaller font for more content
+    const doc = new jsPDF({ orientation: "landscape" });
+    doc.setFontSize(10);
 
-    // Title
     doc.text("Intern Report", 14, 10);
     doc.autoTable({
       head: [
@@ -91,7 +94,7 @@ const Reports = () => {
         ]),
       startY: 20,
       margin: { horizontal: 10 },
-      styles: { fontSize: 8 }, // Smaller font in PDF
+      styles: { fontSize: 8 },
     });
 
     doc.save("intern_report.pdf");
@@ -108,178 +111,87 @@ const Reports = () => {
     saveAs(file, "intern_report.xlsx");
   };
 
-  // Mobile Table View Component
-  const MobileTableView = () => (
-    <div className="space-y-4">
-      {data.map((item) => (
-        <div
-          key={item.id}
-          className={`bg-white border rounded-lg p-4 shadow-sm ${
-            selectedData.has(item.id) ? "bg-blue-50 border-blue-200" : ""
-          }`}
-          onClick={() => handleCheckboxChange(item.id)}
-        >
-          <div className="flex items-center justify-between mb-2">
-            <input
-              type="checkbox"
-              checked={selectedData.has(item.id)}
-              onChange={() => handleCheckboxChange(item.id)}
-              className="mr-2"
-            />
-            <span className="font-bold text-blue-800">{item.name}</span>
-          </div>
-          <div className="grid grid-cols-2 gap-2 text-sm text-gray-700">
-            <div>
-              ID: <span className="font-medium">{item.id}</span>
-            </div>
-            <div>
-              Department: <span className="font-medium">{item.department}</span>
-            </div>
-            <div>
-              Attendance:{" "}
-              <span className="font-medium">{item.attendance}%</span>
-            </div>
-            <div>
-              Task Completion:{" "}
-              <span className="font-medium">{item.taskCompletion}%</span>
-            </div>
-            <div>
-              Performance:{" "}
-              <span className="font-medium">{item.performance}%</span>
-            </div>
-            <div>
-              Task Status:{" "}
-              <span className="font-medium">{item.taskStatus}</span>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-blue-100 to-blue-200 px-4 py-6">
-        <div className="max-w-full mx-auto px-4 sm:px-8 py-6 sm:ml-36">
-          {/* Mobile Header with Hamburger Menu */}
-          <div className="sm:hidden flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold text-blue-800">Intern Report</h1>
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-blue-800"
-            >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-
-          {/* Mobile Dropdown Menu */}
-          {isMobileMenuOpen && (
-            <div className="sm:hidden bg-white rounded-lg shadow-md p-4 mb-4">
-              <div className="flex flex-col space-y-2">
-                <button
-                  onClick={handleDownloadPDF}
-                  className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all"
-                >
-                  <FileText size={20} />
-                  Download PDF
-                </button>
-                <button
-                  onClick={handleDownloadExcel}
-                  className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all"
-                >
-                  <FaFileExcel size={20} />
-                  Download Excel
-                </button>
+      <div className="container mx-auto py-10 lg:ml-36">
+        <Card>
+          <CardHeader>
+            <div className="flex justify-between items-center">
+              <CardTitle>Intern Report</CardTitle>
+              <div className="flex gap-2">
+                <Button onClick={handleDownloadPDF} variant="outline">
+                  <FileText className="mr-2 h-4 w-4" /> PDF
+                </Button>
+                <Button onClick={handleDownloadExcel} variant="outline">
+                  <FaFileExcel className="mr-2 h-4 w-4" /> Excel
+                </Button>
               </div>
             </div>
-          )}
-
-          {/* Desktop Header with Download Buttons */}
-          <div className="hidden sm:flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold text-blue-800">Intern Report</h1>
-            <div className="flex gap-4">
-              <button
-                onClick={handleDownloadPDF}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-300"
-              >
-                <FileText size={20} />
-                Download PDF
-              </button>
-              <button
-                onClick={handleDownloadExcel}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-300"
-              >
-                <FaFileExcel size={20} />
-                Download Excel
-              </button>
-            </div>
-          </div>
-
-          {/* Responsive Table View */}
-          <div className="bg-white p-6 rounded-xl shadow-lg overflow-x-auto">
-            {isMobileTableView ? (
-              <MobileTableView />
-            ) : (
-              <table className="w-full text-sm text-left text-gray-600">
-                <thead className="bg-blue-200">
-                  <tr>
-                    <th className="px-4 py-2">
-                      <input
-                        type="checkbox"
-                        checked={selectAll}
-                        onChange={handleSelectAll}
-                        className="cursor-pointer"
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[50px]">
+                    <Checkbox
+                      checked={selectAll}
+                      onCheckedChange={handleSelectAll}
+                    />
+                  </TableHead>
+                  <TableHead>ID</TableHead>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Attendance</TableHead>
+                  <TableHead>Task Update</TableHead>
+                  <TableHead>Department</TableHead>
+                  <TableHead>Task Status</TableHead>
+                  <TableHead>Performance</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {data.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>
+                      <Checkbox
+                        checked={selectedData.has(item.id)}
+                        onCheckedChange={() => handleCheckboxChange(item.id)}
                       />
-                    </th>
-                    <th className="px-4 py-2">ID</th>
-                    <th className="px-4 py-2">Name</th>
-                    <th className="px-4 py-2">Attendance (%)</th>
-                    <th className="px-4 py-2">Task Update</th>
-                    <th className="px-4 py-2">Task Completion (%)</th>
-                    <th className="px-4 py-2">Department</th>
-                    <th className="px-4 py-2">Joining Date</th>
-                    <th className="px-4 py-2">Email</th>
-                    <th className="px-4 py-2">Phone</th>
-                    <th className="px-4 py-2">Task Status</th>
-                    <th className="px-4 py-2">Performance (%)</th>
-                    <th className="px-4 py-2">Comments</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.map((item) => (
-                    <tr
-                      key={item.id}
-                      className="border-b hover:bg-blue-50 cursor-pointer"
-                      onClick={() => handleCheckboxChange(item.id)}
-                    >
-                      <td className="px-4 py-2">
-                        <input
-                          type="checkbox"
-                          checked={selectedData.has(item.id)}
-                          onChange={() => handleCheckboxChange(item.id)}
-                          className="cursor-pointer"
-                        />
-                      </td>
-                      <td className="px-4 py-2">{item.id}</td>
-                      <td className="px-4 py-2">{item.name}</td>
-                      <td className="px-4 py-2">{item.attendance}%</td>
-                      <td className="px-4 py-2">{item.taskUpdate}</td>
-                      <td className="px-4 py-2">{item.taskCompletion}%</td>
-                      <td className="px-4 py-2">{item.department}</td>
-                      <td className="px-4 py-2">{item.joiningDate}</td>
-                      <td className="px-4 py-2">{item.email}</td>
-                      <td className="px-4 py-2">{item.phone}</td>
-                      <td className="px-4 py-2">{item.taskStatus}</td>
-                      <td className="px-4 py-2">{item.performance}%</td>
-                      <td className="px-4 py-2">{item.comments}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
-        </div>
+                    </TableCell>
+                    <TableCell>{item.id}</TableCell>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell>{item.attendance}%</TableCell>
+                    <TableCell>{item.taskUpdate}</TableCell>
+                    <TableCell>{item.department}</TableCell>
+                    <TableCell>{item.taskStatus}</TableCell>
+                    <TableCell>{item.performance}%</TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm">
+                            Details
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem
+                            onClick={() => alert(`Details for ${item.name}`)}
+                          >
+                            View Details
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => alert(`Email: ${item.email}`)}
+                          >
+                            Contact
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
       </div>
     </>
   );
