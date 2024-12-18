@@ -1,94 +1,85 @@
-import { Navbar } from "@/Components/compIndex";
-import { X } from "lucide-react";
-function Notifications() {
-  const updates = [
-    {
-      id: 1,
-      title: "New intern assigned",
-      description1: "Project deadline approaching",
-      description2: "Intern submitted report",
-      time: "1 day ago",
-    },
-    {
-      id: 2,
-      title: "Task completed",
-      description1: "Project evaluation received",
-      description2: "Feedback provided",
-      time: "2 hours ago",
-    },
-    {
-      id: 3,
-      title: "Project update",
-      description1: "New feature release",
-      description2: "Bug fixes applied",
-      time: "3 days ago",
-    },
-    {
-      id: 4,
-      title: "New message received",
-      description1: "Intern has some queries",
-      description2: "Follow up on task progress",
-      time: "5 minutes ago",
-    },
-    {
-      id: 5,
-      title: "Meeting scheduled",
-      description1: "Team discussion on progress",
-      description2: "Meeting link sent",
-      time: "10 minutes ago",
-    },
-    {
-      id: 6,
-      title: "Report submitted",
-      description1: "Intern submitted the final report",
-      description2: "All tasks completed",
-      time: "2 days ago",
-    },
-    {
-      id: 7,
-      title: "Feedback received",
-      description1: "Client feedback on the project",
-      description2: "Areas to improve",
-      time: "1 hour ago",
-    },
-    {
-      id: 8,
-      title: "New task assigned",
-      description1: "Intern assigned a new task",
-      description2: "Task details sent to email",
-      time: "3 hours ago",
-    },
-  ];
+import React, { useState } from "react";
+import { Navbar, SideNav, Filter } from "@/Components/compIndex";
+import { tasks } from "@/APIs";
 
+function Notifications() {
+  const [showFilters, setShowFilters] = useState(true);
+
+  // Sample updates data
+  const updates = tasks;
   return (
     <>
+      {/* Navbar */}
       <Navbar />
-      <div className="notifications-wrapper">
-        <div className="card cursor-pointer">
-          <div className="header">
-            <h3>Recent Updates</h3>
-            <select>
-              <option>This month</option>
-              <option>Last month</option>
-            </select>
+
+      {/* Side Navigation */}
+      <SideNav />
+
+      {/* Main Content - Added responsive classes carefully */}
+      <div className="relative bg-gray-50 min-h-screen ml-0 md:ml-32">
+        {/* Top Section */}
+        <div className="p-4 bg-white shadow-md flex justify-between items-center">
+          <h3 className="text-xl font-bold">Notifications</h3>
+        </div>
+
+        {/* Flex Layout - Responsive with minimal changes */}
+        <div className="flex flex-col md:flex-row mt-4 px-4 space-y-4 md:space-y-0 md:space-x-4">
+          {/* Left Section - Recent Updates */}
+          <div className="w-full md:flex-1 bg-white rounded-lg shadow-lg p-6 overflow-y-auto">
+            <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold mb-2 md:mb-0">
+                Recent Updates
+              </h3>
+              <select className="w-full md:w-auto p-2 border border-gray-300 rounded">
+                <option>This month</option>
+                <option>Last month</option>
+              </select>
+            </div>
+
+            {/* Updates List */}
+            <div className="space-y-4">
+              {updates.map((update, index) => (
+                <div
+                  className="flex flex-col md:flex-row items-start justify-between border-b pb-4 relative"
+                  key={index}
+                >
+                  {/* Avatar - Adjusted for mobile */}
+                  <img
+                    src={update.avatar}
+                    alt={`${update.owner}'s avatar`}
+                    className="w-12 h-12 rounded-full md:mr-4 self-center md:self-start mb-2 md:mb-0"
+                  />
+                  {/* Update Details */}
+                  <div className="flex-1 text-center md:text-left w-full">
+                    <strong className="block text-lg font-semibold">
+                      {update.title}
+                    </strong>
+                    <p className="text-gray-600">{update.dueDate}</p>
+                    <div className="flex justify-center md:justify-start mt-2">
+                      <span className="bg-blue-200 text-blue-700 px-3 py-1 rounded mr-2 cursor-pointer">
+                        View
+                      </span>
+                      <span className="bg-green-200 text-green-700 px-3 py-1 rounded cursor-pointer">
+                        Feedback
+                      </span>
+                    </div>
+                  </div>
+                  {/* Time/Owner - Hidden on mobile */}
+                  <div className="hidden md:block text-gray-500">
+                    {update.owner}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {updates.map((update) => (
-            <div className="update" key={update.id}>
-              <div className="user-img">
-                {/* <img src={""} alt="user" /> */}
-              </div>
-              <div className="content">
-                <strong>{update.title}</strong>
-                <p>{update.description1}</p>
-                <p>{update.description2}</p>
-                <span className="notification-tag lg:mx-3">Approve</span>
-                <span className="feedback-tag lg:mx-3">Feedback </span>
-              </div>
-              <div className="time">{update.time}</div>
-              <X className="absolute adjustCross m-2" color="#ef233c" />
+          {/* Right Sidebar - Filter Options */}
+          {showFilters && (
+            <div className="w-full md:w-1/4 bg-white rounded-lg shadow-lg p-4">
+              <h3 className="text-xl font-bold mb-4">Filters</h3>
+              <Filter />
             </div>
-          ))}
+          )}
         </div>
       </div>
     </>

@@ -2,6 +2,7 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Progress } from "@/Components/ui/progress";
 import { Button } from "@/Components/ui/button";
+import { useNavigate } from "react-router-dom";
 import {
   Calendar,
   Settings,
@@ -10,7 +11,10 @@ import {
   Clock,
 } from "lucide-react";
 import { tasks, calendarItems } from "@/APIs/index.js";
+import { useAppContext } from "@/context/AppContext";
 const CoreDashboard = () => {
+  const navigate = useNavigate();
+  const { setDashboard } = useAppContext();
   const currentDate = new Date();
   const currentDay = currentDate.getDate();
   const currentYear = currentDate.getFullYear();
@@ -31,7 +35,13 @@ const CoreDashboard = () => {
             Open the panel and watch your progress and growth in knowledge.
           </p>
         </div>
-        <div className="hide-mobile">
+        <div
+          onClick={() => {
+            setDashboard("Settings");
+            navigate("/settings");
+          }}
+          className="hide-mobile"
+        >
           <Button variant="outline" className="flex items-center gap-2">
             <Settings className="h-4 w-4" />
             Settings
@@ -52,7 +62,7 @@ const CoreDashboard = () => {
                   />
                 ))}
               </div>
-              <div>
+              <div className="cursor-pointer">
                 <p className="font-medium">Next retrospective</p>
                 <p className="text-sm text-gray-600">Week 12 progress</p>
               </div>
@@ -71,7 +81,7 @@ const CoreDashboard = () => {
                   />
                 ))}
               </div>
-              <div>
+              <div className="cursor-pointer">
                 <p className="font-medium">Next sprint</p>
                 <p className="text-sm text-gray-600">Week 12 progress</p>
               </div>
@@ -90,7 +100,7 @@ const CoreDashboard = () => {
               <p className="text-sm text-gray-600 mb-4">
                 {tasks.length} active tasks
               </p>
-              {tasks.map((task) => (
+              {tasks.slice(0, 5).map((task) => (
                 <div key={task.id} className="flex items-center gap-4 mb-4">
                   <div className="w-8 h-8 rounded-full bg-gray-200" />
                   <div className="flex-1">

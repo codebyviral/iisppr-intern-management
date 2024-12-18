@@ -14,10 +14,12 @@ import {
   X,
 } from "lucide-react";
 import { NotiBadge } from "./compIndex.js";
+import { useAuthContext } from "@/context/AuthContext.jsx";
 
 const TopNavbar = () => {
   const navigate = useNavigate();
-  const { dashboard, setDashboard } = useAppContext();
+  const { loggedIn, setIsLoggedIn } = useAuthContext();
+  const { dashboard, setDashboard, notiCounter } = useAppContext();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [activeItem, setActiveItem] = useState("Home");
 
@@ -35,6 +37,10 @@ const TopNavbar = () => {
     setActiveItem(item);
     setDashboard(item);
     navigate("/" + item.toLowerCase());
+  };
+
+  const handleLoginRedirect = () => {
+    loggedIn ? navigate("/logout") : navigate("/login");
   };
 
   return (
@@ -97,7 +103,9 @@ const TopNavbar = () => {
                     alt="Profile"
                     className="w-8 h-8 rounded-full"
                   />
-                  <span>Intern Profile</span>
+                  <div onClick={() => handleLoginRedirect()}>
+                    {loggedIn ? "Logout" : "Login"}
+                  </div>
                 </div>
               </div>
             </SheetContent>
@@ -162,7 +170,7 @@ const TopNavbar = () => {
 
           {/* Desktop Icons and Profile */}
           <div className="flex items-center space-x-7">
-            <NotiBadge count={1} />
+            <NotiBadge count={notiCounter} />
 
             {/* Message Icon */}
             <div className="text-gray-500 cursor-pointer">
@@ -171,13 +179,13 @@ const TopNavbar = () => {
 
             {/* Profile Section */}
             <div className="flex items-center space-x-2 cursor-pointer">
-              <img
-                src={user}
-                alt="Profile"
-                className="w-8 h-8 mx-3 rounded-full"
-              />
-              <span className="text-gray-700 font-medium">Intern</span>
-              <ChevronDown className="w-4 h-4 text-gray-500" />
+              <img src={user} alt="Profile" className="w-8 h-8 rounded-full" />
+              <div
+                onClick={() => handleLoginRedirect()}
+                className="text-gray-700 font-medium"
+              >
+                {loggedIn ? "Logout" : "Login"}
+              </div>
             </div>
           </div>
         </div>
