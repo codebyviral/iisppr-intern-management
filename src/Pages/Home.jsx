@@ -1,3 +1,4 @@
+import Footer from "@/Components/Footer";
 import { Navbar, Dashboard } from "../Components/compIndex";
 
 const Home = () => {
@@ -5,6 +6,7 @@ const Home = () => {
     <>
       <Navbar />
       <Dashboard />
+      <Footer/>
     </>
   );
 };
