@@ -86,7 +86,7 @@ function Notifications() {
                 <span className="feedback-tag lg:mx-3">Feedback </span>
               </div>
               <div className="time">{update.time}</div>
-
+              {/* removed cancel button */}
             </div>
           ))}
         </div>
