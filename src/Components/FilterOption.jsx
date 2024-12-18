@@ -4,7 +4,9 @@ const FilterOption = ({ filters, onToggle, onMarkAll, onClearAll }) => {
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
       {/* Title */}
-      <h3 className="text-lg font-semibold mb-4 text-gray-800">Filter Options</h3>
+      <h3 className="text-lg font-semibold mb-4 text-gray-800">
+        Filter Options
+      </h3>
       {/* Filters List */}
       <div className="space-y-3">
         {Object.keys(filters).map((filter) => (

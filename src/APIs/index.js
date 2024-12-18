@@ -3,19 +3,19 @@ const tasks = [
         title: "Interview with developer",
         dueDate: "Due today",
         avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-        owner: "Admir"
+        owner: "Admin"
     },
     {
         title: "Reflection time for interns",
         dueDate: "Tomorrow",
-        avatar: "https://randomuser.me/api/portraits/men/2.jpg",
-        owner: "Admir"
+        avatar: "https://randomuser.me/api/portraits/men/10.jpg",
+        owner: "Admin"
     },
     {
         title: "Task preparation for interns",
         dueDate: "Due today",
         avatar: "https://randomuser.me/api/portraits/men/3.jpg",
-        owner: "InternH"
+        owner: "HR"
     }
 ];
 const calendarItems = [
