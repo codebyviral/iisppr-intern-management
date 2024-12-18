@@ -1,9 +1,12 @@
-import React from 'react'
+import { SideNav, TopNavbar } from "./compIndex";
 
 const Navbar = () => {
   return (
-    <div>Navbar</div>
-  )
-}
+    <>
+      <TopNavbar />
+      <SideNav />
+    </>
+  );
+};
 
-export default Navbar
+export default Navbar;
