@@ -20,7 +20,7 @@ const SignUp = ({ onSwitchToSignin }) => {
       alert("Signup successful!");
     }
   };
-
+  // verify redirect issue
   return (
     <>
       <Navbar />
