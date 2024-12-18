@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { Navbar, SideNav } from "@/Components/compIndex";
+import { Navbar, SideNav, Filter } from "@/Components/compIndex";
 import { X } from "lucide-react";
-import {Filter} from "@/Components/compIndex";
 
 function Notifications() {
-  const [showFilters, setShowFilters] = useState(true); // State to show/hide filters
+  const [showFilters, setShowFilters] = useState(true);
 
   const updates = [
     { id: 1, title: "New intern assigned", description1: "Project deadline approaching", description2: "Intern submitted report", time: "1 day ago" },
@@ -16,14 +15,20 @@ function Notifications() {
 
   return (
     <>
+      {/* Navbar */}
       <Navbar />
-      <SideNav/>
-      <div className="relative bg-gray-50 min-h-screen">
-        {/* Top Section - Return Home Button */}
-        <div className="p-4 flex justify-between items-center bg-white shadow-md">
+
+      {/* Side Navigation */}
+      <SideNav />
+
+      {/* Main Content */}
+      <div className="relative bg-gray-50 min-h-screen ml-32">
+        {/* Top Section */}
+        <div className="p-4 bg-white shadow-md flex justify-between items-center">
+          <h3 className="text-xl font-bold">Notifications</h3>
         </div>
 
-        {/* Main Content - Flexbox Layout */}
+        {/* Flex Layout */}
         <div className="flex flex-row mt-4 px-4 space-x-4">
           {/* Left Section - Recent Updates */}
           <div className="flex-1 bg-white rounded-lg shadow-lg p-6 overflow-y-auto">
@@ -50,10 +55,10 @@ function Notifications() {
                     <p className="text-gray-600">{update.description1}</p>
                     <p className="text-gray-600">{update.description2}</p>
                     <div className="flex mt-2">
-                      <span className="bg-blue-200 text-blue-700 px-3 py-1 rounded mr-2">
+                      <span className="bg-blue-200 text-blue-700 px-3 py-1 rounded mr-2 cursor-pointer">
                         Approve
                       </span>
-                      <span className="bg-green-200 text-green-700 px-3 py-1 rounded">
+                      <span className="bg-green-200 text-green-700 px-3 py-1 rounded cursor-pointer">
                         Feedback
                       </span>
                     </div>
