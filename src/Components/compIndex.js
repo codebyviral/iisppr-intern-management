@@ -6,5 +6,7 @@ import CoreDashboard from "./CoreDashboard";
 import CoreSettings from "./Settings";
 import Wrapper from "./Wrapper"
 import NotiBadge from "./NotiBadge";
+import FilterOption from "./FilterOption";
+import Filter from "./Filter";
 
-export { Navbar, TopNavbar, SideNav, Dashboard, CoreSettings, CoreDashboard, Wrapper, NotiBadge }
+export { Navbar, TopNavbar, SideNav, Dashboard, CoreSettings, CoreDashboard, Wrapper, NotiBadge, FilterOption, Filter }

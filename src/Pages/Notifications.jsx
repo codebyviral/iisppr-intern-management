@@ -1,94 +1,76 @@
-import { Navbar } from "@/Components/compIndex";
+import React, { useState } from "react";
+import { Navbar, SideNav } from "@/Components/compIndex";
 import { X } from "lucide-react";
+import {Filter} from "@/Components/compIndex";
+
 function Notifications() {
+  const [showFilters, setShowFilters] = useState(true); // State to show/hide filters
+
   const updates = [
-    {
-      id: 1,
-      title: "New intern assigned",
-      description1: "Project deadline approaching",
-      description2: "Intern submitted report",
-      time: "1 day ago",
-    },
-    {
-      id: 2,
-      title: "Task completed",
-      description1: "Project evaluation received",
-      description2: "Feedback provided",
-      time: "2 hours ago",
-    },
-    {
-      id: 3,
-      title: "Project update",
-      description1: "New feature release",
-      description2: "Bug fixes applied",
-      time: "3 days ago",
-    },
-    {
-      id: 4,
-      title: "New message received",
-      description1: "Intern has some queries",
-      description2: "Follow up on task progress",
-      time: "5 minutes ago",
-    },
-    {
-      id: 5,
-      title: "Meeting scheduled",
-      description1: "Team discussion on progress",
-      description2: "Meeting link sent",
-      time: "10 minutes ago",
-    },
-    {
-      id: 6,
-      title: "Report submitted",
-      description1: "Intern submitted the final report",
-      description2: "All tasks completed",
-      time: "2 days ago",
-    },
-    {
-      id: 7,
-      title: "Feedback received",
-      description1: "Client feedback on the project",
-      description2: "Areas to improve",
-      time: "1 hour ago",
-    },
-    {
-      id: 8,
-      title: "New task assigned",
-      description1: "Intern assigned a new task",
-      description2: "Task details sent to email",
-      time: "3 hours ago",
-    },
+    { id: 1, title: "New intern assigned", description1: "Project deadline approaching", description2: "Intern submitted report", time: "1 day ago" },
+    { id: 2, title: "Task completed", description1: "Project evaluation received", description2: "Feedback provided", time: "2 hours ago" },
+    { id: 3, title: "Project update", description1: "New feature release", description2: "Bug fixes applied", time: "3 days ago" },
+    { id: 4, title: "New message received", description1: "Intern has some queries", description2: "Follow up on task progress", time: "5 minutes ago" },
+    { id: 5, title: "Meeting scheduled", description1: "Team discussion on progress", description2: "Meeting link sent", time: "10 minutes ago" },
   ];
 
   return (
     <>
       <Navbar />
-      <div className="notifications-wrapper">
-        <div className="card cursor-pointer">
-          <div className="header">
-            <h3>Recent Updates</h3>
-            <select>
-              <option>This month</option>
-              <option>Last month</option>
-            </select>
+      <SideNav/>
+      <div className="relative bg-gray-50 min-h-screen">
+        {/* Top Section - Return Home Button */}
+        <div className="p-4 flex justify-between items-center bg-white shadow-md">
+        </div>
+
+        {/* Main Content - Flexbox Layout */}
+        <div className="flex flex-row mt-4 px-4 space-x-4">
+          {/* Left Section - Recent Updates */}
+          <div className="flex-1 bg-white rounded-lg shadow-lg p-6 overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold">Recent Updates</h3>
+              <select className="p-2 border border-gray-300 rounded">
+                <option>This month</option>
+                <option>Last month</option>
+              </select>
+            </div>
+
+            {/* Updates List */}
+            <div className="space-y-4">
+              {updates.map((update) => (
+                <div
+                  className="flex items-start justify-between border-b pb-4 relative"
+                  key={update.id}
+                >
+                  <div className="w-12 h-12 bg-gray-400 rounded-full mr-4"></div>
+                  <div className="flex-1">
+                    <strong className="block text-lg font-semibold">
+                      {update.title}
+                    </strong>
+                    <p className="text-gray-600">{update.description1}</p>
+                    <p className="text-gray-600">{update.description2}</p>
+                    <div className="flex mt-2">
+                      <span className="bg-blue-200 text-blue-700 px-3 py-1 rounded mr-2">
+                        Approve
+                      </span>
+                      <span className="bg-green-200 text-green-700 px-3 py-1 rounded">
+                        Feedback
+                      </span>
+                    </div>
+                  </div>
+                  <div className="text-gray-500">{update.time}</div>
+                  <X className="absolute top-2 right-2 cursor-pointer" color="#ef233c" />
+                </div>
+              ))}
+            </div>
           </div>
 
-          {updates.map((update) => (
-            <div className="update" key={update.id}>
-              <div className="user-img">
-                {/* <img src={""} alt="user" /> */}
-              </div>
-              <div className="content">
-                <strong>{update.title}</strong>
-                <p>{update.description1}</p>
-                <p>{update.description2}</p>
-                <span className="notification-tag lg:mx-3">Approve</span>
-                <span className="feedback-tag lg:mx-3">Feedback </span>
-              </div>
-              <div className="time">{update.time}</div>
-              {/* removed cancel button */}
+          {/* Right Sidebar - Filter Options */}
+          {showFilters && (
+            <div className="w-1/4">
+              <Filter />
             </div>
-          ))}
+          )}
         </div>
       </div>
     </>
