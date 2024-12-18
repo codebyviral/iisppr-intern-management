@@ -57,7 +57,6 @@ const Reports = () => {
   const handleDownloadPDF = () => {
     const doc = new jsPDF({ orientation: "landscape" });
     doc.setFontSize(10);
-
     doc.text("Intern Report", 14, 10);
     doc.autoTable({
       head: [

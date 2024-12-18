@@ -3,6 +3,7 @@ import { Navbar, SideNav } from "@/Components/compIndex";
 import { Mail, Lock, UserPlus } from "lucide-react"; // Adding icons for visual interest
 
 const SignUp = ({ onSwitchToSignin }) => {
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -11,11 +12,11 @@ const SignUp = ({ onSwitchToSignin }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!email || !password || password !== confirmPassword) {
+    if (!fullName || !email || !password || password !== confirmPassword) {
       setError("Please fill in all fields and make sure passwords match.");
     } else {
       setError("");
-      console.log("Registered successfully");
+      console.log("Registered successfully:", { fullName, email });
       alert("Signup successful!");
     }
   };
@@ -36,50 +37,28 @@ const SignUp = ({ onSwitchToSignin }) => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Name fields */}
-            <div className="flex space-x-4">
-              <div className="w-1/2">
-                <label
-                  htmlFor="firstName"
-                  className="block text-sm text-gray-600 mb-1"
-                >
-                  First Name
-                </label>
-                <div className="relative">
-                  <UserPlus
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                    size={20}
-                  />
-                  <input
-                    type="text"
-                    id="firstName"
-                    required
-                    className="pl-10 p-3 border border-gray-200 rounded-lg text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300"
-                    placeholder="Enter your first name"
-                  />
-                </div>
-              </div>
-
-              <div className="w-1/2">
-                <label
-                  htmlFor="lastName"
-                  className="block text-sm text-gray-600 mb-1"
-                >
-                  Last Name
-                </label>
-                <div className="relative">
-                  <UserPlus
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                    size={20}
-                  />
-                  <input
-                    type="text"
-                    id="lastName"
-                    required
-                    className="pl-10 p-3 border border-gray-200 rounded-lg text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300"
-                    placeholder="Enter your last name"
-                  />
-                </div>
+            {/* Full Name */}
+            <div className="relative">
+              <label
+                htmlFor="fullName"
+                className="block text-sm text-gray-600 mb-1"
+              >
+                Full Name
+              </label>
+              <div className="relative">
+                <UserPlus
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  size={20}
+                />
+                <input
+                  type="text"
+                  id="fullName"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  required
+                  placeholder="Enter your full name"
+                  className="pl-10 p-3 border border-gray-200 rounded-lg text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300"
+                />
               </div>
             </div>
 
