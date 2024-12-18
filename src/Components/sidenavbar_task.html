@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Sidebar with Hover</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <div class="flex flex-col md:flex-row h-screen">
+
+    <!-- Sidebar -->
+    <div class="bg-gray-200 shadow-md md:w-64 w-3/4 p-4 md:static fixed top-0 left-0 h-screen md:h-auto md:translate-x-0 -translate-x-full md:block transition-transform duration-300 overflow-auto" id="sidebar">
+      <!-- Logo Section -->
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center">
+          <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+          <h1 class="text-xl font-bold text-gray-800 ml-2">InternHub</h1>
+        </div>
+        <!--Close button-->
+        <button class="md:hidden" onclick="toggleSidebar()">
+          <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+        <!--categories-->
+      <div>
+        <h2 class="text-gray-600 font-semibold mb-2">Filters</h2>
+        <div class="mb-4">
+          <h3 class="text-gray-500 font-medium mb-2">Categories</h3>
+          <div class="flex items-center mb-1 hover:bg-gray-300 rounded p-2 cursor-pointer">
+            <input type="checkbox" id="development" class="h-4 w-4 text-blue-500 border-gray-300 rounded">
+            <label for="development" class="ml-2 text-gray-700 hover:text-blue-500">Development</label>
+          </div>
+          <div class="flex items-center mb-1 hover:bg-gray-300 rounded p-2 cursor-pointer">
+            <input type="checkbox" id="design" class="h-4 w-4 text-blue-500 border-gray-300 rounded">
+            <label for="design" class="ml-2 text-gray-700 hover:text-blue-500">Design</label>
+          </div>
+          <div class="flex items-center mb-1 hover:bg-gray-300 rounded p-2 cursor-pointer">
+            <input type="checkbox" id="marketing" class="h-4 w-4 text-blue-500 border-gray-300 rounded">
+            <label for="marketing" class="ml-2 text-gray-700 hover:text-blue-500">Marketing</label>
+          </div>
+        </div>
+        <!--Status-->
+        <div>
+          <h3 class="text-gray-500 font-medium mb-2">Status</h3>
+          <div class="flex items-center mb-1 hover:bg-gray-300 rounded p-2 cursor-pointer">
+            <input type="radio" id="pending" name="status" class="h-4 w-4 text-blue-500 border-gray-300">
+            <label for="pending" class="ml-2 text-gray-700 hover:text-blue-500">Pending</label>
+          </div>
+          <div class="flex items-center mb-1 hover:bg-gray-300 rounded p-2 cursor-pointer">
+            <input type="radio" id="inprogress" name="status" class="h-4 w-4 text-blue-500 border-gray-300">
+            <label for="inprogress" class="ml-2 text-gray-700 hover:text-blue-500">In Progress</label>
+          </div>
+          <div class="flex items-center mb-1 hover:bg-gray-300 rounded p-2 cursor-pointer">
+            <input type="radio" id="completed" name="status" class="h-4 w-4 text-blue-500 border-gray-300">
+            <label for="completed" class="ml-2 text-gray-700 hover:text-blue-500">Completed</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="p-2 bg-blue-500 text-white fixed top-4 left-2 md:hidden z-10" onclick="toggleSidebar()">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+    </button>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      sidebar.classList.toggle("-translate-x-full");
+    }
+  </script>
+</body>
+</html>
