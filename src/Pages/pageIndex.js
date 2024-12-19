@@ -7,7 +7,7 @@ import Categories from "./Categories";
 import Stores from "./Stores";
 import Signin from "./Signin";
 import SignUp from "./Signup";
+import Logout from "./Logout";
 
 
-
-export { Home, Notifications, Settings, Reports, Projects, Categories, Stores, Signin, SignUp }
+export { Home, Notifications, Settings, Reports, Projects, Categories, Stores, Signin, SignUp, Logout }

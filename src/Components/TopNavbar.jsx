@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { userIcon as user } from "./URIs.js";
+import { userIcon as user, authenticatedUser } from "./URIs.js";
 import { Button } from "@/Components/ui/button.jsx";
 import { Sheet, SheetContent, SheetTrigger } from "@/Components/ui/sheet";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "@/context/AppContext.jsx";
+import { UserRoundCheck, UserRound } from "lucide-react";
 import {
   Menu,
   Search,
@@ -18,7 +19,7 @@ import { useAuthContext } from "@/context/AuthContext.jsx";
 
 const TopNavbar = () => {
   const navigate = useNavigate();
-  const { loggedIn, setIsLoggedIn } = useAuthContext();
+  const { loggedIn } = useAuthContext();
   const { dashboard, setDashboard, notiCounter } = useAppContext();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [activeItem, setActiveItem] = useState("Home");
@@ -98,11 +99,13 @@ const TopNavbar = () => {
                 </div>
                 {/* Profile */}
                 <div className="flex items-center space-x-2 cursor-pointer mt-4">
-                  <img
-                    src={user}
-                    alt="Profile"
-                    className="w-8 h-8 rounded-full"
-                  />
+                  <div
+                    onClick={() => {
+                      navigate("/settings");
+                    }}
+                  >
+                    {loggedIn ? <UserRoundCheck /> : <UserRound />}
+                  </div>
                   <div onClick={() => handleLoginRedirect()}>
                     {loggedIn ? "Logout" : "Login"}
                   </div>
@@ -179,7 +182,13 @@ const TopNavbar = () => {
 
             {/* Profile Section */}
             <div className="flex items-center space-x-2 cursor-pointer">
-              <img src={user} alt="Profile" className="w-8 h-8 rounded-full" />
+              <div
+                onClick={() => {
+                  navigate("/settings");
+                }}
+              >
+                {loggedIn ? <UserRoundCheck /> : <UserRound />}
+              </div>
               <div
                 onClick={() => handleLoginRedirect()}
                 className="text-gray-700 font-medium"

@@ -8,7 +8,8 @@ import {
   Categories,
   Stores,
   Signin,
-  SignUp
+  SignUp,
+  Logout,
 } from "./Pages/pageIndex";
 import "./App.css";
 
@@ -19,6 +20,7 @@ const App = () => {
       <Route path="/Home" element={<Home />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Signin />} />
+      <Route path="/logout" element={<Logout />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/notifications" element={<Notifications />} />
       <Route path="/reports" element={<Reports />} />
