@@ -19,7 +19,7 @@ const Signin = ({ onSwitchToSignup }) => {
   const Login = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.post(localLoginUrl, {
+      const response = await axios.post(loginUrl, {
         email: email,
         password: password,
       });
