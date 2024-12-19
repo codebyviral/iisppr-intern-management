@@ -44,13 +44,15 @@ const SignUp = ({ onSwitchToSignin }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!fullName || !email || !password || password !== confirmPassword) {
+
       toast.error("Please fill in all fields.");
     } else {
       setError("");
       signUpUser();
+
     }
   };
-
+  // verify redirect issue
   return (
     <>
       <Navbar />

@@ -8,5 +8,7 @@ import Wrapper from "./Wrapper"
 import NotiBadge from "./NotiBadge";
 import FilterOption from "./FilterOption";
 import Filter from "./Filter";
+import AdminSideNav from "./AdminSideNav";
+import AdminTopNav from "./AdminTopNav";
 
-export { Navbar, TopNavbar, SideNav, Dashboard, CoreSettings, CoreDashboard, Wrapper, NotiBadge, FilterOption, Filter }
+export { Navbar, TopNavbar, SideNav, Dashboard, CoreSettings, CoreDashboard, Wrapper, NotiBadge, FilterOption, Filter, AdminSideNav, AdminTopNav}
