@@ -1,10 +1,11 @@
-import { Navbar, Dashboard } from "../Components/compIndex";
+import { Navbar, Dashboard, Footer } from "../Components/compIndex";
 
 const Home = () => {
   return (
     <>
       <Navbar />
       <Dashboard />
+      <Footer />
     </>
   );
 };
