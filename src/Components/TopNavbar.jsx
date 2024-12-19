@@ -99,7 +99,13 @@ const TopNavbar = () => {
                 </div>
                 {/* Profile */}
                 <div className="flex items-center space-x-2 cursor-pointer mt-4">
-                  {loggedIn ? <UserRoundCheck /> : <UserRound />}
+                  <div
+                    onClick={() => {
+                      navigate("/settings");
+                    }}
+                  >
+                    {loggedIn ? <UserRoundCheck /> : <UserRound />}
+                  </div>
                   <div onClick={() => handleLoginRedirect()}>
                     {loggedIn ? "Logout" : "Login"}
                   </div>
@@ -176,7 +182,13 @@ const TopNavbar = () => {
 
             {/* Profile Section */}
             <div className="flex items-center space-x-2 cursor-pointer">
-              {loggedIn ? <UserRoundCheck /> : <UserRound />}
+              <div
+                onClick={() => {
+                  navigate("/settings");
+                }}
+              >
+                {loggedIn ? <UserRoundCheck /> : <UserRound />}
+              </div>
               <div
                 onClick={() => handleLoginRedirect()}
                 className="text-gray-700 font-medium"

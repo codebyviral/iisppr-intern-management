@@ -19,15 +19,15 @@ const Signin = ({ onSwitchToSignup }) => {
   const Login = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.post(loginUrl, {
+      const response = await axios.post(localLoginUrl, {
         email: email,
         password: password,
       });
 
-      const { token, id } = response.data;
+      const { token } = response.data;
 
       await storeTokenInLocalStorage(token);
-      await storeUserId(id);
+      await storeUserId(response.data.user.id);
 
       setIsLoggedIn(true);
 
