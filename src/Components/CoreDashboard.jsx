@@ -109,19 +109,22 @@ const CoreDashboard = () => {
               </div>
             </CardContent>
           </Card>
+
           {/* Metrics Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <Card className="bg-blue-500 text-white">
-              <CardContent className="p-6 flex flex-col items-center">
-                <div className="w-24 h-24 flex items-center justify-center mb-4">
-                  {[1, 2].map((i) => (
-                    <HelpCircle key={i} className="h-8 w-8 opacity-80" />
-                  ))}
-                </div>
-                <p className="text-center">FAQs</p>
-              </CardContent>
-            </Card>
-          </div>
+        <Card
+          className="bg-blue-500 text-white cursor-pointer"
+          onClick={() => navigate("/faqs")}
+        >
+          <CardContent className="p-6 flex flex-col items-center">
+            <div className="w-24 h-24 flex items-center justify-center mb-4">
+              <HelpCircle className="h-12 w-12" />
+            </div>
+            <p className="text-center">FAQs</p>
+          </CardContent>
+        </Card>
+      </div>
+
         </div>
       </div>
     </div>

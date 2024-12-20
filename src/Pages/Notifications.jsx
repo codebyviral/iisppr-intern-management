@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Navbar, SideNav, Filter } from "@/Components/compIndex";
+import { Navbar, SideNav } from "@/Components/compIndex";
 import { tasks } from "@/APIs";
 
 function Notifications() {
@@ -30,10 +30,7 @@ function Notifications() {
               <h3 className="text-2xl font-bold mb-2 md:mb-0">
                 Recent Updates
               </h3>
-              <select className="w-full md:w-auto p-2 border border-gray-300 rounded">
-                <option>This month</option>
-                <option>Last month</option>
-              </select>
+             
             </div>
 
             {/* Updates List */}
@@ -54,15 +51,8 @@ function Notifications() {
                     <strong className="block text-lg font-semibold">
                       {update.title}
                     </strong>
-                    <p className="text-gray-600">{update.dueDate}</p>
-                    <div className="flex justify-center md:justify-start mt-2">
-                      <span className="bg-blue-200 text-blue-700 px-3 py-1 rounded mr-2 cursor-pointer">
-                        View
-                      </span>
-                      <span className="bg-green-200 text-green-700 px-3 py-1 rounded cursor-pointer">
-                        Feedback
-                      </span>
-                    </div>
+                    {/* <p className="text-gray-600">{update.dueDate}</p>  */}
+                    
                   </div>
                   {/* Time/Owner - Hidden on mobile */}
                   <div className="hidden md:block text-gray-500">
@@ -73,13 +63,7 @@ function Notifications() {
             </div>
           </div>
 
-          {/* Right Sidebar - Filter Options */}
-          {showFilters && (
-            <div className="w-full md:w-1/4 bg-white rounded-lg shadow-lg p-4">
-              <h3 className="text-xl font-bold mb-4">Filters</h3>
-              <Filter />
-            </div>
-          )}
+          
         </div>
       </div>
     </>
