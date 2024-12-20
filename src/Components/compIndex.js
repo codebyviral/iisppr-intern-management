@@ -10,5 +10,6 @@ import FilterOption from "./FilterOption";
 import Filter from "./Filter";
 import AdminSideNav from "./AdminSideNav";
 import AdminTopNav from "./AdminTopNav";
-
-export { Navbar, TopNavbar, SideNav, Dashboard, CoreSettings, CoreDashboard, Wrapper, NotiBadge, FilterOption, Filter, AdminSideNav, AdminTopNav}
+import FAQ from "./FAQ";
+import FAQsData from "./FAQsData";
+export { Navbar, TopNavbar, SideNav, Dashboard, CoreSettings, CoreDashboard, Wrapper, NotiBadge, FilterOption, Filter, AdminSideNav, AdminTopNav, FAQ, FAQsData}

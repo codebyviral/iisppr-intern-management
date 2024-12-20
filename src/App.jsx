@@ -11,6 +11,7 @@ import {
   SignUp,
   Logout,
 } from "./Pages/pageIndex";
+import {CoreDashboard, FAQ} from "@/Components/compIndex";
 import "./App.css";
 
 const App = () => {
@@ -27,6 +28,8 @@ const App = () => {
       <Route path="/projects" element={<Projects />} />
       <Route path="/categories" element={<Categories />} />
       <Route path="/stores" element={<Stores />} />
+      <Route path="/" element={<CoreDashboard />} />
+        <Route path="/faqs" element={<FAQ />} />
     </Routes>
   );
 };
