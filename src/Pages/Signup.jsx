@@ -6,7 +6,6 @@ import axios from "axios";
 import { signupURL, localSignupUrl } from "@/Components/URIs";
 import { useNavigate } from "react-router-dom";
 
-
 const SignUp = ({ onSwitchToSignin }) => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,7 +17,6 @@ const SignUp = ({ onSwitchToSignin }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
-
 
   const signUpUser = async () => {
     setIsLoading(true);
@@ -44,12 +42,10 @@ const SignUp = ({ onSwitchToSignin }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!fullName || !email || !password || password !== confirmPassword) {
-
       toast.error("Please fill in all fields.");
     } else {
       setError("");
       signUpUser();
-
     }
   };
   // verify redirect issue

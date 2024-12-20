@@ -1,197 +1,59 @@
-import React, { useState, useEffect } from "react";
-import { FileText, Menu, X } from "lucide-react";
-import { FaFileExcel } from "react-icons/fa";
-import { saveAs } from "file-saver";
-import { jsPDF } from "jspdf";
-import * as XLSX from "xlsx";
-import { Navbar } from "@/Components/compIndex";
-import { reportData } from "@/APIs";
-
-import { Button } from "@/Components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/Components/ui/table";
-import { Checkbox } from "@/Components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/Components/ui/dropdown-menu";
-import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Navbar, SideNav, Wrapper } from "@/Components/compIndex";
+import { BarChart2, Timer, PieChart, ChartBar } from "lucide-react";
 
 const Reports = () => {
-  const [data, setData] = useState([]);
-  const [selectedData, setSelectedData] = useState(new Set());
-  const [selectAll, setSelectAll] = useState(false);
-
-  useEffect(() => {
-    setData(reportData);
-  }, []);
-
-  const handleCheckboxChange = (id) => {
-    const updatedSelectedData = new Set(selectedData);
-    if (updatedSelectedData.has(id)) {
-      updatedSelectedData.delete(id);
-    } else {
-      updatedSelectedData.add(id);
-    }
-    setSelectedData(updatedSelectedData);
-  };
-
-  const handleSelectAll = () => {
-    if (selectAll) {
-      setSelectedData(new Set());
-    } else {
-      const allDataIds = data.map((item) => item.id);
-      setSelectedData(new Set(allDataIds));
-    }
-    setSelectAll(!selectAll);
-  };
-
-  const handleDownloadPDF = () => {
-    const doc = new jsPDF({ orientation: "landscape" });
-    doc.setFontSize(10);
-    doc.text("Intern Report", 14, 10);
-    doc.autoTable({
-      head: [
-        [
-          "ID",
-          "Name",
-          "Attendance",
-          "Task Update",
-          "Task Completion",
-          "Department",
-          "Joining Date",
-          "Email",
-          "Phone",
-          "Task Status",
-          "Performance",
-          "Comments",
-        ],
-      ],
-      body: data
-        .filter((item) => selectedData.has(item.id))
-        .map((item) => [
-          item.id,
-          item.name,
-          item.attendance,
-          item.taskUpdate,
-          item.taskCompletion,
-          item.department,
-          item.joiningDate,
-          item.email,
-          item.phone,
-          item.taskStatus,
-          item.performance,
-          item.comments,
-        ]),
-      startY: 20,
-      margin: { horizontal: 10 },
-      styles: { fontSize: 8 },
-    });
-
-    doc.save("intern_report.pdf");
-  };
-
-  const handleDownloadExcel = () => {
-    const selectedRows = data.filter((item) => selectedData.has(item.id));
-    const ws = XLSX.utils.json_to_sheet(selectedRows);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Intern Report");
-    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-
-    const file = new Blob([excelBuffer], { type: "application/octet-stream" });
-    saveAs(file, "intern_report.xlsx");
-  };
+  const reportFeatures = [
+    "Custom Report Generation",
+    "Data Visualization Tools",
+    "Export Capabilities",
+    "Real-time Analytics Dashboard",
+  ];
 
   return (
     <>
+      <SideNav />
       <Navbar />
-      <div className="container mx-auto py-10 lg:ml-36">
-        <Card>
-          <CardHeader>
-            <div className="flex justify-between items-center">
-              <CardTitle>Intern Report</CardTitle>
-              <div className="flex gap-2">
-                <Button onClick={handleDownloadPDF} variant="outline">
-                  <FileText className="mr-2 h-4 w-4" /> PDF
-                </Button>
-                <Button onClick={handleDownloadExcel} variant="outline">
-                  <FaFileExcel className="mr-2 h-4 w-4" /> Excel
-                </Button>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[50px]">
-                    <Checkbox
-                      checked={selectAll}
-                      onCheckedChange={handleSelectAll}
-                    />
-                  </TableHead>
-                  <TableHead>ID</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Attendance</TableHead>
-                  <TableHead>Task Update</TableHead>
-                  <TableHead>Department</TableHead>
-                  <TableHead>Task Status</TableHead>
-                  <TableHead>Performance</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell>
-                      <Checkbox
-                        checked={selectedData.has(item.id)}
-                        onCheckedChange={() => handleCheckboxChange(item.id)}
-                      />
-                    </TableCell>
-                    <TableCell>{item.id}</TableCell>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>{item.attendance}%</TableCell>
-                    <TableCell>{item.taskUpdate}</TableCell>
-                    <TableCell>{item.department}</TableCell>
-                    <TableCell>{item.taskStatus}</TableCell>
-                    <TableCell>{item.performance}%</TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm">
-                            Details
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem
-                            onClick={() => alert(`Details for ${item.name}`)}
-                          >
-                            View Details
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => alert(`Email: ${item.email}`)}
-                          >
-                            Contact
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-      </div>
+      <Wrapper>
+        <div className="flex flex-col items-center justify-center min-h-[80vh] text-center px-4">
+          <div className="animate-bounce mb-8">
+            <BarChart2 className="w-16 h-16 text-purple-500" />
+          </div>
+
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Analytics & Reporting Hub
+          </h1>
+
+          <p className="text-lg text-gray-600 mb-8 max-w-2xl">
+            Your central workspace for generating insights and analyzing data.
+            Enhanced reporting features coming to transform your analytics workflow.
+          </p>
+
+          <div className="bg-purple-50 rounded-lg p-6 mb-8 max-w-md w-full">
+            <h2 className="text-lg font-semibold text-purple-800 mb-4 flex items-center justify-center gap-2">
+              <Timer className="w-5 h-5" />
+              Upcoming Features
+            </h2>
+            <ul className="space-y-3">
+              {reportFeatures.map((feature, index) => (
+                <li
+                  key={index}
+                  className="flex items-center gap-2 text-gray-700"
+                >
+                  <PieChart className="w-4 h-4 text-purple-500" />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="animate-pulse flex items-center gap-2 text-sm text-gray-500">
+            <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+            <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+            <div className="w-2 h-2 bg-purple-300 rounded-full"></div>
+            <span>Under Development</span>
+          </div>
+        </div>
+      </Wrapper>
     </>
   );
 };

@@ -100,8 +100,11 @@ const CoreDashboard = () => {
               <p className="text-sm text-gray-600 mb-4">
                 {tasks.length} active tasks
               </p>
-              {tasks.slice(0, 5).map((task) => (
-                <div key={task.id} className="flex items-center gap-4 mb-4">
+              {tasks.slice(0, 5).map((task, index) => (
+                <div
+                  key={task.id || index}
+                  className="flex items-center gap-4 mb-4"
+                >
                   <div className="w-8 h-8 rounded-full bg-gray-200" />
                   <div className="flex-1">
                     <p className="font-medium">{task.title}</p>

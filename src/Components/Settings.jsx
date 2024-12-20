@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pencil } from "lucide-react";
 import { Card, CardHeader, CardContent } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
@@ -12,11 +12,25 @@ import {
 } from "@/Components/ui/dialog";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
+import axios from "axios";
+import { localReqUser, reqUser } from "./URIs.js";
 
 export default function Settings() {
+  const [userDetails, setUserDetails] = useState({
+    email: "",
+    mnumber: "",
+    name: "",
+    role: "",
+  });
+  const userId = localStorage.getItem("userId");
+  useEffect(() => {
+    axios.get(`${localReqUser}/${userId}`).then((res) => {
+      setUserDetails(res.data);
+    });
+  }, []);
   const [accountInfo, setAccountInfo] = useState({
     FullName: "John Doe",
-    CompanyName: "InternHub, Inc.",
+    InstituteName: "IISPPR, Inc.",
     CompanyEmail: "j.doe@internhub.com",
     EmployeeId: "IH-1234",
     CurrentRole: "Manager",
