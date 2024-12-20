@@ -163,7 +163,7 @@ export default function Settings() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Roles Section */}
-          <Card className="bg-white shadow-sm">
+          {/* <Card className="bg-white shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between">
               <h2 className="text-xl font-semibold text-gray-900">Roles</h2>
             </CardHeader>
@@ -194,10 +194,10 @@ export default function Settings() {
                 ))}
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
 
           {/* Permissions Section */}
-          <Card className="bg-white shadow-sm">
+          {/* <Card className="bg-white shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between">
               <h2 className="text-xl font-semibold text-gray-900">
                 Permissions
@@ -230,7 +230,7 @@ export default function Settings() {
                 ))}
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
         </div>
       </div>
 

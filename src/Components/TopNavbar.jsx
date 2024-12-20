@@ -101,7 +101,7 @@ const TopNavbar = () => {
                 <div className="flex items-center space-x-2 cursor-pointer mt-4">
                   <div
                     onClick={() => {
-                      navigate("/settings");
+                      navigate("/user-profile");
                     }}
                   >
                     {loggedIn ? <UserRoundCheck /> : <UserRound />}
@@ -184,7 +184,7 @@ const TopNavbar = () => {
             <div className="flex items-center space-x-2 cursor-pointer">
               <div
                 onClick={() => {
-                  navigate("/settings");
+                  navigate("/user-profile");
                 }}
               >
                 {loggedIn ? <UserRoundCheck /> : <UserRound />}
