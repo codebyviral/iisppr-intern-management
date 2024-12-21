@@ -36,21 +36,18 @@ const SideNav = () => {
   const menuItems = [
     { id: 0, name: "Home", icon: "bi-house" },
     { id: 1, name: "Projects", icon: "bi-people" },
-    { id: 2, name: "Categories", icon: "bi-list-task" },
-    { id: 3, name: "Stores", icon: "bi-shop" },
-    { id: 4, name: "Reports", icon: "bi-bar-chart" },
-    { id: 5, name: "Settings", icon: "bi-gear" },
+    { id: 2, name: "Report", icon: "bi-bar-chart" },
+    { id: 3, name: "Setting", icon: "bi-gear" },
+    {id:4,name :"FAQ",icon:"bi-question-circle"}
   ];
   const redirectURLs = [
     "",
     "projects",
-    "categories",
-    "stores",
     "reports",
-    "settings",
+    "Setting",
+    "faqs",
   ];
   const footerItems = [
-    { name: "Add Task", icon: "bi-plus-circle" },
     { name: "Log Out", icon: "bi bi-box-arrow-left" },
   ];
 

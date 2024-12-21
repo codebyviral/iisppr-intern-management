@@ -1,12 +1,15 @@
 import { Navbar, SideNav, Wrapper } from "@/Components/compIndex";
-import { FolderGit2, Timer, Users, BarChart } from "lucide-react";
 
 const Projects = () => {
   const projectFeatures = [
-    "Project Timeline Tracking",
-    "Team Collaboration Tools",
-    "Resource Management",
-    "Performance Analytics",
+    {
+      img: "https://img.atom.com/story_images/visual_images/1707439420-Intern2%20image1.jpg?class=listing",
+      title: "Intern Management System",
+      shortDescription: "The platform for interns",
+      longDescription:
+        "An Intern Management System is a platform designed to streamline the process of managing internships within an organization. It allows companies to efficiently track and manage intern applications, assignments, and performance. The system enables easy onboarding of interns, assignment of mentors, and real-time tracking of progress and feedback. Additionally, it provides features for evaluating interns' performance, generating reports, and ensuring smooth communication between interns and supervisors. Overall, it enhances the internship experience for both the interns and the organization by promoting organization, transparency, and productivity.",
+      by: "The Bhavesh Rathod",
+    },
   ];
 
   return (
@@ -14,43 +17,37 @@ const Projects = () => {
       <SideNav />
       <Navbar />
       <Wrapper>
-        <div className="flex flex-col items-center justify-center min-h-[80vh] text-center px-4">
-          <div className="animate-bounce mb-8">
-            <FolderGit2 className="w-16 h-16 text-purple-500" />
+        <div className="project-container flex flex-col md:flex-row w-full md:w-128 h-auto mx-auto bg-slate-500 rounded-lg shadow-lg border-2 text-black-90">
+          {/* Left side: Image */}
+          <div className="project-image w-full md:w-1/3">
+            <img
+              src={projectFeatures[0].img}
+              alt="Project image"
+              className="w-full h-64 md:h-full object-cover rounded-t-lg md:rounded-l-lg"
+            />
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Project Management Hub
-          </h1>
+          {/* Right side: Description */}
+          <div className="project-description w-full md:w-2/3 p-4 overflow-y-auto">
+            <div className="project-main-heading">
+              <h3 className="text-2xl font-bold text-white">
+                {projectFeatures[0].title}
+              </h3>
+            </div>
 
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl">
-            Your central workspace for managing projects and tracking team
-            progress. Enhanced features coming to streamline your workflow.
-          </p>
+            <div className="project-short-description mt-2">
+              <h5 className="text-lg text-white">
+                {projectFeatures[0].shortDescription}
+              </h5>
+            </div>
 
-          <div className="bg-purple-50 rounded-lg p-6 mb-8 max-w-md w-full">
-            <h2 className="text-lg font-semibold text-purple-800 mb-4 flex items-center justify-center gap-2">
-              <Timer className="w-5 h-5" />
-              Upcoming Features
-            </h2>
-            <ul className="space-y-3">
-              {projectFeatures.map((feature, index) => (
-                <li
-                  key={index}
-                  className="flex items-center gap-2 text-gray-700"
-                >
-                  <Users className="w-4 h-4 text-purple-500" />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </div>
+            <div className="project-long-description mt-4">
+              <p className="text-white">{projectFeatures[0].longDescription}</p>
+            </div>
 
-          <div className="animate-pulse flex items-center gap-2 text-sm text-gray-500">
-            <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-            <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
-            <div className="w-2 h-2 bg-purple-300 rounded-full"></div>
-            <span>Under Development</span>
+            <div className="project-by mt-4">
+              <p className="text-white">By: {projectFeatures[0].by}</p>
+            </div>
           </div>
         </div>
       </Wrapper>

@@ -7,10 +7,11 @@ import {
   Settings,
   Categories,
   Stores,
+  Navbar,
   Signin,
   SignUp,
   Logout,
-} from "./Pages/pageIndex";
+} from "./Components/pageIndex";
 import {CoreDashboard, FAQ} from "@/Components/compIndex";
 import "./App.css";
 
@@ -27,9 +28,10 @@ const App = () => {
       <Route path="/reports" element={<Reports />} />
       <Route path="/projects" element={<Projects />} />
       <Route path="/categories" element={<Categories />} />
+
       <Route path="/stores" element={<Stores />} />
       <Route path="/" element={<CoreDashboard />} />
-        <Route path="/faqs" element={<FAQ />} />
+        <Route path="/faqs" element={<><Navbar/><FAQ /></>} />
     </Routes>
   );
 };

@@ -8,6 +8,7 @@ import Stores from "./Stores";
 import Signin from "./Signin";
 import SignUp from "./Signup";
 import Logout from "./Logout";
+import Navbar from "./Navbar";
 
 
-export { Home, Notifications, Settings, Reports, Projects, Categories, Stores, Signin, SignUp, Logout }
+export { Home, Notifications, Settings, Reports, Projects, Categories, Stores, Signin, SignUp, Logout ,Navbar}
