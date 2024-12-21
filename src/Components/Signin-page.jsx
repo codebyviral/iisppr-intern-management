@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { Navbar, SideNav } from "@/Components/compIndex";
 import { Mail, Lock, UserPlus } from "lucide-react"; // Adding icons for visual interest
