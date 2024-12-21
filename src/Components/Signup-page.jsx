@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navbar, SideNav } from "@/Components/compIndex";
+import { Navbar, SideNav, Footer } from "@/Components/compIndex";
 import { Mail, Lock, UserPlus, Phone } from "lucide-react";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -258,6 +258,7 @@ const SignUp = ({ onSwitchToSignin }) => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

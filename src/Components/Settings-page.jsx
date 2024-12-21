@@ -1,4 +1,4 @@
-import { Navbar, SideNav } from "../Components/compIndex";
+import { Navbar, SideNav, Footer } from "../Components/compIndex";
 import { CoreSettings } from "@/Components/compIndex";
 const Settings = () => {
   return (
@@ -6,6 +6,7 @@ const Settings = () => {
       <Navbar />
       <SideNav />
       <CoreSettings />
+      <Footer />
     </>
   );
 };
