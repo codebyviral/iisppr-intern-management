@@ -11,7 +11,7 @@ const FAQ = () => {
         {/* Main Content */}
         <div id="mainContent" className="p-6 lg:ml-32 ml-10 duration-300 w-full">
           <h1 className="text-4xl font-bold mb-6 text-center text-blue-600">
-            Intern Management System - FAQs
+            How can I help?
           </h1>
           <div className="bg-white shadow-lg rounded-lg p-8 max-w-4xl mx-auto">
             {FAQsData.map((faq, index) => (

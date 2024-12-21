@@ -41,11 +41,11 @@ function Notifications() {
                   key={index}
                 >
                   {/* Avatar - Adjusted for mobile */}
-                  <img
+                  {/* <img
                     src={update.avatar}
                     alt={`${update.owner}'s avatar`}
                     className="w-12 h-12 rounded-full md:mr-4 self-center md:self-start mb-2 md:mb-0"
-                  />
+                  /> */}
                   {/* Update Details */}
                   <div className="flex-1 text-center md:text-left w-full">
                     <strong className="block text-lg font-semibold">
@@ -55,9 +55,9 @@ function Notifications() {
                     
                   </div>
                   {/* Time/Owner - Hidden on mobile */}
-                  <div className="hidden md:block text-gray-500">
+                  {/* <div className="hidden md:block text-gray-500">
                     {update.owner}
-                  </div>
+                  </div> */}
                 </div>
               ))}
             </div>
