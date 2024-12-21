@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Navbar, SideNav } from "@/Components/compIndex";
+import { Navbar, SideNav, Footer } from "@/Components/compIndex";
 import { tasks } from "@/APIs";
 
 function Notifications() {
@@ -40,7 +40,6 @@ function Notifications() {
                   key={index}
                   className="flex flex-col md:flex-row items-start justify-between border-b pb-4"
                 >
-
                   {/* Update Details */}
                   <div className="flex-1 md:ml-4 mt-2 md:mt-0">
                     <h4 className="text-lg font-semibold text-gray-800">
@@ -56,6 +55,7 @@ function Notifications() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

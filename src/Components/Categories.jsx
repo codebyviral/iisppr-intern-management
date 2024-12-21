@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, SideNav, Wrapper } from "@/Components/compIndex";
+import { Navbar, SideNav, Wrapper, Footer } from "@/Components/compIndex";
 import { FolderTree, ListFilter, Tags, Settings } from "lucide-react";
 
 const Categories = () => {
@@ -55,6 +55,7 @@ const Categories = () => {
           </div>
         </div>
       </Wrapper>
+      <Footer />
     </>
   );
 };

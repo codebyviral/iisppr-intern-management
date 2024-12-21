@@ -1,4 +1,4 @@
-import { Navbar, SideNav, Wrapper } from "@/Components/compIndex";
+import { Navbar, SideNav, Wrapper, Footer } from "@/Components/compIndex";
 
 const Projects = () => {
   const projectFeatures = [
@@ -51,6 +51,7 @@ const Projects = () => {
           </div>
         </div>
       </Wrapper>
+      <Footer />
     </>
   );
 };
