@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useState, useEffect } from "react";
 import { useAppContext } from "../context/AppContext";
