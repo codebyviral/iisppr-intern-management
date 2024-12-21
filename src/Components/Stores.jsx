@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, SideNav, Wrapper } from "@/Components/compIndex";
+import { Navbar, SideNav, Wrapper, Footer } from "@/Components/compIndex";
 import { Store, ShoppingBag, TrendingUp, Package } from "lucide-react";
 
 const Stores = () => {
@@ -55,6 +55,8 @@ const Stores = () => {
           </div>
         </div>
       </Wrapper>
+
+      <Footer />
     </>
   );
 };

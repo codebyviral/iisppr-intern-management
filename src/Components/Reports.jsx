@@ -1,59 +1,114 @@
-import { Navbar, SideNav, Wrapper } from "@/Components/compIndex";
-import { BarChart2, Timer, PieChart, ChartBar } from "lucide-react";
+import { useState } from "react";
+import { Navbar, SideNav, Wrapper, Footer } from "@/Components/compIndex";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Label } from "@/Components/ui/label";
+import { Textarea } from "@/Components/ui/textarea";
 
 const Reports = () => {
-  const reportFeatures = [
-    "Custom Report Generation",
-    "Data Visualization Tools",
-    "Export Capabilities",
-    "Real-time Analytics Dashboard",
-  ];
+  // State to manage the editable fields
+  const [employee, setEmployee] = useState("Patricia Collins");
+  const [department, setDepartment] = useState("Marketing");
+  const [week, setWeek] = useState("08-12 Jul 2019");
 
   return (
     <>
       <SideNav />
       <Navbar />
+
       <Wrapper>
-        <div className="flex flex-col items-center justify-center min-h-[80vh] text-center px-4">
-          <div className="animate-bounce mb-8">
-            <BarChart2 className="w-16 h-16 text-purple-500" />
-          </div>
-
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Analytics & Reporting Hub
-          </h1>
-
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl">
-            Your central workspace for generating insights and analyzing data.
-            Enhanced reporting features coming to transform your analytics workflow.
-          </p>
-
-          <div className="bg-purple-50 rounded-lg p-6 mb-8 max-w-md w-full">
-            <h2 className="text-lg font-semibold text-purple-800 mb-4 flex items-center justify-center gap-2">
-              <Timer className="w-5 h-5" />
-              Upcoming Features
-            </h2>
-            <ul className="space-y-3">
-              {reportFeatures.map((feature, index) => (
-                <li
-                  key={index}
-                  className="flex items-center gap-2 text-gray-700"
-                >
-                  <PieChart className="w-4 h-4 text-purple-500" />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="animate-pulse flex items-center gap-2 text-sm text-gray-500">
-            <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-            <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
-            <div className="w-2 h-2 bg-purple-300 rounded-full"></div>
-            <span>Under Development</span>
-          </div>
+        <div className="min-h-screen bg-white p-4 md:p-8">
+          <Card className="mx-auto max-w-4xl border-none shadow-none">
+            <CardHeader className="space-y-2">
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>SPARKS & CO. PUBLISHING</span>
+                <span>WEEKLY REPORT</span>
+              </div>
+              <CardTitle className="text-center text-3xl font-bold tracking-tight text-[#ff7f7f]">
+                EMPLOYEE WEEKLY STATUS REPORT
+              </CardTitle>
+              <div className="grid grid-cols-1 gap-4 pt-4 md:grid-cols-3">
+                <div className="space-y-2">
+                  <Label className="text-muted-foreground">EMPLOYEE : </Label>
+                  <input
+                    type="text"
+                    value={employee}
+                    onChange={(e) => setEmployee(e.target.value)}
+                    className="text-[#ff7f7f] border-none focus:outline-none"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-muted-foreground">DEPARTMENT : </Label>
+                  <input
+                    type="text"
+                    value={department}
+                    onChange={(e) => setDepartment(e.target.value)}
+                    className="text-[#ff7f7f] border-none focus:outline-none"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-muted-foreground">WEEK : </Label>
+                  <br />
+                  <input
+                    type="text"
+                    value={week}
+                    onChange={(e) => setWeek(e.target.value)}
+                    className="text-[#ff7f7f] border-none focus:outline-none"
+                  />
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <div className="rounded-lg bg-[#ff7f7f] p-2">
+                  <h2 className="text-lg font-semibold text-white">
+                    TASKS COMPLETED
+                  </h2>
+                </div>
+                <Textarea
+                  className="min-h-[150px] resize-none"
+                  placeholder="Enter completed tasks..."
+                />
+              </div>
+              <div className="space-y-4">
+                <div className="rounded-lg bg-[#ff7f7f] p-2">
+                  <h2 className="text-lg font-semibold text-white">
+                    TASKS COMPLETED
+                  </h2>
+                </div>
+                <Textarea
+                  className="min-h-[150px] resize-none"
+                  placeholder="Enter completed tasks..."
+                />
+              </div>
+              <div className="grid gap-6 md:grid-cols-2">
+                <div className="space-y-4">
+                  <div className="rounded-lg bg-[#ff7f7f] p-2">
+                    <h2 className="text-lg font-semibold text-white">
+                      TASKS TO BEGIN NEXT WEEK
+                    </h2>
+                  </div>
+                  <Textarea
+                    className="min-h-[150px] resize-none"
+                    placeholder="Enter upcoming tasks..."
+                  />
+                </div>
+                <div className="space-y-4">
+                  <div className="rounded-lg bg-[#ff7f7f] p-2">
+                    <h2 className="text-lg font-semibold text-white">
+                      SELF ASSESSMENT & COMMENTS
+                    </h2>
+                  </div>
+                  <Textarea
+                    className="min-h-[150px] resize-none"
+                    placeholder="Enter your comments..."
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </Wrapper>
+      <Footer />
     </>
   );
 };
