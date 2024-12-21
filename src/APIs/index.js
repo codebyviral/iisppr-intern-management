@@ -1,23 +1,27 @@
 const tasks = [
     {
         title: "Interview with developer",
+        description: "Schedule and conduct an interview with a potential developer candidate.",
         dueDate: "Due today",
         avatar: "https://randomuser.me/api/portraits/men/1.jpg",
         owner: "Admin"
     },
     {
         title: "Reflection time for interns",
+        description: "A dedicated session for interns to reflect on their weekly progress and challenges.",
         dueDate: "Tomorrow",
         avatar: "https://randomuser.me/api/portraits/men/10.jpg",
         owner: "Admin"
     },
     {
         title: "Task preparation for interns",
+        description: "Prepare and assign tasks for interns to enhance their project-related skills.",
         dueDate: "Due today",
         avatar: "https://randomuser.me/api/portraits/men/3.jpg",
         owner: "HR"
     }
 ];
+
 const calendarItems = [
     {
         id: "05",
