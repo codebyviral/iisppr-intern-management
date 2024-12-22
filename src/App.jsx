@@ -11,6 +11,7 @@ import {
   SignUp
 } from "./Pages/pageIndex";
 import "./App.css";
+import About from "./Pages/About";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
       <Route path="/projects" element={<Projects />} />
       <Route path="/categories" element={<Categories />} />
       <Route path="/stores" element={<Stores />} />
+      <Route path="/about" element={<About />} />
     </Routes>
   );
 };
