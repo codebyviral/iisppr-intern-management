@@ -10,6 +10,7 @@ import {   Home,
         Signin,   
         SignUp,   
         Logout,
+        profile,
        } from "./Components/pageIndex"; 
 import {CoreDashboard, FAQ} from "@/Components/compIndex"; 
 import "./App.css"; 
@@ -22,7 +23,8 @@ const App = () => {
     <Route path="/logout" element={<Logout />} />       
     <Route path="/user-profile" element={<profile />} />      
     <Route path="/notifications" element={<Notifications />} />    
-    <Route path="/reports" element={<Reports />} />      
+    <Route path="/reports" element={<Reports />} /> 
+    <Route path="/user-profile" element={<profile />} />
     <Route path="/projects" element={<Projects />} />      
     <Route path="/categories" element={<Categories />} />        
     <Route path="/stores" element={<Stores />} />      
