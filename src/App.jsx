@@ -11,8 +11,9 @@ import {
   Signin,
   SignUp,
   Logout,
+  Profile, // Added Profile
 } from "./Components/pageIndex";
-import {CoreDashboard, FAQ} from "@/Components/compIndex";
+import { CoreDashboard, FAQ } from "@/Components/compIndex";
 import "./App.css";
 
 const App = () => {
@@ -23,15 +24,14 @@ const App = () => {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Signin />} />
       <Route path="/logout" element={<Logout />} />
-      <Route path="/user-profile" element={<profile />} />
+      <Route path="/user-profile" element={<Profile />} />
       <Route path="/notifications" element={<Notifications />} />
       <Route path="/reports" element={<Reports />} />
       <Route path="/projects" element={<Projects />} />
       <Route path="/categories" element={<Categories />} />
-
       <Route path="/stores" element={<Stores />} />
       <Route path="/" element={<CoreDashboard />} />
-        <Route path="/faqs" element={<><Navbar/><FAQ /></>} />
+      <Route path="/faqs" element={<><Navbar /><FAQ /></>} />
     </Routes>
   );
 };
