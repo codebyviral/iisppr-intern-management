@@ -13,6 +13,7 @@ import {
   Logout,
 } from "./Components/pageIndex";
 import {CoreDashboard, FAQ} from "@/Components/compIndex";
+import Profile from "./Components/Profile";
 import "./App.css";
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
       <Route path="/login" element={<Signin />} />
       <Route path="/logout" element={<Logout />} />
       <Route path="/user-profile" element={<Settings />} />
+      <Route path="/user-profile" element={<Profile />} /> 
       <Route path="/notifications" element={<Notifications />} />
       <Route path="/reports" element={<Reports />} />
       <Route path="/projects" element={<Projects />} />
