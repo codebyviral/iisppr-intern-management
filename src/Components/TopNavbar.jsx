@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { userIcon as user, authenticatedUser } from "./URIs.js";
 import { Button } from "@/Components/ui/button.jsx";
@@ -101,7 +102,7 @@ const TopNavbar = () => {
                 <div className="flex items-center space-x-2 cursor-pointer mt-4">
                   <div
                     onClick={() => {
-                      navigate("/user-profile");
+                      navigate("/userProfile");
                     }}
                   >
                     {loggedIn ? <UserRoundCheck /> : <UserRound />}
@@ -184,7 +185,7 @@ const TopNavbar = () => {
             <div className="flex items-center space-x-2 cursor-pointer">
               <div
                 onClick={() => {
-                  navigate("/user-profile");
+                  navigate("/userProfile");
                 }}
               >
                 {loggedIn ? <UserRoundCheck /> : <UserRound />}

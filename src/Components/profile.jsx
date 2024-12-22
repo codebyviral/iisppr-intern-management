@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-
+import { SideNav,Navbar } from "./compIndex";
 export default function AccountDetails() {
   const [formDetails, setFormDetails] = useState({
     fullName: "",
@@ -62,6 +62,9 @@ export default function AccountDetails() {
   };
 
   return (
+    <>
+    <SideNav />
+    <Navbar />
     <div className="min-h-screen flex items-center justify-center p-4">
       <Card className="w-full max-w-3xl bg-white shadow-md p-6">
         <CardHeader className="text-center mb-4">
@@ -109,5 +112,6 @@ export default function AccountDetails() {
         </CardContent>
       </Card>
     </div>
+    </>
   );
 }
