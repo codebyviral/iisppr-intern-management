@@ -5,27 +5,50 @@ import { Label } from "@/Components/ui/label";
 import { Textarea } from "@/Components/ui/textarea";
 
 const Reports = () => {
-  // State to manage the editable fields
-  const [employee, setEmployee] = useState("Patricia Collins");
-  const [department, setDepartment] = useState("Marketing");
-  const [week, setWeek] = useState("08-12 Jul 2019");
-  const [tasksCompleted, setTasksCompleted] = useState("");
-  const [tasksToBegin, setTasksToBegin] = useState("");
-  const [comments, setComments] = useState("");
+  const [formData, setFormData] = useState({
+    employee: "",
+    department: "",
+    date: "",
+    tasksCompleted: "",
+    tasksToBegin: "",
+    comments: "",
+  });
 
-  // Temporary handleSave function
-  const handleSave = () => {
-    // Temporary log statement to simulate saving
-    console.log("Saving report...");
-    console.log("Employee:", employee);
-    console.log("Department:", department);
-    console.log("Week:", week);
-    console.log("Tasks Completed:", tasksCompleted);
-    console.log("Tasks To Begin Next Week:", tasksToBegin);
-    console.log("Self-Assessment & Comments:", comments);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
-    // Placeholder for backend integration (this is where backend team can add their logic)
-    alert("Report Saved!");
+  const handleSave = async () => {
+    try {
+      const response = await fetch("/api/reports", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        alert("Report saved successfully!");
+        setFormData({
+          employee: "",
+          department: "",
+          date: "",
+          tasksCompleted: "",
+          tasksToBegin: "",
+          comments: "",
+        });
+      } else {
+        alert("Failed to save report.");
+      }
+    } catch (error) {
+      console.error("Error saving report:", error);
+      alert("An error occurred while saving the report.");
+    }
   };
 
   return (
@@ -36,103 +59,52 @@ const Reports = () => {
       <Wrapper>
         <div className="min-h-screen bg-white p-4 md:p-8">
           <Card className="mx-auto max-w-4xl border-none shadow-none">
-            {/* Added border around the report section */}
-            <CardHeader className="space-y-2 border-2 border-[#0056b3] rounded-lg p-6">
-              <div className="flex justify-between text-sm text-muted-foreground">
-                <span>SPARKS & CO. PUBLISHING</span>
-                <span>WEEKLY REPORT</span>
-              </div>
+            <CardHeader className="mb-7">
               <CardTitle className="text-center text-3xl font-bold tracking-tight text-[#007bff]">
                 EMPLOYEE WEEKLY STATUS REPORT
               </CardTitle>
-              <div className="grid grid-cols-1 gap-4 pt-4 md:grid-cols-3">
-                <div className="space-y-2">
-                  <Label className="text-muted-foreground">EMPLOYEE : </Label>
-                  <input
-                    type="text"
-                    value={employee}
-                    onChange={(e) => setEmployee(e.target.value)}
-                    className="text-[#007bff] border-none focus:outline-none"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-muted-foreground">DEPARTMENT : </Label>
-                  <input
-                    type="text"
-                    value={department}
-                    onChange={(e) => setDepartment(e.target.value)}
-                    className="text-[#007bff] border-none focus:outline-none"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-muted-foreground">WEEK : </Label>
-                  <br />
-                  <input
-                    type="text"
-                    value={week}
-                    onChange={(e) => setWeek(e.target.value)}
-                    className="text-[#007bff] border-none focus:outline-none"
-                  />
-                </div>
-              </div>
             </CardHeader>
+
+            <div className="mb-6 space-y-6 rounded-lg border-[#0056b3] p-6">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                {["employee", "department", "date"].map((field) => (
+                  <div key={field} className="flex flex-col space-y-2">
+                    <Label className="text-muted-foreground">
+                      {field.charAt(0).toUpperCase() + field.slice(1)}
+                    </Label>
+                    <input
+                      type={field === "date" ? "date" : "text"}
+                      name={field}
+                      value={formData[field]}
+                      onChange={handleInputChange}
+                      className="w-full rounded-md border-2 border-[#0056b3] p-2 text-[#007bff] focus:outline-none"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <CardContent className="space-y-6">
-              <div className="space-y-4">
-                {/* Task Completed section with added padding */}
-                <div className="rounded-lg bg-[#007bff] p-4">
-                  <h2 className="text-lg font-semibold text-white">
-                    TASKS COMPLETED
-                  </h2>
-                </div>
-                <Textarea
-                  value={tasksCompleted}
-                  onChange={(e) => setTasksCompleted(e.target.value)}
-                  className="min-h-[150px] resize-none border-2 border-[#0056b3] focus:outline-none p-4"
-                  placeholder="Enter completed tasks..."
-                />
-              </div>
-              <div className="space-y-4">
-                <div className="rounded-lg bg-[#007bff] p-4">
-                  <h2 className="text-lg font-semibold text-white">
-                    TASKS COMPLETED
-                  </h2>
-                </div>
-                <Textarea
-                  value={tasksToBegin}
-                  onChange={(e) => setTasksToBegin(e.target.value)}
-                  className="min-h-[150px] resize-none border-2 border-[#0056b3] focus:outline-none p-4"
-                  placeholder="Enter upcoming tasks..."
-                />
-              </div>
-              <div className="grid gap-6 md:grid-cols-2">
-                <div className="space-y-4">
+              {[
+                { label: "TASKS COMPLETED", name: "tasksCompleted" },
+                { label: "TASKS TO BEGIN NEXT WEEK", name: "tasksToBegin" },
+                { label: "SELF ASSESSMENT & COMMENTS", name: "comments" },
+              ].map((section) => (
+                <div key={section.name} className="space-y-4">
                   <div className="rounded-lg bg-[#007bff] p-4">
-                    <h2 className="text-lg font-semibold text-white">
-                      TASKS TO BEGIN NEXT WEEK
-                    </h2>
+                    <h2 className="text-lg font-semibold text-white">{section.label}</h2>
                   </div>
                   <Textarea
+                    name={section.name}
+                    value={formData[section.name]}
+                    onChange={handleInputChange}
                     className="min-h-[150px] resize-none border-2 border-[#0056b3] focus:outline-none p-4"
-                    placeholder="Enter upcoming tasks..."
+                    placeholder={`Enter ${section.label.toLowerCase()}...`}
                   />
                 </div>
-                <div className="space-y-4">
-                  <div className="rounded-lg bg-[#007bff] p-4">
-                    <h2 className="text-lg font-semibold text-white">
-                      SELF ASSESSMENT & COMMENTS
-                    </h2>
-                  </div>
-                  <Textarea
-                    value={comments}
-                    onChange={(e) => setComments(e.target.value)}
-                    className="min-h-[150px] resize-none border-2 border-[#0056b3] focus:outline-none p-4"
-                    placeholder="Enter your comments..."
-                  />
-                </div>
-              </div>
+              ))}
             </CardContent>
 
-            {/* Save Button */}
             <div className="flex justify-center mt-6">
               <button
                 onClick={handleSave}

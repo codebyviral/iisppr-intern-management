@@ -9,6 +9,8 @@ import Signin from "./Signin";
 import SignUp from "./Signup";
 import Logout from "./Logout";
 import Navbar from "./Navbar";
+import Profile from "./profile";
+import AccountSetting from "./AccountSetting";
 
 
-export { Home, Notifications, Settings, Reports, Projects, Categories, Stores, Signin, SignUp, Logout ,Navbar}
+export { Home, Notifications, Settings, Reports, Projects, Categories, Stores, Signin, SignUp, Logout ,Navbar,Profile,AccountSetting}

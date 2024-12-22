@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Progress } from "@/Components/ui/progress";
@@ -38,7 +39,7 @@ const CoreDashboard = () => {
         <div
           onClick={() => {
             setDashboard("Settings");
-            navigate("/settings");
+            navigate("/setting");
           }}
           className="hide-mobile"
         >
