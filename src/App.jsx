@@ -11,6 +11,7 @@ import {   Home,
         Signin,   
         SignUp,   
         Logout,
+        profile,
        } from "./Components/pageIndex"; 
 import {CoreDashboard, FAQ, Footer} from "@/Components/compIndex"; 
 import { Profile } from "./Components/pageIndex";
@@ -24,7 +25,8 @@ const App = () => {
     <Route path="/logout" element={<Logout />} />       
     <Route path="/userProfile" element={<Profile/>} />      
     <Route path="/notifications" element={<Notifications />} />    
-    <Route path="/reports" element={<Reports />} />      
+    <Route path="/reports" element={<Reports />} /> 
+    <Route path="/user-profile" element={<profile />} />
     <Route path="/projects" element={<Projects />} />      
     <Route path="/categories" element={<Categories />} />        
     <Route path="/stores" element={<Stores />} />  
