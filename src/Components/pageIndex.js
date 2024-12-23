@@ -11,6 +11,12 @@ import Logout from "./Logout";
 import Navbar from "./Navbar";
 import Profile from "./profile";
 import AccountSetting from "./AccountSetting";
+import Aboutus from "./Aboutus";
+import AdminHomePage from "@/AdminPanel/AdminHomePage";
+import AdminProject from "@/AdminPanel/AdminProject";
+
+/* Admin panel importing */
+import CustomNavbar from "@/AdminPanel/CustomNavbar";
 
 
-export { Home, Notifications, Settings, Reports, Projects, Categories, Stores, Signin, SignUp, Logout ,Navbar,Profile,AccountSetting}
+export { Home, Notifications, Settings, Reports, Projects, Categories, Stores, Signin, SignUp, Logout ,Navbar,Profile,AccountSetting,Aboutus,CustomNavbar,AdminHomePage,AdminProject}

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";  // Import Link component for routing
 
 const Footer = () => {
   return (
@@ -11,28 +12,28 @@ const Footer = () => {
             <p className="font-semibold text-lg text-gray-900">Company</p>
             <ul className="mt-6 space-y-4">
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition-colors hover:text-blue-600"
+                <Link
+                  to="/aboutus"  
+                  className="text-gray-700 transition-colors hover:text-blue-600" 
                 >
                   About Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/team"  // Use Link for routing
                   className="text-gray-700 transition-colors hover:text-blue-600"
                 >
                   Team
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/careers"  // Use Link for routing
                   className="text-gray-700 transition-colors hover:text-blue-600"
                 >
                   Careers
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -42,20 +43,20 @@ const Footer = () => {
             <p className="font-semibold text-lg text-gray-900">Help</p>
             <ul className="mt-6 space-y-4">
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/contact-support"  // Use Link for routing
                   className="text-gray-700 transition-colors hover:text-blue-600"
                 >
                   Contact Support
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/faqs"  // Use Link for routing
                   className="text-gray-700 transition-colors hover:text-blue-600"
                 >
                   FAQs
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -65,28 +66,28 @@ const Footer = () => {
             <p className="font-semibold text-lg text-gray-900">Legal</p>
             <ul className="mt-6 space-y-4">
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/termsandconditions"  // Use Link for routing
                   className="text-gray-700 transition-colors hover:text-blue-600"
                 >
                   Terms & Conditions
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/privacypolicy"  // Use Link for routing
                   className="text-gray-700 transition-colors hover:text-blue-600"
                 >
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/refund-policy"  // Use Link for routing
                   className="text-gray-700 transition-colors hover:text-blue-600"
                 >
                   Refund Policy
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -96,7 +97,6 @@ const Footer = () => {
             <p className="font-semibold text-lg text-gray-900">Follow Us</p>
             <ul className="mt-6 space-y-4">
               <li className="flex items-center space-x-2">
-                {/* Facebook Icon */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
@@ -108,7 +108,6 @@ const Footer = () => {
                 <span>Facebook</span>
               </li>
               <li className="flex items-center space-x-2">
-                {/* LinkedIn Icon */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
@@ -120,7 +119,6 @@ const Footer = () => {
                 <span>LinkedIn</span>
               </li>
               <li className="flex items-center space-x-2">
-                {/* Instagram Icon */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
@@ -143,28 +141,28 @@ const Footer = () => {
             </p>
             <ul className="mt-2 sm:mt-0 flex flex-wrap justify-start gap-6 text-xs sm:text-sm lg:justify-end">
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/terms-and-conditions"  // Use Link for routing
                   className="text-gray-600 transition-colors hover:text-blue-600"
                 >
                   Terms & Conditions
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/privacy-policy"  // Use Link for routing
                   className="text-gray-600 transition-colors hover:text-blue-600"
                 >
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/cookies"  // Use Link for routing
                   className="text-gray-600 transition-colors hover:text-blue-600"
                 >
                   Cookies
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

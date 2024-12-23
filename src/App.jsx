@@ -11,26 +11,37 @@ import {   Home,
         Signin,   
         SignUp,   
         Logout,
+        Aboutus,
+        CustomNavbar,
+        AdminHomePage,
+        AdminProject,
        } from "./Components/pageIndex"; 
 import {CoreDashboard, FAQ, Footer} from "@/Components/compIndex"; 
 import { Profile } from "./Components/pageIndex";
 import "./App.css"; 
 const App = () => {   
-  return (     <Routes>       
+  return (    
+     <Routes>       
+      {/* <Route path="*" element={<NotFound />} />  */}
+
     <Route path="/" element={<Home />} />      
-    <Route path="/Home" element={<Home />} />      
+    {/* <Route path="/Home" element={<Home />} />       */}
     <Route path="/signup" element={<SignUp />} />     
     <Route path="/login" element={<Signin />} />       
     <Route path="/logout" element={<Logout />} />       
     <Route path="/userProfile" element={<><Profile/></>} />      
     <Route path="/notifications" element={<Notifications />} />    
     <Route path="/reports" element={<Reports />} /> 
-    <Route path="/projects" element={<Projects />} />      
-    <Route path="/categories" element={<Categories />} />        
+    <Route path="/projects" element={<Projects />} />  
+    <Route path="/aboutus" element={<><Aboutus/><Footer/></>}/>          
+   {/* <Route path="/privacypolicy" element={}></Route> */}
     <Route path="/stores" element={<Stores />} />  
     <Route path="/setting" element={<><AccountSetting/> <Footer/> </>}></Route>    
     <Route path="/" element={<CoreDashboard />} />        
-    <Route path="/faqs" element={<><Navbar/><FAQ /></>} />    
+    <Route path="/faqs" element={<><Navbar/><FAQ /></>} />   
+
+    <Route path="/Adminhomepage" element={<AdminHomePage/>}></Route>
+    <Route path="Adminproject" element={<AdminProject/>}></Route>
   </Routes>  
          ); 
 };  
