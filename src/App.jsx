@@ -1,8 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Routes, Route } from "react-router-dom"; 
-import {   Home,Notifications, Projects,Reports,  AccountSetting, Stores,   Navbar,   Signin,   SignUp,   Logout,Aboutus,Privacypolicy,CustomNavbar,AdminHomePage,AdminProject,AdminTask,AdminReport,
-
-} from "./Components/pageIndex"; 
+import {   Home,Notifications, Projects,Reports,  AccountSetting, Stores,   Navbar,   Signin,   SignUp,   Logout,Aboutus,Privacypolicy,CustomNavbar,AdminHomePage,AdminProject,AdminTask,AdminReport,Help} from "./Components/pageIndex"; 
 import {CoreDashboard, FAQ, Footer} from "@/Components/compIndex"; 
 import { Profile } from "./Components/pageIndex";
 import "./App.css"; 
@@ -22,7 +20,7 @@ const App = () => {
     <Route path="/projects" element={<Projects />} />  
     <Route path="/aboutus" element={<><Aboutus/><Footer/></>}/>  
     <Route path="/privacypolicy" element={<><Privacypolicy/><Footer/> </>}></Route>
-   {/* <Route path="/privacypolicy" element={}></Route> */}
+   <Route path="/help" element={<Help/>}></Route>
    
     <Route path="/stores" element={<Stores />} />  
     <Route path="/setting" element={<><AccountSetting/> <Footer/> </>}></Route>    

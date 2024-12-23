@@ -17,8 +17,9 @@ import AdminHomePage from "@/AdminPanel/AdminHomePage";
 import AdminProject from "@/AdminPanel/AdminProject";
 import AdminTask from "@/AdminPanel/AdminTask";
 import AdminReport from "@/AdminPanel/AdminReport";
+import Help from "./Help";
 /* Admin panel importing */
 import CustomNavbar from "@/AdminPanel/CustomNavbar";
 
 
-export { Home, Notifications, Settings, Reports, Projects, Categories, Stores, Signin, SignUp, Logout ,Navbar,Profile,AccountSetting,Aboutus,CustomNavbar,AdminHomePage,AdminProject,AdminTask,AdminReport,Privacypolicy}
+export { Home, Notifications, Settings, Reports, Projects, Categories, Stores, Signin, SignUp, Logout ,Navbar,Profile,AccountSetting,Aboutus,CustomNavbar,AdminHomePage,AdminProject,AdminTask,AdminReport,Privacypolicy,Help}
