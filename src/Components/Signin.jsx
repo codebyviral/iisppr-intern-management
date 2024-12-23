@@ -1,19 +1,45 @@
+import axios from "axios";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
+import { loginUrl } from "./URIs.js";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "@/context/AuthContext";
 
 const Signin = ({ onSwitchToSignup }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const {
+    setIsLoggedIn,
+    storeTokenInLocalStorage,
+    storeIsAdminState,
+    storeUserId,
+  } = useAuthContext();
+
+  const signup = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.post(loginUrl, { email, password });
+      toast.success(`Login Successful`);
+      setIsLoggedIn(true);
+      storeTokenInLocalStorage(response.data.token);
+      storeUserId(response.data.user.id);
+      storeIsAdminState(response.data.user.isAdmin);
+      navigate("/");  
+    } catch (err) {
+      console.log(err);
+      toast.error(`Error Logging in.`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      setError("Oops! All fields are mandatory and you missed out something!");
-    } else {
-      setError("");
-      console.log("Logged in successfully");
-      alert("Login was successful!");
-    }
+    signup();
   };
 
   return (
@@ -62,7 +88,7 @@ const Signin = ({ onSwitchToSignup }) => {
 
           <input
             type="submit"
-            value="Enter"
+            value={loading ? "Processing..." : "Login"}
             className="mt-2 bg-blue-500 text-white p-2 rounded-lg text-sm cursor-pointer transition duration-300 ease-in-out hover:bg-blue-600"
           />
         </form>

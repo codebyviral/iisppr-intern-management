@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
-import { userIcon as user, authenticatedUser } from "./URIs.js";
 import { Button } from "@/Components/ui/button.jsx";
 import { Sheet, SheetContent, SheetTrigger } from "@/Components/ui/sheet";
 import { Link } from "react-router-dom";
