@@ -53,14 +53,14 @@ export default function CustomNavbar() {
             <Link to="/Adminhomepage" className="text-black font-medium hover:text-red-500">
               Home
             </Link>
-            <Link to="/Adminproject" className="text-black font-medium hover:text-red-500">
+            <Link to="/Projectmanagement" className="text-black font-medium hover:text-red-500">
               Project Management
             </Link>
-            <Link to="/AdminReports" className="text-black font-medium hover:text-red-500">
-              Report Management
+            <Link to="/Weeklyreport" className="text-black font-medium hover:text-red-500">
+              WeeklyReport
             </Link>
-            <Link to="/LeaveApplication" className="text-black font-medium hover:text-red-500">
-              Leave Application
+            <Link to="/Taskassignment" className="text-black font-medium hover:text-red-500">
+              Task Assignment
             </Link>
             </div>
           
@@ -79,23 +79,17 @@ export default function CustomNavbar() {
             >
               Home
             </Link>
-            <Link
-              to="/Projects"
-              className="block px-4 py-2 text-black hover:text-blue-500 border-b"
-            >
-              Projects
+            <Link to="/Projectmanagement" className="text-black font-medium hover:text-red-500">
+              Project Management
             </Link>
             <Link
-              to="/Reports"
+              to="//Weeklyreport"
               className="block px-4 py-2 text-black hover:text-blue-500 border-b"
             >
               Reports
             </Link>
-            <Link
-              to="/LeaveApplication"
-              className="block px-4 py-2 text-black hover:text-blue-500 border-b"
-            >
-              Leave Application
+            <Link to ="/Taskassignment" className="block px-4 py-2 text-black hover:text-blue-500 border-b">
+            Task Assignment
             </Link>
             <button  onClick={()=>handleNavigation()} className="w-full text-left bg-red-500 text-white px-4 py-2 mt-2 rounded-md hover:bg-red-600 transition duration-300">
               Logout

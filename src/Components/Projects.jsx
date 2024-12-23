@@ -8,7 +8,7 @@ const Projects = () => {
       shortDescription: "The platform for interns",
       longDescription:
         "An Intern Management System is a platform designed to streamline the process of managing internships within an organization. It allows companies to efficiently track and manage intern applications, assignments, and performance. The system enables easy onboarding of interns, assignment of mentors, and real-time tracking of progress and feedback. Additionally, it provides features for evaluating interns' performance, generating reports, and ensuring smooth communication between interns and supervisors. Overall, it enhances the internship experience for both the interns and the organization by promoting organization, transparency, and productivity.",
-      by: "The Bhavesh Rathod",
+      by: "The iispr team",
     },
   ];
 

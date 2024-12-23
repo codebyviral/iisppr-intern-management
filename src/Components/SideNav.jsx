@@ -40,6 +40,7 @@ const SideNav = () => {
     { id: 2, name: "Report", icon: "bi-bar-chart" },
     { id: 3, name: "Setting", icon: "bi-gear" },
     {id:4,name :"FAQ",icon:"bi-question-circle"}
+  
   ];
   const redirectURLs = [
     "",

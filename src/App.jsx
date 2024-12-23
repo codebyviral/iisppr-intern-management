@@ -12,9 +12,12 @@ import {   Home,
         SignUp,   
         Logout,
         Aboutus,
+        Privacypolicy,
         CustomNavbar,
         AdminHomePage,
         AdminProject,
+        AdminTask,
+        AdminReport,
        } from "./Components/pageIndex"; 
 import {CoreDashboard, FAQ, Footer} from "@/Components/compIndex"; 
 import { Profile } from "./Components/pageIndex";
@@ -33,15 +36,20 @@ const App = () => {
     <Route path="/notifications" element={<Notifications />} />    
     <Route path="/reports" element={<Reports />} /> 
     <Route path="/projects" element={<Projects />} />  
-    <Route path="/aboutus" element={<><Aboutus/><Footer/></>}/>          
+    <Route path="/aboutus" element={<><Aboutus/><Footer/></>}/>  
+    <Route path="/privacypolicy" element={<><Privacypolicy/><Footer/> </>}></Route>
    {/* <Route path="/privacypolicy" element={}></Route> */}
+   
     <Route path="/stores" element={<Stores />} />  
     <Route path="/setting" element={<><AccountSetting/> <Footer/> </>}></Route>    
     <Route path="/" element={<CoreDashboard />} />        
     <Route path="/faqs" element={<><Navbar/><FAQ /></>} />   
 
     <Route path="/Adminhomepage" element={<AdminHomePage/>}></Route>
-    <Route path="Adminproject" element={<AdminProject/>}></Route>
+    <Route path="/Projectmanagement" element={<AdminProject/>}></Route>
+    <Route path="/Admintask" element={<AdminTask/>}></Route>
+    <Route path="/Weeklyreport" element={<AdminReport/>}></Route>
+    <Route path="/Taskassignment" element={<AdminTask/>}></Route>
   </Routes>  
          ); 
 };  

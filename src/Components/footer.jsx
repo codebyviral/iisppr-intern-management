@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import { Link } from "react-router-dom";  // Import Link component for routing
 
@@ -150,7 +151,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/privacy-policy"  // Use Link for routing
+                  to="/privacypolicy"  // Use Link for routing
                   className="text-gray-600 transition-colors hover:text-blue-600"
                 >
                   Privacy Policy
