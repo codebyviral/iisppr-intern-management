@@ -13,7 +13,9 @@ const reqUser = `https://iisppr-backend.vercel.app/api/get/user`
 
 const getTasks = `https://iisppr-backend.vercel.app/task/get-tasks`
 
+const deleteTaskUri = `https://iisppr-backend.vercel.app/task/delete-task`
 
 
 
-export { localSignupUrl, signupURL, localLoginUrl, loginUrl, localReqUser, reqUser, getTasks }
+
+export { localSignupUrl, signupURL, localLoginUrl, loginUrl, localReqUser, reqUser, getTasks, deleteTaskUri }

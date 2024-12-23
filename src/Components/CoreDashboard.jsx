@@ -5,8 +5,9 @@ import { Button } from "@/Components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Settings } from "lucide-react";
 import axios from "axios";
-import { getTasks } from "./URIs";
+import { deleteTaskUri, getTasks } from "./URIs";
 import { useAppContext } from "@/context/AppContext";
+import toast from "react-hot-toast";
 
 const CoreDashboard = () => {
   const [tasks, setTasks] = useState([]);
@@ -20,13 +21,26 @@ const CoreDashboard = () => {
   // Generate the 7 dates based on the start of the week
   const dates = Array.from({ length: 7 }, (_, index) => weekStart + index);
 
+  const { setNotiCounter } = useAppContext();
+
   // Fetch current Tasks
   useEffect(() => {
     axios.get(`${getTasks}/${localStorage.getItem("userId")}`).then((res) => {
-      console.log(res.data);
       setTasks(res.data.tasksData);
+      setNotiCounter(tasks.length);
     });
-  }, []);
+  }, [tasks]);
+
+  // const delete particular task
+  const deleteTask = async (taskId) => {
+    try {
+      const response = await axios.delete(`${deleteTaskUri}/${taskId}`);
+      toast.success("Task deleted successfully");
+      setTasks(tasks.filter((task) => task._id !== taskId));
+    } catch (error) {
+      toast.error(`Error deleting task: ${error.message}`);
+    }
+  };
 
   return (
     <div className="p-6 max-w-7xl mx-auto taskContainer">
@@ -64,7 +78,7 @@ const CoreDashboard = () => {
               <p className="text-sm text-gray-600 mb-4">
                 {tasks.length} active tasks
               </p>
-              {tasks.slice(0, 5).map((task, index) => (
+              {tasks.map((task, index) => (
                 <div
                   key={task._id || index}
                   className="flex flex-col lg:flex-row items-start lg:items-center gap-4 mb-4 border-b pb-4 last:border-b-0"
@@ -76,19 +90,25 @@ const CoreDashboard = () => {
                     </p>
                     <p className="text-xs text-gray-400 mt-1">
                       Start Date:{" "}
-                      {new Date(task.startDate).toLocaleDateString()} <br />
-                      End Date: {new Date(task.endDate).toLocaleDateString()}
+                      <span className="text-blue-500">
+                        {new Date(task.startDate).toLocaleDateString()} <br />
+                      </span>
+                      End Date:{" "}
+                      <span className="text-blue-500">
+                        {new Date(task.endDate).toLocaleDateString()}
+                      </span>
                     </p>
                   </div>
                   <div className="flex flex-col items-start lg:items-center gap-2 mt-4 lg:mt-0">
                     <Button
+                      onClick={() => deleteTask(task._id)}
                       variant="outline"
                       className="w-full lg:w-auto text-sm"
                     >
                       Task Completed
                     </Button>
-                    <span className="text-sm text-gray-600 mt-2">
-                      {task.status}
+                    <span className="text-sm text-red-600 mt-2">
+                      {`${task.status}.`}
                     </span>
                   </div>
                 </div>
