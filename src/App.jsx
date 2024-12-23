@@ -1,24 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { Routes, Route } from "react-router-dom"; 
-import {   Home,
-        Notifications, 
-        Projects,
-        Reports,  
-        AccountSetting,  
-        Categories,   
-        Stores,   
-        Navbar,   
-        Signin,   
-        SignUp,   
-        Logout,
-        Aboutus,
-        Privacypolicy,
-        CustomNavbar,
-        AdminHomePage,
-        AdminProject,
-        AdminTask,
-        AdminReport,
-       } from "./Components/pageIndex"; 
+import {   Home,Notifications, Projects,Reports,  AccountSetting, Stores,   Navbar,   Signin,   SignUp,   Logout,Aboutus,Privacypolicy,CustomNavbar,AdminHomePage,AdminProject,AdminTask,AdminReport,
+
+} from "./Components/pageIndex"; 
 import {CoreDashboard, FAQ, Footer} from "@/Components/compIndex"; 
 import { Profile } from "./Components/pageIndex";
 import "./App.css"; 
