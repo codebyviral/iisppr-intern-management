@@ -5,7 +5,7 @@ import { loginUrl } from "./URIs.js";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/context/AuthContext";
 
-const Signin = ({ onSwitchToSignup }) => {
+const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -96,8 +96,7 @@ const Signin = ({ onSwitchToSignup }) => {
         <p className="text-xs text-center text-gray-600 mt-3">
           {`Don't`} have an account?{" "}
           <a
-            href="#"
-            onClick={onSwitchToSignup}
+            href="/signup"
             className="text-purple-700 hover:underline"
           >
             Sign-up
