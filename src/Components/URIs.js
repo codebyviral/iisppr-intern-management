@@ -11,7 +11,9 @@ const localLoginUrl = `http://localhost:8000/api/auth/login`
 const localReqUser = `http://localhost:8000/api/get/user`
 const reqUser = `https://iisppr-backend.vercel.app/api/get/user`
 
+const getTasks = `https://iisppr-backend.vercel.app/task/get-tasks`
 
 
 
-export { localSignupUrl, signupURL, localLoginUrl, loginUrl, localReqUser, reqUser }
+
+export { localSignupUrl, signupURL, localLoginUrl, loginUrl, localReqUser, reqUser, getTasks }

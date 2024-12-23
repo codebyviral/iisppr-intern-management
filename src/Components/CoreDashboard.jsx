@@ -1,19 +1,15 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
-import { Progress } from "@/Components/ui/progress";
 import { Button } from "@/Components/ui/button";
 import { useNavigate } from "react-router-dom";
-import {
-  Calendar,
-  Settings,
-  HelpCircle,
-  ChevronRight,
-  Clock,
-} from "lucide-react";
-import { tasks, calendarItems } from "@/APIs/index.js";
+import { Settings } from "lucide-react";
+import axios from "axios";
+import { getTasks } from "./URIs";
 import { useAppContext } from "@/context/AppContext";
+
 const CoreDashboard = () => {
+  const [tasks, setTasks] = useState([]);
   const navigate = useNavigate();
   const { setDashboard } = useAppContext();
   const currentDate = new Date();
@@ -23,6 +19,14 @@ const CoreDashboard = () => {
 
   // Generate the 7 dates based on the start of the week
   const dates = Array.from({ length: 7 }, (_, index) => weekStart + index);
+
+  // Fetch current Tasks
+  useEffect(() => {
+    axios.get(`${getTasks}/${localStorage.getItem("userId")}`).then((res) => {
+      console.log(res.data);
+      setTasks(res.data.tasksData);
+    });
+  }, []);
 
   return (
     <div className="p-6 max-w-7xl mx-auto taskContainer">
@@ -53,7 +57,7 @@ const CoreDashboard = () => {
       {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Tasks Section */}
-        <div>
+        <div className="capitalize">
           <h2 className="text-xl font-bold mb-4">My tasks</h2>
           <Card>
             <CardContent className="p-6">
@@ -62,15 +66,31 @@ const CoreDashboard = () => {
               </p>
               {tasks.slice(0, 5).map((task, index) => (
                 <div
-                  key={task.id || index}
-                  className="flex items-center gap-4 mb-4"
+                  key={task._id || index}
+                  className="flex flex-col lg:flex-row items-start lg:items-center gap-4 mb-4 border-b pb-4 last:border-b-0"
                 >
-                  <div className="w-8 h-8 rounded-full bg-gray-200" />
                   <div className="flex-1">
-                    <p className="font-medium">{task.title}</p>
-                    <p className="text-sm text-gray-600">{task.owner}</p>
+                    <p className="font-medium text-lg">{task.title}</p>
+                    <p className="text-sm text-gray-600 mt-2">
+                      {task.description}
+                    </p>
+                    <p className="text-xs text-gray-400 mt-1">
+                      Start Date:{" "}
+                      {new Date(task.startDate).toLocaleDateString()} <br />
+                      End Date: {new Date(task.endDate).toLocaleDateString()}
+                    </p>
                   </div>
-                  <span className="text-sm text-gray-600">{task.dueType}</span>
+                  <div className="flex flex-col items-start lg:items-center gap-2 mt-4 lg:mt-0">
+                    <Button
+                      variant="outline"
+                      className="w-full lg:w-auto text-sm"
+                    >
+                      Task Completed
+                    </Button>
+                    <span className="text-sm text-gray-600 mt-2">
+                      {task.status}
+                    </span>
+                  </div>
                 </div>
               ))}
               <Button variant="outline" className="w-full mt-4">
@@ -100,7 +120,7 @@ const CoreDashboard = () => {
                     key={date}
                     className={`p-2 rounded cursor-pointer ${
                       date === currentDay
-                        ? "bg-gray-200 fw-bold text-black"
+                        ? "bg-gray-200 font-bold text-black"
                         : ""
                     }`}
                   >
@@ -113,19 +133,18 @@ const CoreDashboard = () => {
 
           {/* Metrics Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <Card
-          className="bg-blue-500 text-white cursor-pointer"
-          onClick={() => navigate("/faqs")}
-        >
-          <CardContent className="p-6 flex flex-col items-center">
-            <div className="w-24 h-24 flex items-center justify-center mb-4">
-              <HelpCircle className="h-12 w-12" />
-            </div>
-            <p className="text-center">FAQs</p>
-          </CardContent>
-        </Card>
-      </div>
-
+            <Card
+              className="bg-blue-500 text-white cursor-pointer"
+              onClick={() => navigate("/faqs")}
+            >
+              <CardContent className="p-6 flex flex-col items-center">
+                <div className="w-24 h-24 flex items-center justify-center mb-4">
+                  <Settings className="h-12 w-12" />
+                </div>
+                <p className="text-center">FAQs</p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>
