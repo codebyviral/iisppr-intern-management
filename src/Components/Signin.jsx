@@ -19,7 +19,7 @@ const Signin = () => {
     storeUserId,
   } = useAuthContext();
 
-  const signup = async () => {
+  const login = async () => {
     setLoading(true);
     try {
       const response = await axios.post(loginUrl, { email, password });
@@ -39,7 +39,7 @@ const Signin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    signup();
+    login();
   };
 
   return (
