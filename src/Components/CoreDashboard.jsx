@@ -25,7 +25,7 @@ const CoreDashboard = () => {
 
   const { setNotiCounter } = useAppContext();
 
-  // Fetch current Tasks
+  // Fetch current Tasks 
   useEffect(() => {
     axios.get(`${getTasks}/${localStorage.getItem("userId")}`).then((res) => {
       setTasks(res.data.tasksData);
@@ -45,7 +45,7 @@ const CoreDashboard = () => {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto taskContainer">
+    <div className="p-6 max-w-7xl mx-auto taskContainer sm:pl-8 md:pl-10 lg:pl-[10rem]">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
