@@ -4,9 +4,17 @@ const AppContext = createContext();
 export const AppProvider = ({ children }) => {
   const [dashboard, setDashboard] = useState("Home");
   const [notiCounter, setNotiCounter] = useState(0);
+  const [modalView, setModalView] = useState(false);
   return (
     <AppContext.Provider
-      value={{ dashboard, notiCounter, setDashboard, setNotiCounter }}
+      value={{
+        dashboard,
+        notiCounter,
+        setDashboard,
+        setNotiCounter,
+        modalView,
+        setModalView,
+      }}
     >
       {children}
     </AppContext.Provider>
