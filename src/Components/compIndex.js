@@ -9,7 +9,7 @@ import FilterOption from "./FilterOption";
 import Filter from "./Filter";
 import AdminTask from "./AdminTask"
 import AdminSideNav from "./AdminSideNav";
-import AdminPanelMain from "./AdminPanelMain"
+import AdminPanelMain from "../Admin/AdminHomePage"
 import AdminTopNav from "./AdminTopNav";
 import FAQsData from "./FAQsData";
 import TaskModal from "./TaskModal";
