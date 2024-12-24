@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { SideNav,Navbar } from "./compIndex";
+import { SideNav,Navbar } from "../Components/compIndex";
 export default function AccountDetails() {
   const [formDetails, setFormDetails] = useState({
     fullName: "",

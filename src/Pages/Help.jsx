@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { SideNav,Navbar } from "./compIndex";
+import { SideNav,Navbar } from "../Components/compIndex";
 function Help() {
     
   const cards = [

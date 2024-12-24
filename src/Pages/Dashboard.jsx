@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { CoreDashboard } from "./compIndex";
+import { CoreDashboard } from "../Components/compIndex";
 
 const Dashboard = () => {
   const navigate = useNavigate();

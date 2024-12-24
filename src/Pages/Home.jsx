@@ -1,4 +1,5 @@
-import { Navbar, Dashboard, Footer } from "../Components/compIndex";
+import { Navbar, Footer } from "../Components/compIndex";
+import { Dashboard } from "./pageIndex";
 const Home = () => {
   return (
     <>

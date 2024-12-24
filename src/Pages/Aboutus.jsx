@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-import { SideNav, Navbar } from "./compIndex";
+import { SideNav, Navbar } from "../Components/compIndex";
 
 const Aboutus = () => {
   const aboutusRef = useRef(null);

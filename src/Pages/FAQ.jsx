@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { FAQsData, SideNav } from "./compIndex";
+import { FAQsData, SideNav } from "../Components/compIndex";
 
 const FAQ = () => {
   return (

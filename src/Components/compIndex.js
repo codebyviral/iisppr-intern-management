@@ -1,33 +1,35 @@
 import Navbar from "./Navbar";
-import TopNavbar from "./TopNavbar";
-import SideNav from "./SideNav";
-import Dashboard from "./Dashboard";
+import TopNavbar from "../Components/TopNavbar";
+import SideNav from "../Components/SideNav";
 import CoreDashboard from "./CoreDashboard";
 import CoreSettings from "./Settings";
 import Wrapper from "./Wrapper";
 import NotiBadge from "./NotiBadge";
 import FilterOption from "./FilterOption";
 import Filter from "./Filter";
+import AdminTask from "./AdminTask"
 import AdminSideNav from "./AdminSideNav";
+import AdminPanelMain from "./AdminPanelMain"
 import AdminTopNav from "./AdminTopNav";
-import FAQ from "./FAQ";
 import FAQsData from "./FAQsData";
+import TaskModal from "./TaskModal";
 import Footer from "./footer";
 
 export {
   Navbar,
   TopNavbar,
   SideNav,
-  Dashboard,
   CoreSettings,
+  AdminPanelMain,
+  AdminTask,
   CoreDashboard,
   Wrapper,
+  TaskModal,
   NotiBadge,
   FilterOption,
   Filter,
   AdminSideNav,
   AdminTopNav,
-  FAQ,
   FAQsData,
   Footer,
 };
