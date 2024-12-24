@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(!!admin);
 
   const storeIsAdminState = (isAdminState) => {
-    const isAdmin = localStorage.setItem(isAdminState);
+    const isAdmin = localStorage.setItem("isAdmin", isAdminState);
     setIsAdmin(isAdminState);
   };
 
