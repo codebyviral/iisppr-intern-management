@@ -7,7 +7,7 @@ import Wrapper from "./Wrapper";
 import NotiBadge from "./NotiBadge";
 import FilterOption from "./FilterOption";
 import Filter from "./Filter";
-import AdminTask from "./AdminTask"
+import AdminTask from "../Admin/AdminTask"
 import AdminSideNav from "./AdminSideNav";
 import AdminPanelMain from "../Admin/AdminHomePage"
 import AdminTopNav from "./AdminTopNav";
