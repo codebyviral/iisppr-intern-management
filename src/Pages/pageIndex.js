@@ -8,7 +8,7 @@ import Stores from "./Stores";
 import Signin from "./Signin-page";
 import SignUp from "./Signup-page";
 import Logout from "./Logout";
-import Profile from "./profile";
+import Profile from "./Profile";
 import AccountSetting from "./AccountSetting";
 import FAQ from "./FAQ";
 import Aboutus from "./Aboutus";
