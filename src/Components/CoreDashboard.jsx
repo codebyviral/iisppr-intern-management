@@ -18,6 +18,8 @@ const CoreDashboard = () => {
   const currentYear = currentDate.getFullYear();
   const weekStart = currentDate.getDate() - currentDate.getDay();
 
+  console.log(localStorage.getItem("userId"))
+
   // Generate the 7 dates based on the start of the week
   const dates = Array.from({ length: 7 }, (_, index) => weekStart + index);
 

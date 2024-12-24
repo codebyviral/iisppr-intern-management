@@ -20,6 +20,9 @@ import AdminReport from "@/AdminPanel/AdminReport";
 import Help from "./Help";
 /* Admin panel importing */
 import CustomNavbar from "@/AdminPanel/CustomNavbar";
+import AllUsers from "@/AdminPanel/AllUsers";
+import AdminHelpPage from "@/AdminPanel/AdminHelpPage";
 
 
-export { Home, Notifications, Settings, Reports, Projects, Categories, Stores, Signin, SignUp, Logout ,Navbar,Profile,AccountSetting,Aboutus,CustomNavbar,AdminHomePage,AdminProject,AdminTask,AdminReport,Privacypolicy,Help}
+
+export { Home, Notifications, Settings, Reports, Projects, Categories, Stores, Signin, SignUp, Logout ,Navbar,Profile,AccountSetting,Aboutus,CustomNavbar,AdminHomePage,AdminProject,AdminTask,AdminReport,Privacypolicy,Help,AllUsers,AdminHelpPage}

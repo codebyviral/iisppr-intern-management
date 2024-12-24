@@ -1,11 +1,10 @@
-/* eslint-disable no-unused-vars */
 import React from "react";
-import { Link } from "react-router-dom";  // Import Link component for routing
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="bg-white border-t border-gray-200 text-gray-800 ml-36">
-      <div className="mx-auto max-w-screen-xl px-4 py-5 sm:px-6 lg:px-8">
+    <footer className="bg-white border-t border-gray-200 text-gray-800">
+      <div className="mx-auto max-w-screen-xl px-4 py-5 sm:px-6 lg:px-28"> {/* Updated lg:px-16 for desktop */}
         {/* Flexbox container for "Company", "Help", "Legal", and Social Media sections */}
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 text-sm sm:text-base">
           {/* Company Section */}
@@ -14,23 +13,23 @@ const Footer = () => {
             <ul className="mt-6 space-y-4">
               <li>
                 <Link
-                  to="/aboutus"  
-                  className="text-gray-700 transition-colors hover:text-blue-600" 
+                  to="/aboutus"
+                  className="text-gray-700 transition-colors hover:text-blue-600 sm:mt-4 "
                 >
                   About Us
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/team"  // Use Link for routing
-                  className="text-gray-700 transition-colors hover:text-blue-600"
+                  to="/team"
+                  className="text-gray-700 transition-colors hover:text-blue-600 "
                 >
                   Team
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/careers"  // Use Link for routing
+                  to="/careers"
                   className="text-gray-700 transition-colors hover:text-blue-600"
                 >
                   Careers
@@ -45,7 +44,7 @@ const Footer = () => {
             <ul className="mt-6 space-y-4">
               <li>
                 <Link
-                  to="/contact-support"  // Use Link for routing
+                  to="/contact-support"
                   className="text-gray-700 transition-colors hover:text-blue-600"
                 >
                   Contact Support
@@ -53,7 +52,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/faqs"  // Use Link for routing
+                  to="/faqs"
                   className="text-gray-700 transition-colors hover:text-blue-600"
                 >
                   FAQs
@@ -68,7 +67,7 @@ const Footer = () => {
             <ul className="mt-6 space-y-4">
               <li>
                 <Link
-                  to="/termsandconditions"  // Use Link for routing
+                  to="/termsandconditions"
                   className="text-gray-700 transition-colors hover:text-blue-600"
                 >
                   Terms & Conditions
@@ -76,7 +75,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/privacypolicy"  // Use Link for routing
+                  to="/privacypolicy"
                   className="text-gray-700 transition-colors hover:text-blue-600"
                 >
                   Privacy Policy
@@ -84,7 +83,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/refund-policy"  // Use Link for routing
+                  to="/refund-policy"
                   className="text-gray-700 transition-colors hover:text-blue-600"
                 >
                   Refund Policy
@@ -135,15 +134,15 @@ const Footer = () => {
         </div>
 
         {/* Footer Bottom Section */}
-        <div className="mt-4 border-t border-gray-200 pt-4">
+        <div className="mt-4 border-t border-gray-200 pt-4 sm:text-center">
           <div className="sm:flex sm:justify-between">
-            <p className="text-xs sm:text-sm text-gray-600">
+            <p className="text-xs sm:text-sm  text-gray-600 ">
               &copy; 2024 Intern Management System. All rights reserved.
             </p>
             <ul className="mt-2 sm:mt-0 flex flex-wrap justify-start gap-6 text-xs sm:text-sm lg:justify-end">
               <li>
                 <Link
-                  to="/terms-and-conditions"  // Use Link for routing
+                  to="/terms-and-conditions"
                   className="text-gray-600 transition-colors hover:text-blue-600"
                 >
                   Terms & Conditions
@@ -151,7 +150,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/privacypolicy"  // Use Link for routing
+                  to="/privacypolicy"
                   className="text-gray-600 transition-colors hover:text-blue-600"
                 >
                   Privacy Policy
@@ -159,7 +158,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/cookies"  // Use Link for routing
+                  to="/cookies"
                   className="text-gray-600 transition-colors hover:text-blue-600"
                 >
                   Cookies

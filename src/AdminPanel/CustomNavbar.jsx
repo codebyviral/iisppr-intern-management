@@ -91,6 +91,7 @@ export default function CustomNavbar() {
             <Link to ="/Taskassignment" className="block px-4 py-2 text-black hover:text-blue-500 border-b">
             Task Assignment
             </Link>
+            
             <button  onClick={()=>handleNavigation()} className="w-full text-left bg-red-500 text-white px-4 py-2 mt-2 rounded-md hover:bg-red-600 transition duration-300">
               Logout
             </button>
