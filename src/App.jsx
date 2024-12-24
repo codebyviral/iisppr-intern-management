@@ -23,6 +23,7 @@ import {
   AdminPanelMain,
 } from "./Components/compIndex";
 import "./App.css";
+import { Analytics } from "@vercel/analytics/react";
 
 const App = () => {
   return (
@@ -89,6 +90,7 @@ const App = () => {
       <Route path="/Taskassignment" element={<AdminTask />}></Route>
       <Route path="/allusers" element={<Profile />}></Route>
       <Route path="/adminhelppage" element={<Help />}></Route>
+      <Analytics />
     </Routes>
   );
 };
