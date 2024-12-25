@@ -10,6 +10,7 @@ import SignUp from "./Signup-page";
 import Logout from "./Logout";
 import SettingsPage from "./SettingsPage";
 import Profile from "./Profile";
+import LeaveApplication from "./LeaveApplication";
 import FAQ from "./FAQ";
 import Aboutus from "./Aboutus";
 import PrivacyPolicy from "./Privacypolicy";

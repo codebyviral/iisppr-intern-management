@@ -17,6 +17,7 @@ import {
   AdminProject,
   AdminReport,
   AllUsers,
+  LeaveApplication,
   AdminHelpPage,
   UserAttendance,
   SettingsPage,
@@ -25,6 +26,7 @@ import {
   AdminHelp,
   InternTasksSubmissions,
 } from "./Pages/pageIndex";
+import InternAttendance from "./Admin/InternAttendance";
 import {
   AdminTask,
   CoreDashboard,
@@ -75,6 +77,7 @@ const App = () => {
       <Route path="/help" element={<Help />}></Route>
       <Route path="/my-attendance" element={<UserAttendance />} />
       <Route path="/stores" element={<Stores />} />
+      <Route path="/leave-application" element={<LeaveApplication />} />
       <Route
         path="/setting"
         element={
