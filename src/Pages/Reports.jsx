@@ -3,16 +3,18 @@ import { Navbar, SideNav, Wrapper, Footer } from "@/Components/compIndex";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Label } from "@/Components/ui/label";
 import { Textarea } from "@/Components/ui/textarea";
+import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
 
 const Reports = () => {
-  const [message, setMesage] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     employee: "",
     department: "",
     date: "",
     tasksCompleted: "",
-    tasksToBeginNextWeek: "", // Corrected key
-    selfAssessmentComments: "", // Corrected key
+    tasksToBeginNextWeek: "",
+    selfAssessmentComments: "",
   });
 
   const handleInputChange = (e) => {
@@ -24,6 +26,7 @@ const Reports = () => {
   };
 
   const handleSave = async () => {
+    setLoading(true);
     try {
       const response = await fetch(
         "https://iisppr-backend.vercel.app/weeklystatus/submit",
@@ -37,6 +40,8 @@ const Reports = () => {
       );
 
       if (response.ok) {
+        const data = await response.json();
+        setMessage({ type: "success", text: data.message });
         setFormData({
           employee: "",
           department: "",
@@ -47,12 +52,15 @@ const Reports = () => {
         });
       } else {
         const errorData = await response.json();
-        console.error("API Error:", errorData);
-        alert("Failed to save report. Please check your input.");
+        setMessage({ type: "error", text: errorData.error });
       }
     } catch (error) {
-      console.error("Error saving report:", error);
-      alert("An error occurred while saving the report.");
+      setMessage({
+        type: "error",
+        text: "An error occurred while saving the report.",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,47 +70,59 @@ const Reports = () => {
       <Navbar />
 
       <Wrapper>
-        <div className="min-h-screen bg-white p-4 md:p-8">
-          <Card className="mx-auto max-w-4xl border-none shadow-none">
-            <CardHeader className="mb-7">
-              <CardTitle className="text-center text-3xl font-bold tracking-tight text-[#007bff]">
-                EMPLOYEE WEEKLY STATUS REPORT
+        <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white p-4 md:p-8">
+          <Card className="mx-auto max-w-4xl border shadow-xl transition-all duration-300 hover:shadow-2xl">
+            <CardHeader className="space-y-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-lg">
+              <CardTitle className="text-center text-3xl font-bold tracking-tight">
+                Employee Weekly Status Report
               </CardTitle>
+              <p className="text-center text-blue-100">
+                Track your progress and plan ahead
+              </p>
             </CardHeader>
 
-            <div className="mb-6 space-y-6 rounded-lg border-[#0056b3] p-6">
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                {["employee", "department", "date"].map((field) => (
-                  <div key={field} className="flex flex-col space-y-2">
-                    <Label className="text-muted-foreground">
-                      {field.charAt(0).toUpperCase() + field.slice(1)}
+            <div className="mb-6 space-y-6 p-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+                {[
+                  { name: "employee", label: "Employee Name", type: "text" },
+                  { name: "department", label: "Department", type: "text" },
+                  { name: "date", label: "Report Date", type: "date" },
+                ].map(({ name, label, type }) => (
+                  <div key={name} className="group space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">
+                      {label}
                     </Label>
                     <input
-                      type={field === "date" ? "date" : "text"}
-                      name={field}
-                      value={formData[field]}
+                      type={type}
+                      name={name}
+                      value={formData[name]}
                       onChange={handleInputChange}
-                      className="w-full rounded-md border-2 border-[#0056b3] p-2 text-[#007bff] focus:outline-none"
+                      className="w-full rounded-md border-2 border-gray-200 p-2 transition-all duration-200 
+                               focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200
+                               group-hover:border-blue-300"
                     />
                   </div>
                 ))}
               </div>
             </div>
 
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-8">
               {[
-                { label: "TASKS COMPLETED", name: "tasksCompleted" },
+                { label: "Tasks Completed This Week", name: "tasksCompleted" },
                 {
-                  label: "TASKS TO BEGIN NEXT WEEK",
+                  label: "Tasks Planned for Next Week",
                   name: "tasksToBeginNextWeek",
-                }, // Corrected name
+                },
                 {
-                  label: "SELF ASSESSMENT & COMMENTS",
+                  label: "Self Assessment & Comments",
                   name: "selfAssessmentComments",
-                }, // Corrected name
+                },
               ].map((section) => (
-                <div key={section.name} className="space-y-4">
-                  <div className="rounded-lg bg-[#007bff] p-4">
+                <div key={section.name} className="space-y-4 group">
+                  <div
+                    className="rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 p-4 transition-all duration-200
+                                group-hover:from-blue-700 group-hover:to-blue-800"
+                  >
                     <h2 className="text-lg font-semibold text-white">
                       {section.label}
                     </h2>
@@ -111,8 +131,10 @@ const Reports = () => {
                     name={section.name}
                     value={formData[section.name]}
                     onChange={handleInputChange}
-                    className="min-h-[150px] resize-none border-2 border-[#0056b3] focus:outline-none p-4"
-                    placeholder={`Enter ${section.label.toLowerCase()}...`}
+                    className="min-h-[150px] w-full rounded-md border-2 border-gray-200 p-4 transition-all duration-200
+                             focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200
+                             group-hover:border-blue-300"
+                    placeholder={`Enter your ${section.label.toLowerCase()}...`}
                   />
                 </div>
               ))}
@@ -120,22 +142,33 @@ const Reports = () => {
 
             {message && (
               <div
-                className={`mb-4 rounded-lg p-4 text-center ${
-                  message.type === "sucess"
-                    ? "bg-green-100 text-green-700"
-                    : "bg-red-100 text-red-700"
-                }`}
+                className={`mx-6 mb-4 flex items-center justify-center gap-2 rounded-lg p-4 text-center transition-all duration-300
+                              ${
+                                message.type === "success"
+                                  ? "bg-green-100 text-green-700"
+                                  : "bg-red-100 text-red-700"
+                              }`}
               >
+                {message.type === "success" ? (
+                  <CheckCircle2 className="h-5 w-5" />
+                ) : (
+                  <AlertCircle className="h-5 w-5" />
+                )}
                 {message.text}
               </div>
             )}
 
-            <div className="flex justify-center mt-6">
+            <div className="flex justify-center p-6">
               <button
                 onClick={handleSave}
-                className="bg-blue-500 text-white px-6 py-3 text-lg font-bold uppercase tracking-wide rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+                disabled={loading}
+                className="group relative inline-flex items-center gap-2 rounded-lg bg-blue-600 px-8 py-3 
+                         text-lg font-semibold text-white transition-all duration-300
+                         hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                         disabled:cursor-not-allowed disabled:opacity-70"
               >
-                Save
+                {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : null}
+                {loading ? "Saving..." : "Save Report"}
               </button>
             </div>
           </Card>
