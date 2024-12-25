@@ -5,13 +5,14 @@ import { Label } from "@/Components/ui/label";
 import { Textarea } from "@/Components/ui/textarea";
 
 const Reports = () => {
+  const [message, setMesage] = useState(null);
   const [formData, setFormData] = useState({
     employee: "",
     department: "",
     date: "",
     tasksCompleted: "",
-    tasksToBegin: "",
-    comments: "",
+    tasksToBeginNextWeek: "", // Corrected key
+    selfAssessmentComments: "", // Corrected key
   });
 
   const handleInputChange = (e) => {
@@ -24,26 +25,30 @@ const Reports = () => {
 
   const handleSave = async () => {
     try {
-      const response = await fetch("/api/reports", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "https://iisppr-backend.vercel.app/weeklystatus/submit",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (response.ok) {
-        alert("Report saved successfully!");
         setFormData({
           employee: "",
           department: "",
           date: "",
           tasksCompleted: "",
-          tasksToBegin: "",
-          comments: "",
+          tasksToBeginNextWeek: "",
+          selfAssessmentComments: "",
         });
       } else {
-        alert("Failed to save report.");
+        const errorData = await response.json();
+        console.error("API Error:", errorData);
+        alert("Failed to save report. Please check your input.");
       }
     } catch (error) {
       console.error("Error saving report:", error);
@@ -87,12 +92,20 @@ const Reports = () => {
             <CardContent className="space-y-6">
               {[
                 { label: "TASKS COMPLETED", name: "tasksCompleted" },
-                { label: "TASKS TO BEGIN NEXT WEEK", name: "tasksToBegin" },
-                { label: "SELF ASSESSMENT & COMMENTS", name: "comments" },
+                {
+                  label: "TASKS TO BEGIN NEXT WEEK",
+                  name: "tasksToBeginNextWeek",
+                }, // Corrected name
+                {
+                  label: "SELF ASSESSMENT & COMMENTS",
+                  name: "selfAssessmentComments",
+                }, // Corrected name
               ].map((section) => (
                 <div key={section.name} className="space-y-4">
                   <div className="rounded-lg bg-[#007bff] p-4">
-                    <h2 className="text-lg font-semibold text-white">{section.label}</h2>
+                    <h2 className="text-lg font-semibold text-white">
+                      {section.label}
+                    </h2>
                   </div>
                   <Textarea
                     name={section.name}
@@ -104,6 +117,18 @@ const Reports = () => {
                 </div>
               ))}
             </CardContent>
+
+            {message && (
+              <div
+                className={`mb-4 rounded-lg p-4 text-center ${
+                  message.type === "sucess"
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-700"
+                }`}
+              >
+                {message.text}
+              </div>
+            )}
 
             <div className="flex justify-center mt-6">
               <button

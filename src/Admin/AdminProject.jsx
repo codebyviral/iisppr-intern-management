@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CustomNavbar from './CustomNavbar';
 
 const AdminProject = () => {
@@ -11,7 +11,7 @@ const AdminProject = () => {
     by: ''
   });
 
-  // To simulate posted projects (just for now)
+  // State to store posted projects fetched from API
   const [postedProjects, setPostedProjects] = useState([]);
 
   // Handle change for any input field
@@ -26,21 +26,37 @@ const AdminProject = () => {
   // Handle form submission (console log for now)
   const handlePostProject = async () => {
     try {
-      // You can replace the fetch call with actual API logic
-      // const response = await fetch('api/postProject', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-type': 'application/json',
-      //   },
-      //   body: JSON.stringify(project),
-      // });
-      // const result = await response.json();
+      // Simulate posting the project (In real app, you would send this to the API)
       setPostedProjects([...postedProjects, project]);
       console.log('Project posted successfully:', project);
     } catch (error) {
       console.log(error);
     }
   };
+
+  // API to fetch posted projects
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch('https://iisppr-backend.vercel.app/project/all');
+        if (!response.ok) {
+          throw new Error("Failed to fetch projects");
+        }
+        const data = await response.json();
+        
+      
+        const projectHeadings = data.map(project => ({
+          heading: project.heading
+        }));
+
+        setPostedProjects(projectHeadings);
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
   return (
     <>
@@ -126,11 +142,10 @@ const AdminProject = () => {
           </div>
         </div>
 
-       
+        {/* Right Side (Posted Projects) */}
         <div className="w-full md:w-1/2 p-6 bg-white shadow-lg rounded-lg mx-auto mt-6 overflow-auto border-2 ml-2 mr-5">
           <h2 className="text-2xl font-semibold text-blue-600 mb-4 text-center">Posted Projects</h2>
 
-          
           <div className="space-y-4">
             {postedProjects.length === 0 ? (
               <p className="text-center text-gray-500">No projects posted yet.</p>
@@ -138,9 +153,6 @@ const AdminProject = () => {
               postedProjects.map((project, index) => (
                 <div key={index} className="p-4 border border-gray-300 rounded-md shadow-md">
                   <h3 className="text-xl font-semibold text-blue-600">{project.heading}</h3>
-                  <p className="text-gray-700">{project.shortDescription}</p>
-                  <p className="text-gray-500">{project.longDescription}</p>
-                  <p className="text-gray-500 italic">By: {project.by}</p>
                 </div>
               ))
             )}

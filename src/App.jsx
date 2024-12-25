@@ -14,6 +14,11 @@ import {
   SignUp,
   Logout,
   Stores,
+  AdminHomePage,
+  AdminProject,
+  AdminReport,
+  AllUsers,
+  AdminHelpPage,
 } from "./Pages/pageIndex";
 import {
   AdminTask,
@@ -82,13 +87,13 @@ const App = () => {
         }
       />
 
-      <Route path="/Adminhomepage" element={<AdminPanelMain />}></Route>
-      <Route path="/Projectmanagement" element={<AdminTask />}></Route>
-      <Route path="/Admintask" element={<AdminTask />}></Route>
-      <Route path="/Weeklyreport" element={<Reports />}></Route>
+      <Route path="/Adminhomepage" element={<AdminHomePage />}></Route>
+      <Route path="/Projectmanagement" element={<AdminProject/>}></Route>
+      <Route path="/Admintask" element={<AdminTask/>}></Route>
+      <Route path="/Weeklyreport" element={<AdminReport />}></Route>
       <Route path="/Taskassignment" element={<AdminTask />}></Route>
-      <Route path="/allusers" element={<Profile />}></Route>
-      <Route path="/adminhelppage" element={<Help />}></Route>
+      <Route path="/allusers" element={<AllUsers/>}></Route>
+      <Route path="/adminhelppage" element={<AdminHelpPage />}></Route>
     </Routes>
   );
 };
