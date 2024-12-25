@@ -1,9 +1,8 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Settings, ExternalLink, Headset } from "lucide-react";
+import { Settings, ExternalLink, Headset, Loader } from "lucide-react"; // Importing the loader icon
 import axios from "axios";
 import { deleteTaskUri, getTasks } from "./URIs";
 import { useAppContext } from "@/context/AppContext";
@@ -27,7 +26,6 @@ const CoreDashboard = () => {
     useAppContext();
 
   // Fetch current Tasks
-  // Fetch current Tasks
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -35,7 +33,7 @@ const CoreDashboard = () => {
         const response = await axios.get(
           `${getTasks}/${localStorage.getItem("userId")}`
         );
-        console.log(response.data.tasksData)
+        console.log(response.data.tasksData);
         const fetchedTasks = response.data.tasksData;
         setTasks(fetchedTasks);
         setNotiCounter(fetchedTasks.length);
@@ -68,8 +66,8 @@ const CoreDashboard = () => {
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-2xl font-bold mb-2">
-              Welcome,{" "}
-              {localStorage.getItem("userName") || `Login to Continue`}!
+              Welcome, {localStorage.getItem("userName") || `Login to Continue`}
+              !
             </h1>
             <p className="text-gray-600">
               Open the panel and watch your progress and growth in knowledge.
@@ -101,11 +99,11 @@ const CoreDashboard = () => {
                 </p>
                 {loading ? (
                   <>
-                    {" "}
                     <div className="flex justify-center items-center py-4">
-                      <p className="text-gray-600">
+                      <p className="text-gray-600 mr-2">
                         Loading tasks, please wait...
                       </p>
+                      <Loader className="animate-spin h-5 w-5 text-blue-500" />
                     </div>
                   </>
                 ) : (
