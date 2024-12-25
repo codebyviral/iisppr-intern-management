@@ -33,11 +33,22 @@ const Signin = ({ onSwitchToSignup }) => {
 
       setIsLoggedIn(true);
 
-      toast.success("Login Successful");
+      toast.success("Login successful");
       navigate("/");
     } catch (error) {
-      console.log(`Error: ${error}`);
-      toast.error("Something went wrong.");
+      if (error.response) {
+        const { status, data } = error.response;
+
+        if (status === 403) {
+          toast.error(data.message || "Invalid email or password");
+        } else if (status === 500) {
+          toast.error(data.message || "Internal server error");
+        } else {
+          toast.error(data.message || "An unknown error occurred");
+        }
+      } else {
+        toast.error("Unable to connect to the server. Please try again later.");
+      }
     } finally {
       setIsLoading(false);
       window.scrollTo(0, 0);
