@@ -2,7 +2,14 @@ import { useState } from "react";
 import { Card, CardContent } from "@/Components/ui/card";
 import { Navbar } from "@/Components/compIndex";
 import { Switch } from "@/Components/ui/switch";
-import { Settings, User, HelpCircle, ExternalLink, Bell } from "lucide-react";
+import {
+  Settings,
+  User,
+  HelpCircle,
+  ExternalLink,
+  Bell,
+  Lock,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "@/context/AppContext";
 import toast from "react-hot-toast";
@@ -10,7 +17,7 @@ import toast from "react-hot-toast";
 const SettingsPage = () => {
   const navigate = useNavigate();
   const { setDashboard } = useAppContext();
-  const [notifications, setNotifications] = useState(true);
+  const [notifications] = useState(true);
 
   const menuItems = [
     {
@@ -25,7 +32,12 @@ const SettingsPage = () => {
       path: "/your-profile",
       description: "Manage your personal information and preferences",
     },
-    // ... rest of the menuItems array stays the same
+    {
+      icon: <Lock size={24} />,
+      label: "Change Password",
+      path: "/reset-account-password",
+      description: "Update your account password securely",
+    },
   ];
 
   const handleClick = (path) => {
