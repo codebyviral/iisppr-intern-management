@@ -14,6 +14,7 @@ import {
   SignUp,
   Logout,
   Stores,
+  UserAttendance,
 } from "./Pages/pageIndex";
 import {
   AdminTask,
@@ -23,10 +24,12 @@ import {
   AdminPanelMain,
 } from "./Components/compIndex";
 import "./App.css";
+import { NotFound } from "./Components/Notfound";
 
 const App = () => {
   return (
     <Routes>
+      <Route path="*" element={<NotFound />} />
       <Route path="/" element={<Home />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Signin />} />
@@ -61,7 +64,7 @@ const App = () => {
         }
       ></Route>
       <Route path="/help" element={<Help />}></Route>
-
+      <Route path="/my-attendance" element={<UserAttendance />} />
       <Route path="/stores" element={<Stores />} />
       <Route
         path="/setting"

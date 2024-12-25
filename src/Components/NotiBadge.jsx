@@ -1,7 +1,7 @@
 import { Bell } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const NotiBadge = ({ count = 1 }) => {
+const NotiBadge = ({ count }) => {
   const navigate = useNavigate();
 
   return (

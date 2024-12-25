@@ -23,22 +23,31 @@ const CoreDashboard = () => {
   // Generate the 7 dates based on the start of the week
   const dates = Array.from({ length: 7 }, (_, index) => weekStart + index);
 
-  const { setNotiCounter, modalView, setModalView } = useAppContext();
+  const { notiCounter, setNotiCounter, modalView, setModalView } =
+    useAppContext();
 
   // Fetch current Tasks
+  // Fetch current Tasks
   useEffect(() => {
-    try {
-      setLoading(true);
-      axios.get(`${getTasks}/${localStorage.getItem("userId")}`).then((res) => {
-        setTasks(res.data.tasksData);
-        setNotiCounter(tasks.length);
-      });
-    } catch (error) {
-      toast.error(`Error Fetching Tasks`);
-    } finally {
-      setLoading(false);
-    }
+    const fetchTasks = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `${getTasks}/${localStorage.getItem("userId")}`
+        );
+        const fetchedTasks = response.data.tasksData;
+        setTasks(fetchedTasks);
+        setNotiCounter(fetchedTasks.length);
+      } catch (error) {
+        toast.error(`Error Fetching Tasks`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTasks();
   }, []);
+
   // const delete particular task
   const deleteTask = async (taskId) => {
     try {
@@ -149,9 +158,7 @@ const CoreDashboard = () => {
 
           {/* Calendar Section */}
           <div>
-            <h2 className="text-xl font-bold mb-4">
-              December {currentYear} progress report
-            </h2>
+            <h2 className="text-xl font-bold mb-4">December {currentYear}</h2>
             <Card className="mb-8">
               <CardContent className="p-4">
                 <div className="grid grid-cols-7 gap-2 text-center">

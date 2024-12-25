@@ -3,6 +3,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { useState, useEffect } from "react";
 import { useAppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
+
 const SideNav = () => {
   const { dashboard, setDashboard } = useAppContext();
   const [activeItem, setActiveItem] = useState(dashboard);
@@ -39,27 +40,23 @@ const SideNav = () => {
     { id: 1, name: "Projects", icon: "bi-people" },
     { id: 2, name: "Report", icon: "bi-bar-chart" },
     { id: 3, name: "Setting", icon: "bi-gear" },
-    {id:4,name :"FAQ",icon:"bi-question-circle"},
-    {id:5, name:"Help",icon:"bi-question-circle"}
-  
+    { id: 4, name: "FAQ", icon: "bi-question-circle" },
+    { id: 5, name: "Help", icon: "bi-question-circle" },
   ];
-  const redirectURLs = [
-    "",
-    "projects",
-    "reports",
-    "Setting",
-    "faqs",
-    "help"
-  ];
-  const footerItems = [
-    { name: "Log Out", icon: "bi bi-box-arrow-left" },
-  ];
+
+  const redirectURLs = ["", "projects", "reports", "Setting", "faqs", "help"];
+
+  const footerItems = [{ name: "Log Out", icon: "bi bi-box-arrow-left" }];
 
   // Handle menu click
   const handleMenuClick = (item) => {
     setActiveItem(item);
     setDashboard(item);
     setContent(`Content for ${item}`);
+  };
+
+  const handleLogOut = () => {
+    navigate("/logout"); 
   };
 
   return (
@@ -98,7 +95,11 @@ const SideNav = () => {
             {footerItems.map((item) => (
               <li
                 key={item.name}
-                onClick={() => handleMenuClick(item.name)}
+                onClick={
+                  item.name === "Log Out"
+                    ? handleLogOut
+                    : () => handleMenuClick(item.name)
+                }
                 className="flex items-center py-4 px-2 hover:bg-blue-600 cursor-pointer"
               >
                 <i className={`bi ${item.icon} text-lg`}></i>
