@@ -67,7 +67,8 @@ const CoreDashboard = () => {
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-2xl font-bold mb-2">
-              Welcome, to IISPPR Dashboard!
+              Welcome,{" "}
+              {localStorage.getItem("userName") || `Login to Continue`}!
             </h1>
             <p className="text-gray-600">
               Open the panel and watch your progress and growth in knowledge.

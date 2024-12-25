@@ -8,6 +8,7 @@ import { toast } from "react-hot-toast";
 import { localLoginUrl, loginUrl } from "@/Components/URIs";
 import axios from "axios";
 import { useAuthContext } from "@/context/AuthContext";
+import { useAppContext } from "@/context/AppContext";
 const Signin = ({ onSwitchToSignup }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -18,6 +19,7 @@ const Signin = ({ onSwitchToSignup }) => {
   const navigate = useNavigate();
   const { loggedIn, setIsLoggedIn, storeTokenInLocalStorage, storeUserId } =
     useAuthContext();
+  const { storeUsername } = useAppContext();
   const Login = async () => {
     setIsLoading(true);
     try {
@@ -30,7 +32,7 @@ const Signin = ({ onSwitchToSignup }) => {
 
       await storeTokenInLocalStorage(token);
       await storeUserId(response.data.user.id);
-
+      await storeUsername(response.data.user.name);
       setIsLoggedIn(true);
 
       toast.success("Login successful");
