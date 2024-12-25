@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Navbar, SideNav, Footer } from "@/Components/compIndex";
-import { Mail, Lock, UserPlus, Phone, Calendar } from "lucide-react";
+import { Mail, Lock, UserPlus, Phone } from "lucide-react";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { signupURL } from "@/Components/URIs";
+import { signupURL, localSignupUrl } from "@/Components/URIs";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = ({ onSwitchToSignin }) => {
@@ -12,7 +12,6 @@ const SignUp = ({ onSwitchToSignin }) => {
   const [phone, setPhone] = useState();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [startDate, setStartDate] = useState(""); // Added startDate state
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -21,24 +20,35 @@ const SignUp = ({ onSwitchToSignin }) => {
 
   const signUpUser = async () => {
     setIsLoading(true);
+    const num = parseInt(phone);
     try {
-      const payload = {
+      const response = await axios.post(signupURL, {
         name: fullName,
-        mnumber: phone,
         email: email,
         password: password,
         rpassword: confirmPassword,
-        role: "intern", // Default role
-        startDate: startDate,
-      };
-
-      const response = await axios.post(signupURL, payload);
-
+        mnumber: num,
+        role: "intern",
+        startDate: new Date().toISOString().split("T")[0],
+      });
       toast.success("Account created successfully");
       navigate("/login");
     } catch (error) {
-      console.error(`Error: ${error}`);
-      toast.error("Something went wrong.");
+      if (error.response) {
+        const { message } = error.response.data;
+        if (message === "Email already exists.") {
+          toast.error("This email is already registered. Try logging in.");
+        } else if (message === "Password must be at least 6 characters.") {
+          toast.error("Password must be at least 6 characters long.");
+        } else if (message === "Passwords do not match.") {
+          toast.error("Your passwords do not match. Please try again.");
+        } else {
+          toast.error(message || "Something went wrong.");
+        }
+      } else {
+        // Generic error fallback
+        toast.error("Network error. Please try again later.");
+      }
     } finally {
       setIsLoading(false);
       window.scrollTo(0, 0);
@@ -47,20 +57,31 @@ const SignUp = ({ onSwitchToSignin }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (
-      !fullName ||
-      !email ||
-      !password ||
-      !startDate ||
-      password !== confirmPassword
-    ) {
-      toast.error("Please fill in all required fields.");
-    } else {
-      setError("");
-      signUpUser();
+
+    if (!fullName || !email || !phone || !password || !confirmPassword) {
+      toast.error("Please fill in all fields.");
+      return;
     }
+
+    if (phone.trim().length < 10 || isNaN(phone)) {
+      toast.error("Please enter a valid phone number.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long.");
+      return;
+    }
+
+    setError("");
+    signUpUser();
   };
 
+  // verify redirect issue
   return (
     <>
       <Navbar />
@@ -142,31 +163,10 @@ const SignUp = ({ onSwitchToSignin }) => {
                   type="number"
                   id="phone"
                   value={phone}
-                  onChange={(e) => setPhone(parseInt(e.target.value))}
-                  placeholder="Enter your phone"
-                  className="pl-10 p-3 border border-gray-200 rounded-lg text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300"
-                />
-              </div>
-            </div>
-
-            {/* Start Date */}
-            <div className="relative">
-              <label
-                htmlFor="startDate"
-                className="block text-sm text-gray-600 mb-1"
-              >
-                Start Date
-              </label>
-              <div className="relative">
-                <Calendar
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                  size={20}
-                />
-                <input
-                  type="date"
-                  id="startDate"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
+                  onChange={(e) => {
+                    setPhone(e.target.value);
+                  }}
+                  placeholder="Enter your Phone"
                   className="pl-10 p-3 border border-gray-200 rounded-lg text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300"
                 />
               </div>
@@ -227,6 +227,13 @@ const SignUp = ({ onSwitchToSignin }) => {
               </div>
             </div>
 
+            {/* Error message */}
+            {error && (
+              <p className="text-red-500 text-sm text-center bg-red-50 p-2 rounded-md">
+                {error}
+              </p>
+            )}
+
             {/* Submit button with loading state */}
             <button
               type="submit"
@@ -251,20 +258,37 @@ const SignUp = ({ onSwitchToSignin }) => {
                       r="10"
                       stroke="currentColor"
                       strokeWidth="4"
-                    />
+                    ></circle>
                     <path
                       className="opacity-75"
                       fill="currentColor"
-                      d="M4 12a8 8 0 018-8v8H4z"
-                    />
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
                   </svg>
-                  Creating...
+                  Signing Up...
                 </>
               ) : (
-                "Sign Up"
+                <>
+                  <UserPlus size={20} />
+                  Sign Up
+                </>
               )}
             </button>
           </form>
+
+          {/* Switch to Signin */}
+          <div className="text-center mt-6">
+            <p className="text-sm text-gray-600">
+              Already have an account?{" "}
+              <a
+                href="/login"
+                onClick={onSwitchToSignin}
+                className="text-blue-700 font-semibold hover:underline"
+              >
+                Log In
+              </a>
+            </p>
+          </div>
         </div>
       </div>
       <Footer />
