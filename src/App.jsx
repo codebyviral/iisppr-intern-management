@@ -18,14 +18,9 @@ import {
   AdminReport,
   AllUsers,
   AdminHelpPage,
-<<<<<<< HEAD
-  UserAttendance
-
-=======
-  SettingsPage,
   UserAttendance,
+  SettingsPage,
   ResetPassword,
->>>>>>> 9e714b9ee8673791da0dbcd88a6037c032cefd49
 } from "./Pages/pageIndex";
 import {
   AdminTask,
