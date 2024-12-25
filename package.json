@@ -18,6 +18,8 @@
     "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-progress": "^1.1.1",
     "@radix-ui/react-slot": "^1.1.1",
+    "@radix-ui/react-switch": "^1.1.2",
+    "@radix-ui/react-toast": "^1.2.4",
     "@vercel/analytics": "^1.4.1",
     "axios": "^1.7.9",
     "bootstrap-icons": "^1.11.3",

@@ -44,7 +44,7 @@ const SideNav = () => {
     { id: 5, name: "Help", icon: "bi-question-circle" },
   ];
 
-  const redirectURLs = ["", "projects", "reports", "Setting", "faqs", "help"];
+  const redirectURLs = ["", "projects", "reports", "Setting", "frequently-asked-questions", "help"];
 
   const footerItems = [{ name: "Log Out", icon: "bi bi-box-arrow-left" }];
 

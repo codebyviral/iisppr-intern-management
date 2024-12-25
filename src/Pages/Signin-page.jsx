@@ -2,12 +2,13 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { Navbar, SideNav, Footer } from "@/Components/compIndex";
-import { Mail, Lock, UserPlus } from "lucide-react"; // Adding icons for visual interest
+import { Mail, Lock, LogIn } from "lucide-react"; // Adding icons for visual interest
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { localLoginUrl, loginUrl } from "@/Components/URIs";
 import axios from "axios";
 import { useAuthContext } from "@/context/AuthContext";
+import { useAppContext } from "@/context/AppContext";
 const Signin = ({ onSwitchToSignup }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -18,6 +19,7 @@ const Signin = ({ onSwitchToSignup }) => {
   const navigate = useNavigate();
   const { loggedIn, setIsLoggedIn, storeTokenInLocalStorage, storeUserId } =
     useAuthContext();
+  const { storeUsername } = useAppContext();
   const Login = async () => {
     setIsLoading(true);
     try {
@@ -30,7 +32,7 @@ const Signin = ({ onSwitchToSignup }) => {
 
       await storeTokenInLocalStorage(token);
       await storeUserId(response.data.user.id);
-
+      await storeUsername(response.data.user.name);
       setIsLoggedIn(true);
 
       toast.success("Login successful");
@@ -136,7 +138,7 @@ const Signin = ({ onSwitchToSignup }) => {
                 </button>
               </div>
               <a
-                href="#"
+                href="/reset-account-password"
                 className="text-xs text-blue-500 hover:underline mt-1 block text-right"
               >
                 Forgot Password?
@@ -184,7 +186,7 @@ const Signin = ({ onSwitchToSignup }) => {
                 </>
               ) : (
                 <>
-                  <UserPlus size={20} />
+                  <LogIn size={20} />
                   Login
                 </>
               )}
