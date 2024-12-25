@@ -22,6 +22,7 @@ import {
   SettingsPage,
   ResetPassword,
 } from "./Pages/pageIndex";
+import InternAttendance from "./Admin/InternAttendance";
 import {
   AdminTask,
   CoreDashboard,
@@ -98,7 +99,7 @@ const App = () => {
       <Route path="/Taskassignment" element={<AdminTask />}></Route>
       <Route path="/allusers" element={<AllUsers />}></Route>
       <Route path="/adminhelppage" element={<AdminHelpPage />}></Route>
-      <Route path="/internattendance" element={<InternAttendance/>}></Route>
+      <Route path="/internattendance" element={<InternAttendance />}></Route>
     </Routes>
   );
 };
