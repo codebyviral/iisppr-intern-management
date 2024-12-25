@@ -25,12 +25,8 @@ import AllUsers from "@/Admin/AllUsers";
 import AdminHelpPage from "@/Admin/AdminHelpPage";
 import UserAttendance from "./UserAttendance";
 import ResetPassword from "./ResetPassword";
+import InternAttendance from "@/Admin/InternAttendance";
 
 
 
-<<<<<<< HEAD
-
-export { Home, Notifications, Settings, Reports, UserAttendance,Projects, FAQ, SettingsPage, Categories, Dashboard, Stores, Signin, SignUp, Logout, Profile, AccountSetting, Aboutus, CustomNavbar, AdminHomePage, AdminProject, AdminTask, AdminReport, PrivacyPolicy, Help, AllUsers, AdminHelpPage }
-=======
-export { Home, Notifications, Settings, ResetPassword, Reports, UserAttendance, Projects, FAQ, SettingsPage, Categories, Dashboard, Stores, Signin, SignUp, Logout, Profile, Aboutus, CustomNavbar, AdminHomePage, AdminProject, AdminTask, AdminReport, PrivacyPolicy, Help, AllUsers, AdminHelpPage }
->>>>>>> 9e714b9ee8673791da0dbcd88a6037c032cefd49
+export { Home, Notifications, Settings, ResetPassword, Reports, UserAttendance, Projects, FAQ, SettingsPage, Categories, Dashboard, Stores, Signin, SignUp, Logout, Profile, Aboutus, CustomNavbar, AdminHomePage, AdminProject, AdminTask, AdminReport, PrivacyPolicy, Help, AllUsers, AdminHelpPage,InternAttendance }

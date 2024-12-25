@@ -3,12 +3,11 @@ import { Link } from "react-router-dom";
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
 
-// Register the components
 ChartJS.register(
   CategoryScale,
   LinearScale,
   LineElement,
-  PointElement, // Register PointElement for points in line charts
+  PointElement, 
   Title,
   Tooltip,
   Legend
@@ -48,7 +47,7 @@ function AdminHomePage() {
                 </div>
               </Link>
 
-              <Link to="/internattendace">
+              <Link to="/internattendance">
               <div className="bg-blue-950 text-white p-12 rounded-lg shadow-lg hover:bg-blue-900 transition w-80 h-32 mt-5 text-center">
                 Intern Attendance
               </div>

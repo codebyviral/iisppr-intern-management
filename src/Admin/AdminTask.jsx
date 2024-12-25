@@ -24,12 +24,14 @@ export default function AdminTask() {
   useAppContext();
 
 
+
   const fetchTasks = async () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${getTasks}/${localStorage.getItem("userId")}`
+        `${getTasks}`
       );
+      console.log('task fetched successfully')
       console.log(response.data.tasksData)
       const fetchedTasks = response.data.tasksData;
       setTasks(fetchedTasks);
@@ -71,8 +73,6 @@ export default function AdminTask() {
 
       const data = await response.json();
       console.log("Task successfully assigned:", data);
-
-      // Display success message
       setSuccessMessage("Task successfully assigned!");
 
       // Reset the form after successful submission
