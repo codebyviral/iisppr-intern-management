@@ -10,6 +10,7 @@ import SignUp from "./Signup-page";
 import Logout from "./Logout";
 import SettingsPage from "./SettingsPage";
 import Profile from "./Profile";
+import LeaveApplication from "./LeaveApplication";
 import FAQ from "./FAQ";
 import Aboutus from "./Aboutus";
 import PrivacyPolicy from "./Privacypolicy";
@@ -29,4 +30,4 @@ import InternAttendance from "@/Admin/InternAttendance";
 
 
 
-export { Home, Notifications, Settings, ResetPassword, Reports, UserAttendance, Projects, FAQ, SettingsPage, Categories, Dashboard, Stores, Signin, SignUp, Logout, Profile, Aboutus, CustomNavbar, AdminHomePage, AdminProject, AdminTask, AdminReport, PrivacyPolicy, Help, AllUsers, AdminHelpPage,InternAttendance }
+export { Home, Notifications, Settings, ResetPassword, Reports, UserAttendance, LeaveApplication, Projects, FAQ, SettingsPage, Categories, Dashboard, Stores, Signin, SignUp, Logout, Profile, Aboutus, CustomNavbar, AdminHomePage, AdminProject, AdminTask, AdminReport, PrivacyPolicy, Help, AllUsers, AdminHelpPage, InternAttendance }
