@@ -11,7 +11,7 @@ export const AppProvider = ({ children }) => {
     localStorage.setItem("userName", name);
     setUsername(name);
   };
-
+// App
   return (
     <AppContext.Provider
       value={{
