@@ -25,9 +25,9 @@ const TopNavbar = () => {
   // Dropdown options for logged-in users
   const dropdownOptions = loggedIn
     ? [
-        { label: "Your Profile", onClick: () => navigate("/userProfile") },
+        { label: "Your Profile", onClick: () => navigate("/your-profile") },
         { label: "Your Attendance", onClick: () => navigate("/my-attendance") },
-        { label: "Have a Query", onClick: () => navigate("/faqs") },
+        { label: "Have a Query", onClick: () => navigate("/frequently-asked-questions") },
         { label: "Task Submissions", onClick: () => navigate("/tasks") },
         {
           label: "Leave Application",

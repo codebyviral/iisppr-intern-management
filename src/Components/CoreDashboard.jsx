@@ -22,7 +22,7 @@ const CoreDashboard = () => {
 
   // Generate the 7 dates based on the start of the week
   const dates = Array.from({ length: 7 }, (_, index) => weekStart + index);
-  console.log(localStorage.getItem('userId'))
+  console.log(localStorage.getItem("userId"));
   const { notiCounter, setNotiCounter, modalView, setModalView } =
     useAppContext();
 
@@ -189,7 +189,7 @@ const CoreDashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
               <Card
                 className="bg-blue-500 text-white cursor-pointer"
-                onClick={() => navigate("/faqs")}
+                onClick={() => navigate("/frequently-asked-questions")}
               >
                 <CardContent className="p-6 flex flex-col items-center">
                   <div className="w-24 h-24 flex items-center justify-center mb-4">

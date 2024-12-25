@@ -8,13 +8,12 @@ import Stores from "./Stores";
 import Signin from "./Signin-page";
 import SignUp from "./Signup-page";
 import Logout from "./Logout";
+import SettingsPage from "./SettingsPage";
 import Profile from "./Profile";
-import AccountSetting from "./AccountSetting";
 import FAQ from "./FAQ";
 import Aboutus from "./Aboutus";
 import PrivacyPolicy from "./Privacypolicy";
 import AdminHomePage from "@/Admin/AdminHomePage";
-import SettingsPage from "./Settings-page"
 import AdminProject from "@/Admin/AdminProject";
 import AdminTask from "@/Admin/AdminTask";
 import Dashboard from "./Dashboard";
@@ -25,7 +24,8 @@ import CustomNavbar from "@/Admin/CustomNavbar";
 import AllUsers from "@/Admin/AllUsers";
 import AdminHelpPage from "@/Admin/AdminHelpPage";
 import UserAttendance from "./UserAttendance";
+import ResetPassword from "./ResetPassword";
 
 
 
-export { Home, Notifications, Settings, Reports, UserAttendance,Projects, FAQ, SettingsPage, Categories, Dashboard, Stores, Signin, SignUp, Logout, Profile, AccountSetting, Aboutus, CustomNavbar, AdminHomePage, AdminProject, AdminTask, AdminReport, PrivacyPolicy, Help, AllUsers, AdminHelpPage }
+export { Home, Notifications, Settings, ResetPassword, Reports, UserAttendance, Projects, FAQ, SettingsPage, Categories, Dashboard, Stores, Signin, SignUp, Logout, Profile, Aboutus, CustomNavbar, AdminHomePage, AdminProject, AdminTask, AdminReport, PrivacyPolicy, Help, AllUsers, AdminHelpPage }

@@ -1,7 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import {
   Aboutus,
-  AccountSetting,
   FAQ,
   Help,
   Home,
@@ -14,15 +13,14 @@ import {
   SignUp,
   Logout,
   Stores,
-<<<<<<< HEAD
   AdminHomePage,
   AdminProject,
   AdminReport,
   AllUsers,
   AdminHelpPage,
-=======
+  SettingsPage,
   UserAttendance,
->>>>>>> 3e4b062b8f62bdb22f964292e4f7ec65b2ea6b0b
+  ResetPassword,
 } from "./Pages/pageIndex";
 import {
   AdminTask,
@@ -42,8 +40,9 @@ const App = () => {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Signin />} />
       <Route path="/logout" element={<Logout />} />
+      <Route path="/reset-account-password" element={<ResetPassword />} />
       <Route
-        path="/userProfile"
+        path="/your-profile"
         element={
           <>
             <Profile />
@@ -78,13 +77,13 @@ const App = () => {
         path="/setting"
         element={
           <>
-            <AccountSetting /> <Footer />{" "}
+            <SettingsPage />
           </>
         }
       ></Route>
       <Route path="/" element={<CoreDashboard />} />
       <Route
-        path="/faqs"
+        path="/frequently-asked-questions"
         element={
           <>
             <Navbar />
@@ -94,11 +93,11 @@ const App = () => {
       />
 
       <Route path="/Adminhomepage" element={<AdminHomePage />}></Route>
-      <Route path="/Projectmanagement" element={<AdminProject/>}></Route>
-      <Route path="/Admintask" element={<AdminTask/>}></Route>
+      <Route path="/Projectmanagement" element={<AdminProject />}></Route>
+      <Route path="/Admintask" element={<AdminTask />}></Route>
       <Route path="/Weeklyreport" element={<AdminReport />}></Route>
       <Route path="/Taskassignment" element={<AdminTask />}></Route>
-      <Route path="/allusers" element={<AllUsers/>}></Route>
+      <Route path="/allusers" element={<AllUsers />}></Route>
       <Route path="/adminhelppage" element={<AdminHelpPage />}></Route>
     </Routes>
   );

@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { Navbar, SideNav, Footer } from "@/Components/compIndex";
-import { Mail, Lock, UserPlus } from "lucide-react"; // Adding icons for visual interest
+import { Mail, Lock, LogIn } from "lucide-react"; // Adding icons for visual interest
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { localLoginUrl, loginUrl } from "@/Components/URIs";
@@ -136,7 +136,7 @@ const Signin = ({ onSwitchToSignup }) => {
                 </button>
               </div>
               <a
-                href="#"
+                href="/reset-account-password"
                 className="text-xs text-blue-500 hover:underline mt-1 block text-right"
               >
                 Forgot Password?
@@ -184,7 +184,7 @@ const Signin = ({ onSwitchToSignup }) => {
                 </>
               ) : (
                 <>
-                  <UserPlus size={20} />
+                  <LogIn size={20} />
                   Login
                 </>
               )}
