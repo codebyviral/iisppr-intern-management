@@ -28,7 +28,7 @@ const TopNavbar = () => {
   const dropdownOptions = loggedIn
     ? [
         { label: "Your Profile", onClick: () => navigate("/userProfile") },
-        { label: "Your Attendance", onClick: () => navigate("/attendance") },
+        { label: "Your Attendance", onClick: () => navigate("/my-attendance") },
         { label: "Have a Query", onClick: () => navigate("/query") },
         { label: "Task Submissions", onClick: () => navigate("/tasks") },
         {
