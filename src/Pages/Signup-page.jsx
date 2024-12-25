@@ -20,19 +20,35 @@ const SignUp = ({ onSwitchToSignin }) => {
 
   const signUpUser = async () => {
     setIsLoading(true);
+    const num = parseInt(phone);
     try {
       const response = await axios.post(signupURL, {
         name: fullName,
-        mnumber: phone,
         email: email,
         password: password,
         rpassword: confirmPassword,
+        mnumber: num,
+        role: "intern",
+        startDate: new Date().toISOString().split("T")[0],
       });
       toast.success("Account created successfully");
       navigate("/login");
     } catch (error) {
-      console.log(`Error: ${error}`);
-      toast.error(`Something went wrong.`);
+      if (error.response) {
+        const { message } = error.response.data;
+        if (message === "Email already exists.") {
+          toast.error("This email is already registered. Try logging in.");
+        } else if (message === "Password must be at least 6 characters.") {
+          toast.error("Password must be at least 6 characters long.");
+        } else if (message === "Passwords do not match.") {
+          toast.error("Your passwords do not match. Please try again.");
+        } else {
+          toast.error(message || "Something went wrong.");
+        }
+      } else {
+        // Generic error fallback
+        toast.error("Network error. Please try again later.");
+      }
     } finally {
       setIsLoading(false);
       window.scrollTo(0, 0);
@@ -41,13 +57,30 @@ const SignUp = ({ onSwitchToSignin }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!fullName || !email || !password || password !== confirmPassword) {
+
+    if (!fullName || !email || !phone || !password || !confirmPassword) {
       toast.error("Please fill in all fields.");
-    } else {
-      setError("");
-      signUpUser();
+      return;
     }
+
+    if (phone.trim().length < 10 || isNaN(phone)) {
+      toast.error("Please enter a valid phone number.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long.");
+      return;
+    }
+
+    setError("");
+    signUpUser();
   };
+
   // verify redirect issue
   return (
     <>
@@ -131,7 +164,7 @@ const SignUp = ({ onSwitchToSignin }) => {
                   id="phone"
                   value={phone}
                   onChange={(e) => {
-                    setPhone(parseInt(e.target.value));
+                    setPhone(e.target.value);
                   }}
                   placeholder="Enter your Phone"
                   className="pl-10 p-3 border border-gray-200 rounded-lg text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300"

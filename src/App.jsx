@@ -14,11 +14,15 @@ import {
   SignUp,
   Logout,
   Stores,
+<<<<<<< HEAD
   AdminHomePage,
   AdminProject,
   AdminReport,
   AllUsers,
   AdminHelpPage,
+=======
+  UserAttendance,
+>>>>>>> 3e4b062b8f62bdb22f964292e4f7ec65b2ea6b0b
 } from "./Pages/pageIndex";
 import {
   AdminTask,
@@ -28,10 +32,12 @@ import {
   AdminPanelMain,
 } from "./Components/compIndex";
 import "./App.css";
+import { NotFound } from "./Components/Notfound";
 
 const App = () => {
   return (
     <Routes>
+      <Route path="*" element={<NotFound />} />
       <Route path="/" element={<Home />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Signin />} />
@@ -66,7 +72,7 @@ const App = () => {
         }
       ></Route>
       <Route path="/help" element={<Help />}></Route>
-
+      <Route path="/my-attendance" element={<UserAttendance />} />
       <Route path="/stores" element={<Stores />} />
       <Route
         path="/setting"

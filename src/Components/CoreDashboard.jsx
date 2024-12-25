@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Settings, ExternalLink, ListTodo } from "lucide-react";
+import { Settings, ExternalLink, Headset } from "lucide-react";
 import axios from "axios";
 import { deleteTaskUri, getTasks } from "./URIs";
 import { useAppContext } from "@/context/AppContext";
@@ -12,6 +12,7 @@ import TaskModal from "./TaskModal";
 
 const CoreDashboard = () => {
   const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { setDashboard } = useAppContext();
   const currentDate = new Date();
@@ -19,20 +20,34 @@ const CoreDashboard = () => {
   const currentYear = currentDate.getFullYear();
   const weekStart = currentDate.getDate() - currentDate.getDay();
 
-  console.log(localStorage.getItem("userId"))
-
   // Generate the 7 dates based on the start of the week
   const dates = Array.from({ length: 7 }, (_, index) => weekStart + index);
-
-  const { setNotiCounter, modalView, setModalView } = useAppContext();
+  console.log(localStorage.getItem('userId'))
+  const { notiCounter, setNotiCounter, modalView, setModalView } =
+    useAppContext();
 
   // Fetch current Tasks
+  // Fetch current Tasks
   useEffect(() => {
-    axios.get(`${getTasks}/${localStorage.getItem("userId")}`).then((res) => {
-      setTasks(res.data.tasksData);
-      setNotiCounter(tasks.length);
-    });
-  }, [tasks]);
+    const fetchTasks = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `${getTasks}/${localStorage.getItem("userId")}`
+        );
+        const fetchedTasks = response.data.tasksData;
+        setTasks(fetchedTasks);
+        setNotiCounter(fetchedTasks.length);
+      } catch (error) {
+        toast.error(`Error Fetching Tasks`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTasks();
+  }, []);
+
   // const delete particular task
   const deleteTask = async (taskId) => {
     try {
@@ -82,42 +97,58 @@ const CoreDashboard = () => {
                 <p className="text-sm text-gray-600 mb-4">
                   {tasks.length} active tasks
                 </p>
-                {tasks.slice(0, 3).map((task, index) => (
-                  <div
-                    key={task._id || index}
-                    className="flex flex-col lg:flex-row items-start lg:items-center gap-4 mb-4 border-b pb-4 last:border-b-0"
-                  >
-                    <div className="flex-1">
-                      <p className="font-medium text-lg">{task.title}</p>
-                      <p className="text-sm text-gray-600 mt-2">
-                        {task.description}
-                      </p>
-                      <p className="text-xs text-gray-400 mt-1">
-                        Start Date:{" "}
-                        <span className="text-blue-500">
-                          {new Date(task.startDate).toLocaleDateString()} <br />
-                        </span>
-                        End Date:{" "}
-                        <span className="text-blue-500">
-                          {new Date(task.endDate).toLocaleDateString()}
-                        </span>
+                {loading ? (
+                  <>
+                    {" "}
+                    <div className="flex justify-center items-center py-4">
+                      <p className="text-gray-600">
+                        Loading tasks, please wait...
                       </p>
                     </div>
-                    <div className="flex flex-col items-start lg:items-center gap-2 mt-4 lg:mt-0">
-                      <Button
-                        onClick={() => setModalView(true)}
-                        variant="outline"
-                        className="w-full lg:w-auto text-sm"
-                      >
-                        View
-                        <ExternalLink color="#3B81F6" />
-                      </Button>
-                      <span className="text-sm text-red-600 mt-2">
-                        {`${task.status}`}
-                      </span>
+                  </>
+                ) : (
+                  <>
+                    <div>
+                      {tasks.slice(0, 3).map((task, index) => (
+                        <div
+                          key={task._id || index}
+                          className="flex flex-col lg:flex-row items-start lg:items-center gap-4 mb-4 border-b pb-4 last:border-b-0"
+                        >
+                          <div className="flex-1">
+                            <p className="font-medium text-lg">{task.title}</p>
+                            <p className="text-sm text-gray-600 mt-2">
+                              {task.description}
+                            </p>
+                            <p className="text-xs text-gray-400 mt-1">
+                              Start Date:{" "}
+                              <span className="text-blue-500">
+                                {new Date(task.startDate).toLocaleDateString()}{" "}
+                                <br />
+                              </span>
+                              End Date:{" "}
+                              <span className="text-blue-500">
+                                {new Date(task.endDate).toLocaleDateString()}
+                              </span>
+                            </p>
+                          </div>
+                          <div className="flex flex-col items-start lg:items-center gap-2 mt-4 lg:mt-0">
+                            <Button
+                              onClick={() => setModalView(true)}
+                              variant="outline"
+                              className="w-full lg:w-auto text-sm"
+                            >
+                              View
+                              <ExternalLink color="#3B81F6" />
+                            </Button>
+                            <span className="text-sm text-red-600 mt-2">
+                              {`${task.status}`}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  </div>
-                ))}
+                  </>
+                )}
                 <Button variant="outline" className="w-full mt-4">
                   View all tasks
                 </Button>
@@ -127,9 +158,7 @@ const CoreDashboard = () => {
 
           {/* Calendar Section */}
           <div>
-            <h2 className="text-xl font-bold mb-4">
-              December {currentYear} progress report
-            </h2>
+            <h2 className="text-xl font-bold mb-4">December {currentYear}</h2>
             <Card className="mb-8">
               <CardContent className="p-4">
                 <div className="grid grid-cols-7 gap-2 text-center">
@@ -167,6 +196,17 @@ const CoreDashboard = () => {
                     <Settings className="h-12 w-12" />
                   </div>
                   <p className="text-center">FAQs</p>
+                </CardContent>
+              </Card>
+              <Card
+                className="bg-blue-500 text-white cursor-pointer"
+                onClick={() => navigate("/help")}
+              >
+                <CardContent className="p-6 flex flex-col items-center">
+                  <div className="w-24 h-24 flex items-center justify-center mb-4">
+                    <Headset className="h-12 w-12" />
+                  </div>
+                  <p className="text-center">Contact Us</p>
                 </CardContent>
               </Card>
             </div>
