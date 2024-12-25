@@ -12,14 +12,13 @@ import TaskModal from "./TaskModal";
 
 const CoreDashboard = () => {
   const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { setDashboard } = useAppContext();
   const currentDate = new Date();
   const currentDay = currentDate.getDate();
   const currentYear = currentDate.getFullYear();
   const weekStart = currentDate.getDate() - currentDate.getDay();
-
-  console.log(localStorage.getItem("userId"))
 
   // Generate the 7 dates based on the start of the week
   const dates = Array.from({ length: 7 }, (_, index) => weekStart + index);
@@ -28,11 +27,18 @@ const CoreDashboard = () => {
 
   // Fetch current Tasks
   useEffect(() => {
-    axios.get(`${getTasks}/${localStorage.getItem("userId")}`).then((res) => {
-      setTasks(res.data.tasksData);
-      setNotiCounter(tasks.length);
-    });
-  }, [tasks]);
+    try {
+      setLoading(true);
+      axios.get(`${getTasks}/${localStorage.getItem("userId")}`).then((res) => {
+        setTasks(res.data.tasksData);
+        setNotiCounter(tasks.length);
+      });
+    } catch (error) {
+      toast.error(`Error Fetching Tasks`);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
   // const delete particular task
   const deleteTask = async (taskId) => {
     try {
@@ -82,42 +88,58 @@ const CoreDashboard = () => {
                 <p className="text-sm text-gray-600 mb-4">
                   {tasks.length} active tasks
                 </p>
-                {tasks.slice(0, 3).map((task, index) => (
-                  <div
-                    key={task._id || index}
-                    className="flex flex-col lg:flex-row items-start lg:items-center gap-4 mb-4 border-b pb-4 last:border-b-0"
-                  >
-                    <div className="flex-1">
-                      <p className="font-medium text-lg">{task.title}</p>
-                      <p className="text-sm text-gray-600 mt-2">
-                        {task.description}
-                      </p>
-                      <p className="text-xs text-gray-400 mt-1">
-                        Start Date:{" "}
-                        <span className="text-blue-500">
-                          {new Date(task.startDate).toLocaleDateString()} <br />
-                        </span>
-                        End Date:{" "}
-                        <span className="text-blue-500">
-                          {new Date(task.endDate).toLocaleDateString()}
-                        </span>
+                {loading ? (
+                  <>
+                    {" "}
+                    <div className="flex justify-center items-center py-4">
+                      <p className="text-gray-600">
+                        Loading tasks, please wait...
                       </p>
                     </div>
-                    <div className="flex flex-col items-start lg:items-center gap-2 mt-4 lg:mt-0">
-                      <Button
-                        onClick={() => setModalView(true)}
-                        variant="outline"
-                        className="w-full lg:w-auto text-sm"
-                      >
-                        View
-                        <ExternalLink color="#3B81F6" />
-                      </Button>
-                      <span className="text-sm text-red-600 mt-2">
-                        {`${task.status}`}
-                      </span>
+                  </>
+                ) : (
+                  <>
+                    <div>
+                      {tasks.slice(0, 3).map((task, index) => (
+                        <div
+                          key={task._id || index}
+                          className="flex flex-col lg:flex-row items-start lg:items-center gap-4 mb-4 border-b pb-4 last:border-b-0"
+                        >
+                          <div className="flex-1">
+                            <p className="font-medium text-lg">{task.title}</p>
+                            <p className="text-sm text-gray-600 mt-2">
+                              {task.description}
+                            </p>
+                            <p className="text-xs text-gray-400 mt-1">
+                              Start Date:{" "}
+                              <span className="text-blue-500">
+                                {new Date(task.startDate).toLocaleDateString()}{" "}
+                                <br />
+                              </span>
+                              End Date:{" "}
+                              <span className="text-blue-500">
+                                {new Date(task.endDate).toLocaleDateString()}
+                              </span>
+                            </p>
+                          </div>
+                          <div className="flex flex-col items-start lg:items-center gap-2 mt-4 lg:mt-0">
+                            <Button
+                              onClick={() => setModalView(true)}
+                              variant="outline"
+                              className="w-full lg:w-auto text-sm"
+                            >
+                              View
+                              <ExternalLink color="#3B81F6" />
+                            </Button>
+                            <span className="text-sm text-red-600 mt-2">
+                              {`${task.status}`}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  </div>
-                ))}
+                  </>
+                )}
                 <Button variant="outline" className="w-full mt-4">
                   View all tasks
                 </Button>
