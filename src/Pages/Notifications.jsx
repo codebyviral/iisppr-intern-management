@@ -19,8 +19,8 @@ function Notifications() {
       {/* Main Content */}
       <div className="relative bg-gray-50 min-h-screen ml-0 md:ml-32">
         {/* Top Section */}
-        <div className="p-4 bg-white shadow-md flex justify-between items-center">
-          <h3 className="text-xl font-bold">Notifications</h3>
+        <div className="p-4 bg-white shadow-md rounded-lg flex justify-between items-center mb-4">
+          <h3 className="text-xl font-bold text-gray-800">Notifications</h3>
         </div>
 
         {/* Flex Layout */}
@@ -38,11 +38,11 @@ function Notifications() {
               {updates.map((update, index) => (
                 <div
                   key={index}
-                  className="flex flex-col md:flex-row items-start justify-between border-b pb-4"
+                  className="flex flex-col md:flex-row items-start justify-between border-b pb-4 hover:bg-gray-100 rounded-lg transition-all duration-200 ease-in-out"
                 >
                   {/* Update Details */}
                   <div className="flex-1 md:ml-4 mt-2 md:mt-0">
-                    <h4 className="text-lg font-semibold text-gray-800">
+                    <h4 className="text-lg font-semibold text-gray-800 hover:text-blue-600">
                       {update.title}
                     </h4>
                     <p className="text-gray-600 text-sm mt-1">
@@ -55,6 +55,8 @@ function Notifications() {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
       <Footer />
     </>
   );
