@@ -75,7 +75,7 @@ function AdminHomePage() {
    Help
   </Link>
   <Link
-    to="/Taskassignment"
+    to="/interntasksubmissions"
     className="bg-blue-950 text-white p-12 rounded-lg shadow-lg hover:bg-blue-900 transition block w-80 h-32 text-center"
   >
     Task Submissions

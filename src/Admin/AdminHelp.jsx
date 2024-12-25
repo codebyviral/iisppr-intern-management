@@ -1,9 +1,9 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
-import CustomNavbar from "./CustomNavbar";
-function AdminHelpPage() {
-
-
-const cards = [
+import { SideNav,Navbar } from "../Components/compIndex";
+function AdminHelp() {
+    
+  const cards = [
     {
       title: "How to get my Offer Letter",
       description: (
@@ -46,10 +46,11 @@ const cards = [
 
   return (
     <>
-   <CustomNavbar/>
+    <SideNav/>
+    <Navbar></Navbar>
     <div className="flex flex-col min-h-screen">
       {/* Content starts after upper navbar */}
-      <div className="flex-grow ">
+      <div className="flex-grow ml-64">
         {/* Help Content */}
         <main className=" min-h-screen py-8 px-4">
           <div className="text-center py-14 px-8 bg-blue-400 rounded-md mb-8">
@@ -74,4 +75,5 @@ const cards = [
    </>
   );
 }
-export default AdminHelpPage;
+
+export default AdminHelp;

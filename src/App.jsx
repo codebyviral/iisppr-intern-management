@@ -21,6 +21,9 @@ import {
   UserAttendance,
   SettingsPage,
   ResetPassword,
+  InternAttendance,
+  AdminHelp,
+  InternTasksSubmissions,
 } from "./Pages/pageIndex";
 import {
   AdminTask,
@@ -99,6 +102,8 @@ const App = () => {
       <Route path="/allusers" element={<AllUsers />}></Route>
       <Route path="/adminhelppage" element={<AdminHelpPage />}></Route>
       <Route path="/internattendance" element={<InternAttendance/>}></Route>
+      <Route path="/adminhelppage" element={<AdminHelp/>}></Route>
+      <Route path="/interntasksubmissions" element={<InternTasksSubmissions/>}></Route>
     </Routes>
   );
 };

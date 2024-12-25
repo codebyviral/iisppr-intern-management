@@ -240,7 +240,7 @@ export default function AdminTask() {
         <div className="w-1/2 bg-white p-8 shadow-md flex flex-col justify-between border-2">
           <h2 className="text-2xl font-semibold text-blue-600">Assigned Tasks</h2>
           {tasks.length === 0 ? (
-            <p>No tasks assigned.</p>
+            <p></p>
           ) : (
             tasks.map((task) => (
               <div key={task.id} className="task-card mb-4">
