@@ -14,22 +14,19 @@ import {
   SignUp,
   Logout,
   Stores,
-<<<<<<< HEAD
   AdminHomePage,
   AdminProject,
   AdminReport,
   AllUsers,
   AdminHelpPage,
-=======
-  UserAttendance,
->>>>>>> 3e4b062b8f62bdb22f964292e4f7ec65b2ea6b0b
+  UserAttendance
+
 } from "./Pages/pageIndex";
 import {
   AdminTask,
   CoreDashboard,
   Footer,
   Navbar,
-  AdminPanelMain,
 } from "./Components/compIndex";
 import "./App.css";
 import { NotFound } from "./Components/Notfound";

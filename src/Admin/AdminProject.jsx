@@ -4,11 +4,11 @@ import CustomNavbar from './CustomNavbar';
 const AdminProject = () => {
   // Single state object to manage the project data
   const [project, setProject] = useState({
-    imageUrl: '',
-    heading: '',
-    shortDescription: '',
-    longDescription: '',
-    by: ''
+    title: '',           // Changed from 'heading' to 'title'
+    subTitle: '',        // Changed from 'shortDescription' to 'subTitle'
+    description: '',     // Changed from 'longDescription' to 'description'
+    image: '',           // Changed from 'imageUrl' to 'image'
+    createdBy: '',       // Changed from 'by' to 'createdBy'
   });
 
   // State to store posted projects fetched from API
@@ -19,7 +19,7 @@ const AdminProject = () => {
     const { name, value } = e.target;
     setProject({
       ...project,
-      [name]: value
+      [name]: value,
     });
   };
 
@@ -43,13 +43,9 @@ const AdminProject = () => {
           throw new Error("Failed to fetch projects");
         }
         const data = await response.json();
-        
-      
-        const projectHeadings = data.map(project => ({
-          heading: project.heading
-        }));
 
-        setPostedProjects(projectHeadings);
+        // Set fetched project data in the state
+        setPostedProjects(data);
       } catch (error) {
         console.error("Error fetching projects:", error);
       }
@@ -71,46 +67,46 @@ const AdminProject = () => {
             <label className="block text-blue-600 font-medium mb-2">Image URL</label>
             <input
               type="text"
-              name="imageUrl"
-              value={project.imageUrl}
+              name="image"
+              value={project.image}
               onChange={handleChange}
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter image URL"
             />
           </div>
 
-          {/* Project Heading */}
+          {/* Project Title */}
           <div className="mb-4">
-            <label className="block text-blue-600 font-medium mb-2">Project Heading</label>
+            <label className="block text-blue-600 font-medium mb-2">Project Title</label>
             <input
               type="text"
-              name="heading"
-              value={project.heading}
+              name="title"
+              value={project.title}
               onChange={handleChange}
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Write heading for project"
+              placeholder="Write title for project"
             />
           </div>
 
-          {/* Short Description */}
+          {/* Sub Title */}
           <div className="mb-4">
-            <label className="block text-blue-600 font-medium mb-2">Short Description</label>
+            <label className="block text-blue-600 font-medium mb-2">Sub Title</label>
             <input
               type="text"
-              name="shortDescription"
-              value={project.shortDescription}
+              name="subTitle"
+              value={project.subTitle}
               onChange={handleChange}
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Intern management system: a platform for managing intern"
+              placeholder="Write a short description"
             />
           </div>
 
-          {/* Long Description */}
+          {/* Project Description */}
           <div className="mb-4">
-            <label className="block text-blue-600 font-medium mb-2">Long Description</label>
+            <label className="block text-blue-600 font-medium mb-2">Description</label>
             <textarea
-              name="longDescription"
-              value={project.longDescription}
+              name="description"
+              value={project.description}
               onChange={handleChange}
               rows="4"
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -118,13 +114,13 @@ const AdminProject = () => {
             />
           </div>
 
-          {/* By (Team Name) */}
+          {/* Created By (Team Name) */}
           <div className="mb-4">
-            <label className="block text-blue-600 font-medium mb-2">BY</label>
+            <label className="block text-blue-600 font-medium mb-2">Created By</label>
             <input
               type="text"
-              name="by"
-              value={project.by}
+              name="createdBy"
+              value={project.createdBy}
               onChange={handleChange}
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="By the team"
@@ -152,8 +148,10 @@ const AdminProject = () => {
             ) : (
               postedProjects.map((project, index) => (
                 <div key={index} className="p-4 border border-gray-300 rounded-md shadow-md">
-                  <h3 className="text-xl font-semibold text-blue-600">{project.heading}</h3>
+                  <h3 className="text-xl font-semibold text-blue-600">{project.title}</h3>
+                  
                 </div>
+               
               ))
             )}
           </div>

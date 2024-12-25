@@ -35,6 +35,7 @@ const CoreDashboard = () => {
         const response = await axios.get(
           `${getTasks}/${localStorage.getItem("userId")}`
         );
+        console.log(response.data.tasksData)
         const fetchedTasks = response.data.tasksData;
         setTasks(fetchedTasks);
         setNotiCounter(fetchedTasks.length);
