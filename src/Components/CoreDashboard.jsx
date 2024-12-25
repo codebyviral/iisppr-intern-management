@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Settings, ExternalLink, ListTodo } from "lucide-react";
+import { Settings, ExternalLink, Headset } from "lucide-react";
 import axios from "axios";
 import { deleteTaskUri, getTasks } from "./URIs";
 import { useAppContext } from "@/context/AppContext";
@@ -22,7 +22,7 @@ const CoreDashboard = () => {
 
   // Generate the 7 dates based on the start of the week
   const dates = Array.from({ length: 7 }, (_, index) => weekStart + index);
-
+  console.log(localStorage.getItem('userId'))
   const { notiCounter, setNotiCounter, modalView, setModalView } =
     useAppContext();
 
@@ -196,6 +196,17 @@ const CoreDashboard = () => {
                     <Settings className="h-12 w-12" />
                   </div>
                   <p className="text-center">FAQs</p>
+                </CardContent>
+              </Card>
+              <Card
+                className="bg-blue-500 text-white cursor-pointer"
+                onClick={() => navigate("/help")}
+              >
+                <CardContent className="p-6 flex flex-col items-center">
+                  <div className="w-24 h-24 flex items-center justify-center mb-4">
+                    <Headset className="h-12 w-12" />
+                  </div>
+                  <p className="text-center">Contact Us</p>
                 </CardContent>
               </Card>
             </div>

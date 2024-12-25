@@ -1,21 +1,60 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { Navbar } from "@/Components/compIndex";
 import { SideNav } from "@/Components/compIndex";
 
 const UserAttendance = () => {
-  // Static attendance data
-  const attendance = [
-    { date: "2024-12-24", status: "Present" },
-    { date: "2024-12-23", status: "Absent" },
-    { date: "2024-12-22", status: "Present" },
-    { date: "2024-12-21", status: "Present" },
-  ];
+  const [attendanceData, setAttendanceData] = useState([]);
+  const [attendancePercentage, setAttendancePercentage] = useState(0);
 
-  // Calculate the attendance percentage
-  const totalDays = attendance.length;
-  const presentDays = attendance.filter(
-    (record) => record.status === "Present"
-  ).length;
-  const attendancePercentage = ((presentDays / totalDays) * 100).toFixed(2);
+  useEffect(() => {
+    // Fetch userId from localStorage
+    const userId = localStorage.getItem("userId");
+
+    if (userId) {
+      // Fetch the attendance data
+      axios
+        .get(`https://iisppr-backend.vercel.app/attendance/${userId}`)
+        .then((response) => {
+          const data = response.data;
+          setAttendanceData(data);
+
+          // Calculate attendance percentage
+          const totalDays = data.length;
+          const presentDays = data.filter(
+            (record) => record.status === "Present"
+          ).length;
+          const percentage = ((presentDays / totalDays) * 100).toFixed(2);
+          setAttendancePercentage(percentage);
+        })
+        .catch((error) => {
+          console.error("Error fetching attendance data:", error);
+        });
+    }
+  }, []);
+
+  const getDayOfWeek = (date) => {
+    const days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    const dayIndex = new Date(date).getDay();
+    return days[dayIndex];
+  };
+
+  // Function to format date to DD/MM/YYYY
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const day = String(d.getDate()).padStart(2, "0"); // Pad day with leading zero if needed
+    const month = String(d.getMonth() + 1).padStart(2, "0"); // Pad month with leading zero if needed
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
 
   return (
     <div className="flex bg-gray-100 min-h-screen">
@@ -34,9 +73,9 @@ const UserAttendance = () => {
               IISPPR Attendance Tracker
             </h1>
             <p className="text-lg">
-              Keep track of your progress and ensure {`you're`} always on top of
-              your goals.
-              <span className="font-semibold"> Attendance matters!</span>
+              Stay on top of your attendance and make sure you're always hitting
+              your targets.
+              <span className="font-semibold"> Attendance really matters!</span>
             </p>
           </div>
 
@@ -57,12 +96,11 @@ const UserAttendance = () => {
             </p>
             {attendancePercentage >= 75 ? (
               <p className="text-sm text-green-600 font-medium">
-                Great job! Keep it up and maintain this excellent streak. 🎉
+                Great job! Keep up the awesome work and maintain your streak. 🎉
               </p>
             ) : (
               <p className="text-sm text-red-600 font-medium">
-                Don’t worry! You can still catch up and improve your attendance.
-                💪
+                You’ve got this! Keep pushing to improve your attendance. 💪
               </p>
             )}
           </div>
@@ -73,11 +111,12 @@ const UserAttendance = () => {
               <thead>
                 <tr className="bg-gray-200 text-gray-700 uppercase text-sm">
                   <th className="px-4 py-3 border-b">Date</th>
+                  <th className="px-4 py-3 border-b">Day</th>
                   <th className="px-4 py-3 border-b">Status</th>
                 </tr>
               </thead>
               <tbody>
-                {attendance.map((record, index) => (
+                {attendanceData.map((record, index) => (
                   <tr
                     key={index}
                     className={`${
@@ -85,7 +124,11 @@ const UserAttendance = () => {
                     } hover:bg-gray-100`}
                   >
                     <td className="px-4 py-3 text-center border-b">
-                      {record.date}
+                      {formatDate(record.date)}{" "}
+                      {/* Updated to DD/MM/YYYY format */}
+                    </td>
+                    <td className="px-4 py-3 text-center border-b">
+                      {getDayOfWeek(record.date)}
                     </td>
                     <td
                       className={`px-4 py-3 text-center border-b font-semibold ${
@@ -102,13 +145,30 @@ const UserAttendance = () => {
             </table>
           </div>
 
+          {/* Attendance Stats */}
+          <div className="bg-white shadow-lg rounded-lg p-6">
+            <h3 className="text-xl font-bold text-gray-800 mb-4">
+              Total Attendance:
+              <span className="font-semibold">
+                {
+                  attendanceData.filter((record) => record.status === "Present")
+                    .length
+                }{" "}
+                /{attendanceData.length} Days
+              </span>
+            </h3>
+            <p className="text-lg text-gray-700 mb-4">
+              Keep up the good work and aim for that 100% attendance!
+            </p>
+          </div>
+
           {/* Motivational Footer */}
           <div className="bg-blue-100 text-blue-800 rounded-lg p-6">
             <h3 className="text-xl font-semibold">Why Attendance Matters?</h3>
             <p className="text-sm mt-2">
-              Being consistent in attendance not only boosts your knowledge but
-              also builds discipline. Stay committed and achieve greatness in
-              every step of your journey.
+              Consistent attendance {`isn't`} just about showing up – {`it's`}{" "}
+              about building habits, gaining knowledge, and setting yourself up
+              for success.
             </p>
           </div>
         </div>

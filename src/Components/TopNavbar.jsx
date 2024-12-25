@@ -17,19 +17,17 @@ import { useAuthContext } from "@/context/AuthContext.jsx";
 const TopNavbar = () => {
   const navigate = useNavigate();
   const { loggedIn } = useAuthContext();
-  const { dashboard, setDashboard, notiCounter } = useAppContext();
+  const { notiCounter } = useAppContext();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar state
-
-  console.log("Notification Counter:", notiCounter);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Dropdown options for logged-in users
   const dropdownOptions = loggedIn
     ? [
         { label: "Your Profile", onClick: () => navigate("/userProfile") },
         { label: "Your Attendance", onClick: () => navigate("/my-attendance") },
-        { label: "Have a Query", onClick: () => navigate("/query") },
+        { label: "Have a Query", onClick: () => navigate("/faqs") },
         { label: "Task Submissions", onClick: () => navigate("/tasks") },
         {
           label: "Leave Application",
@@ -64,9 +62,7 @@ const TopNavbar = () => {
 
           {/* Title */}
           <Link to="/">
-            <span className="text-lg font-semibold">
-              {dashboard + ` Workspace`}
-            </span>
+            <span className="text-lg font-semibold">IISPPR Intern Hub</span>
           </Link>
 
           {/* Search Toggle */}
@@ -99,12 +95,7 @@ const TopNavbar = () => {
         <div className="hidden md:flex items-center justify-between w-full">
           {/* Desktop Title */}
           <Link to="/">
-            <span
-              onClick={() => setDashboard("Home")}
-              className="text-lg font-semibold"
-            >
-              {dashboard + ` Workspace`}
-            </span>
+            <span className="text-lg font-semibold">IISPPR Intern Hub</span>
           </Link>
 
           {/* Desktop Search Bar */}
@@ -169,7 +160,7 @@ const TopNavbar = () => {
             <nav className="flex flex-col space-y-4">
               {/* Dashboard Title */}
               <Link to="/" className="text-lg font-semibold">
-                {dashboard + ` Workspace`}
+                IISPPR Intern Hub
               </Link>
 
               {/* Search Bar */}
