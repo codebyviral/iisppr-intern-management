@@ -28,7 +28,7 @@ const Signin = () => {
       storeTokenInLocalStorage(response.data.token);
       storeUserId(response.data.user.id);
       storeIsAdminState(response.data.user.isAdmin);
-      navigate("/");  
+      navigate("/");
     } catch (err) {
       console.log(err);
       toast.error(`Error Logging in.`);
@@ -95,10 +95,7 @@ const Signin = () => {
 
         <p className="text-xs text-center text-gray-600 mt-3">
           {`Don't`} have an account?{" "}
-          <a
-            href="/signup"
-            className="text-purple-700 hover:underline"
-          >
+          <a href="/signup" className="text-purple-700 hover:underline">
             Sign-up
           </a>
         </p>

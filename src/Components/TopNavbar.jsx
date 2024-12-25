@@ -27,7 +27,6 @@ const TopNavbar = () => {
           label: "Have a Query",
           onClick: () => navigate("/frequently-asked-questions"),
         },
-        { label: "Task Submissions", onClick: () => navigate("/tasks") },
         {
           label: "Leave Application",
           onClick: () => navigate("/leave-application"),
