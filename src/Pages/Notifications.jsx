@@ -10,8 +10,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogClose,
-} from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
+} from "@/Components/ui/dialog";
+import { Badge } from "@/Components/ui/badge";
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
