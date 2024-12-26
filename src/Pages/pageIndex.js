@@ -17,6 +17,7 @@ import PrivacyPolicy from "./Privacypolicy";
 import AdminHomePage from "@/Admin/AdminHomePage";
 import AdminProject from "@/Admin/AdminProject";
 import AdminTask from "@/Admin/AdminTask";
+import NotAuthorized from "./NotAuthorized";
 import Dashboard from "./Dashboard";
 import AdminReport from "@/Admin/AdminReport";
 import Help from "./Help";
@@ -32,4 +33,4 @@ import InternTasksSubmissions from "@/Admin/InternTasksSubmissions";
 
 
 
-export { Home, Notifications, Settings, ResetPassword, Reports, UserAttendance, Projects, FAQ, SettingsPage, Categories, Dashboard, Stores, Signin, SignUp, Logout, Profile, Aboutus, CustomNavbar, AdminHomePage, AdminProject, AdminTask, AdminReport, PrivacyPolicy, Help, AllUsers, AdminHelpPage,InternAttendance ,AdminHelp,InternTasksSubmissions,LeaveApplication}
+export { Home, Notifications, Settings, ResetPassword, Reports, UserAttendance, NotAuthorized, Projects, FAQ, SettingsPage, Categories, Dashboard, Stores, Signin, SignUp, Logout, Profile, Aboutus, CustomNavbar, AdminHomePage, AdminProject, AdminTask, AdminReport, PrivacyPolicy, Help, AllUsers, AdminHelpPage, InternAttendance, AdminHelp, InternTasksSubmissions, LeaveApplication }

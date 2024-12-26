@@ -39,6 +39,7 @@ const TopNavbar = () => {
           label: "Leave Application",
           onClick: () => navigate("/leave-application"),
         },
+        { label: "Admin Panel", onClick: () => navigate("/adminhomepage") },
         { label: "Logout", onClick: () => navigate("/logout") },
       ]
     : [{ label: "Login", onClick: () => navigate("/login") }];

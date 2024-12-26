@@ -19,6 +19,7 @@ import {
   AllUsers,
   LeaveApplication,
   AdminHelpPage,
+  NotAuthorized,
   UserAttendance,
   SettingsPage,
   ResetPassword,
@@ -35,9 +36,98 @@ import {
 import "./App.css";
 import { NotFound } from "./Components/Notfound";
 
+const AdminRoute = ({ children }) => {
+  const isAdmin = localStorage.getItem("isAdmin") === "true";
+  console.log(`Admin route state ${isAdmin}`);
+  return isAdmin ? children : <NotAuthorized />;
+};
+
 const App = () => {
   return (
     <Routes>
+      {/* Admin Routes */}
+      <Route
+        path="/Adminhomepage"
+        element={
+          <AdminRoute>
+            <AdminHomePage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/Projectmanagement"
+        element={
+          <AdminRoute>
+            <AdminProject />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/Admintask"
+        element={
+          <AdminRoute>
+            <AdminTask />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/Weeklyreport"
+        element={
+          <AdminRoute>
+            <AdminReport />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/Taskassignment"
+        element={
+          <AdminRoute>
+            <AdminTask />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/allusers"
+        element={
+          <AdminRoute>
+            <AllUsers />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/adminhelppage"
+        element={
+          <AdminRoute>
+            <AdminHelpPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/internattendance"
+        element={
+          <AdminRoute>
+            <InternAttendance />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/adminhelppage"
+        element={
+          <AdminRoute>
+            <AdminHelp />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/interntasksubmissions"
+        element={
+          <AdminRoute>
+            <InternTasksSubmissions />
+          </AdminRoute>
+        }
+      />
+
+      {/* User Routes */}
       <Route path="*" element={<NotFound />} />
       <Route path="/" element={<Home />} />
       <Route path="/signup" element={<SignUp />} />
@@ -95,18 +185,8 @@ const App = () => {
           </>
         }
       />
-
-      <Route path="/Adminhomepage" element={<AdminHomePage />}></Route>
-      <Route path="/Projectmanagement" element={<AdminProject />}></Route>
-      <Route path="/Admintask" element={<AdminTask />}></Route>
-      <Route path="/Weeklyreport" element={<AdminReport />}></Route>
-      <Route path="/Taskassignment" element={<AdminTask />}></Route>
-      <Route path="/allusers" element={<AllUsers />}></Route>
-      <Route path="/adminhelppage" element={<AdminHelpPage />}></Route>
-      <Route path="/internattendance" element={<InternAttendance/>}></Route>
-      <Route path="/adminhelppage" element={<AdminHelp/>}></Route>
-      <Route path="/interntasksubmissions" element={<InternTasksSubmissions/>}></Route>
     </Routes>
   );
 };
+
 export default App;
