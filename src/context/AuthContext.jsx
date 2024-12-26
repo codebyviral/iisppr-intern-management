@@ -7,17 +7,17 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [loggedIn, setIsLoggedIn] = useState(!!token);
-  const [admin, setAdmin] = useState(localStorage.setItem("isAdmin", false));
+  const [admin, setAdmin] = useState(localStorage.getItem("isAdmin") === "true");
   const [isAdmin, setIsAdmin] = useState(!!admin);
 
-  const storeIsAdminState = (isAdminState) => {
-    const isAdmin = localStorage.setItem("isAdmin", isAdminState);
-    setIsAdmin(isAdminState);
+  const storeIsAdminState = (adminState) => {
+    localStorage.setItem("isAdmin", adminState);
+    setIsAdmin(adminState);
   };
 
   const storeTokenInLocalStorage = (serverToken) => {
     localStorage.setItem("token", serverToken);
-    setToken(token);
+    setToken(serverToken);
     setIsLoggedIn(!!serverToken);
   };
 

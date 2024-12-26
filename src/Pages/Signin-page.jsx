@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { Navbar, SideNav, Footer } from "@/Components/compIndex";
-import { Mail, Lock, LogIn } from "lucide-react"; // Adding icons for visual interest
+import { Mail, Lock, LogIn } from "lucide-react"; 
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { localLoginUrl, loginUrl } from "@/Components/URIs";
@@ -17,9 +17,15 @@ const Signin = ({ onSwitchToSignup }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
-  const { loggedIn, setIsLoggedIn, storeTokenInLocalStorage, storeUserId } =
-    useAuthContext();
+  const {
+    loggedIn,
+    setIsLoggedIn,
+    storeIsAdminState,
+    storeTokenInLocalStorage,
+    storeUserId,
+  } = useAuthContext();
   const { storeUsername } = useAppContext();
+
   const Login = async () => {
     setIsLoading(true);
     try {
@@ -28,32 +34,32 @@ const Signin = ({ onSwitchToSignup }) => {
         password: password,
       });
 
-      const { token } = response.data;
+      const { token, user } = response.data;
+
+      if (!token || !user) {
+        throw new Error("Invalid response format from server");
+      }
 
       await storeTokenInLocalStorage(token);
-      await storeUserId(response.data.user.id);
-      await storeUsername(response.data.user.name);
+      await storeUserId(user.id);
+      await storeUsername(user.name);
+      const isAdminValue = Boolean(user.isAdmin);
+      console.log("Converting isAdmin to boolean:", isAdminValue);
+      await storeIsAdminState(isAdminValue);
       setIsLoggedIn(true);
-
+      setIsLoading(false);
       toast.success("Login successful");
       navigate("/");
     } catch (error) {
-      if (error.response) {
-        const { status, data } = error.response;
-
-        if (status === 403) {
-          toast.error(data.message || "Invalid email or password");
-        } else if (status === 500) {
-          toast.error(data.message || "Internal server error");
-        } else {
-          toast.error(data.message || "An unknown error occurred");
-        }
-      } else {
-        toast.error("Unable to connect to the server. Please try again later.");
-      }
-    } finally {
+      console.error("Login error:", error);
+      console.error("Error response:", error.response?.data);
       setIsLoading(false);
-      window.scrollTo(0, 0);
+
+      if (error.response) {
+        toast.error(error.response.data.message || "Login failed");
+      } else {
+        toast.error("Login failed. Please try again.");
+      }
     }
   };
 
