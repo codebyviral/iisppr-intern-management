@@ -14,7 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogClose,
-} from "@/components/ui/dialog";
+} from "@/Components/ui/dialog";
 
 const CoreDashboard = () => {
   const [tasks, setTasks] = useState([]);
