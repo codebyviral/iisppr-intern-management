@@ -15,9 +15,11 @@ import FAQsData from "./FAQsData";
 import TaskModal from "./TaskModal";
 import Footer from "./footer";
 import Loader from "./Loader";
+import SkeletonLoader from "./SkeletonLoader";
 export {
   Navbar,
   Loader,
+  SkeletonLoader,
   TopNavbar,
   SideNav,
   CoreSettings,

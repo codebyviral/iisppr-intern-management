@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { useEffect, useState } from "react";
+import { Card, CardContent } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Settings, ExternalLink, Headset, Loader, X } from "lucide-react";
+import { Settings, ExternalLink, Headset, Loader } from "lucide-react";
 import axios from "axios";
-import { deleteTaskUri, getTasks } from "./URIs";
+import { getTasks } from "./URIs";
 import { useAppContext } from "@/context/AppContext";
-import toast from "react-hot-toast";
 import TaskModal from "./TaskModal";
 import {
   Dialog,
@@ -28,8 +27,7 @@ const CoreDashboard = () => {
   const currentYear = currentDate.getFullYear();
   const weekStart = currentDate.getDate() - currentDate.getDay();
   const dates = Array.from({ length: 7 }, (_, index) => weekStart + index);
-  const { notiCounter, setNotiCounter, modalView, setModalView } =
-    useAppContext();
+  const { modalView, setModalView } = useAppContext();
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -50,64 +48,59 @@ const CoreDashboard = () => {
     fetchTasks();
   }, []);
 
-  const deleteTask = async (taskId) => {
-    try {
-      const response = await axios.delete(`${deleteTaskUri}/${taskId}`);
-      toast.success("Marked as Done");
-      setTasks(tasks.filter((task) => task._id !== taskId));
-    } catch (error) {
-      toast.error(`Error deleting task: ${error.message}`);
-    }
-  };
-
+  // eslint-disable-next-line react/prop-types
   const TaskList = ({ tasks, limit = null }) => {
+    // eslint-disable-next-line react/prop-types
     const displayTasks = limit ? tasks.slice(0, limit) : tasks;
 
     return (
       <div>
-        {displayTasks.map((task, index) => (
-          <div
-            key={task._id || index}
-            className="flex flex-col lg:flex-row items-start lg:items-center gap-4 mb-4 border-b pb-4 last:border-b-0"
-          >
-            <div className="flex-1">
-              <p className="font-medium text-lg">{task.title}</p>
-              <p className="text-sm text-gray-600 mt-2">{task.description}</p>
-              <p className="text-xs text-gray-400 mt-1">
-                Start Date:{" "}
-                <span className="text-blue-500">
-                  {new Date(task.startDate).toLocaleDateString()} <br />
+        {displayTasks
+          .slice()
+          .reverse()
+          .map((task, index) => (
+            <div
+              key={task._id || index}
+              className="flex flex-col lg:flex-row items-start lg:items-center gap-4 mb-4 border-b pb-4 last:border-b-0"
+            >
+              <div className="flex-1">
+                <p className="font-medium text-lg">{task.title}</p>
+                <p className="text-sm text-gray-600 mt-2">{task.description}</p>
+                <p className="text-xs text-gray-400 mt-1">
+                  Start Date:{" "}
+                  <span className="text-blue-500">
+                    {new Date(task.startDate).toLocaleDateString()} <br />
+                  </span>
+                  End Date:{" "}
+                  <span className="text-blue-500">
+                    {new Date(task.endDate).toLocaleDateString()}
+                  </span>
+                </p>
+              </div>
+              <div className="flex flex-col items-start lg:items-center gap-2 mt-4 lg:mt-0">
+                <Button
+                  onClick={() => {
+                    setSelectedTaskId(task._id);
+                    setModalView(true);
+                    setShowAllTasks(false);
+                  }}
+                  variant="outline"
+                  className="w-full lg:w-auto text-sm"
+                >
+                  {task.status === "completed" ? "Resubmit" : "Submit"}
+                </Button>
+                <span
+                  className={`text-sm capitalize mt-2 ${
+                    task.status === "completed"
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {task.status}
                 </span>
-                End Date:{" "}
-                <span className="text-blue-500">
-                  {new Date(task.endDate).toLocaleDateString()}
-                </span>
-              </p>
+              </div>
             </div>
-            <div className="flex flex-col items-start lg:items-center gap-2 mt-4 lg:mt-0">
-              <Button
-                onClick={() => {
-                  setSelectedTaskId(task._id);
-                  setModalView(true);
-                  setShowAllTasks(false);
-                }}
-                variant="outline"
-                className="w-full lg:w-auto text-sm"
-              >
-                {task.status === "completed" ? "Resubmit" : "Submit"}
-              </Button>
-              <span
-                className={`text-sm capitalize mt-2 ${
-                  task.status === "completed"
-                    ? "text-green-600"
-                    : "text-red-600"
-                }`}
-              >
-                {task.status}
-              </span>
-            </div>
-          </div>
-        ))}
+          ))}
       </div>
     );
   };
