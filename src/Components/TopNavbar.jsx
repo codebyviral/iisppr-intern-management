@@ -17,12 +17,29 @@ import iisspprLogo from "../assets/Images/iisprlogo.png";
 const TopNavbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { loggedIn } = useAuthContext();
   const { notiCounter } = useAppContext();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { loggedIn } = useAuthContext();
+  const { setNotiCounter } = useAppContext();
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      const userId = localStorage.getItem("userId");
+      try {
+        const response = await fetch(
+          `https://iisppr-backend.vercel.app/get-notifications?userId=${userId}`
+        );
+        if (!response.ok) throw new Error("Failed to fetch notifications");
+        const data = await response.json();
+        setNotiCounter(data.notifications.notifications.length);
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
+      }
+    };
 
+    if (loggedIn) fetchNotifications();
+  }, [loggedIn]);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);

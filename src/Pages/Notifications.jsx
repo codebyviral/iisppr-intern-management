@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Skeleton } from "@/Components/ui/skeleton";
-import { AlertCircle, Bell, Calendar } from "lucide-react";
+import { AlertCircle, Bell, Calendar, Loader } from "lucide-react";
 import { Alert, AlertDescription } from "@/Components/ui/alert";
 import { Navbar, SideNav, Footer } from "@/Components/compIndex";
 import {
@@ -84,20 +84,7 @@ const Notifications = () => {
     setSelectedNotification(notification);
     setTaskDetails(null);
     setIsModalOpen(true);
-
-    if (notification.taskId) {
-      await fetchTaskDetails(notification.taskId);
-    }
-  };
-
-  const getStatusBadgeColor = (status) => {
-    const statusColors = {
-      pending: "warning",
-      completed: "success",
-      inProgress: "info",
-      default: "secondary",
-    };
-    return statusColors[status] || statusColors.default;
+    await fetchTaskDetails(notification.task);
   };
 
   return (
@@ -149,11 +136,7 @@ const Notifications = () => {
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
-                            <Badge
-                              variant={getStatusBadgeColor(notification.type)}
-                            >
-                              {notification.type || "Update"}
-                            </Badge>
+                            <Badge>{notification.type || "Update"}</Badge>
                             <p className="text-sm text-gray-500">
                               {formatDate(notification.createdAt)}
                             </p>
@@ -188,50 +171,41 @@ const Notifications = () => {
           <div className="mt-4 space-y-4">
             {taskDetails ? (
               <>
-                <div>
-                  <Badge
-                    variant={getStatusBadgeColor(taskDetails.status)}
-                    className="mb-2"
-                  >
-                    {taskDetails.status}
-                  </Badge>
-                  <h3 className="text-lg font-semibold">{taskDetails.title}</h3>
-                </div>
-                <p className="text-gray-600">{taskDetails.description}</p>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Calendar className="h-4 w-4" />
-                    <span>Start: {formatDate(taskDetails.startDate)}</span>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-2xl font-semibold text-gray-800">
+                      {taskDetails.title}
+                    </h3>
+                    <Badge className="text-sm capitalize px-3 py-1 rounded-md">
+                      {taskDetails.status}
+                    </Badge>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Calendar className="h-4 w-4" />
-                    <span>End: {formatDate(taskDetails.endDate)}</span>
+
+                  <p className="text-gray-600 text-sm">
+                    {taskDetails.description || "No description available."}
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-100 p-4 rounded-lg">
+                    <div className="flex items-center gap-2 text-sm text-gray-700">
+                      <Calendar className="h-4 w-4 text-blue-500" />
+                      <span>
+                        <strong>Start:</strong>{" "}
+                        {formatDate(taskDetails.startDate)}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-700">
+                      <Calendar className="h-4 w-4 text-red-500" />
+                      <span>
+                        <strong>End:</strong> {formatDate(taskDetails.endDate)}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </>
             ) : (
               <>
-                <div>
-                  <Badge
-                    variant={getStatusBadgeColor(selectedNotification?.type)}
-                    className="mb-2"
-                  >
-                    {selectedNotification?.type || "Update"}
-                  </Badge>
-                  <h3 className="text-lg font-semibold">
-                    {selectedNotification?.message}
-                  </h3>
-                </div>
-                {selectedNotification?.description && (
-                  <p className="text-gray-600">
-                    {selectedNotification.description}
-                  </p>
-                )}
-                <div className="text-sm text-gray-500">
-                  <p>Received: {formatDate(selectedNotification?.createdAt)}</p>
-                  {selectedNotification?.sender && (
-                    <p className="mt-1">From: {selectedNotification.sender}</p>
-                  )}
+                <div className="flex justify-center items-center py-4">
+                  <Loader className="animate-spin h-5 w-5 text-blue-500" />
                 </div>
               </>
             )}

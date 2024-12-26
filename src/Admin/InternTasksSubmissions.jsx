@@ -80,22 +80,21 @@ const InternTasksSubmissions = () => {
 
   const markAsComplete = async (taskId, userId) => {
     try {
-      const reponse = await axios.delete(
-        `https://iisppr-backend.vercel.app/task/delete-task/${taskId}`
-      );
-      if (
-        reponse.status === 200 ||
-        reponse.status === 204 ||
-        reponse.status === 201
-      ) {
-        sendAcceptNotification(
-          userId,
-          taskId,
-          "Submission Approved",
-          "Accepted"
-        );
-        toast.success("Task marked as complete successfully");
-      }
+      ////////////////////////////////
+      //  Don't remove below code   //
+      ////////////////////////////////
+
+      // const reponse = await axios.delete(
+      //   `https://iisppr-backend.vercel.app/task/delete-task/${taskId}`
+      // );
+      // if (
+      //   reponse.status === 200 ||
+      //   reponse.status === 204 ||
+      //   reponse.status === 201
+      // ) {
+      sendAcceptNotification(userId, taskId, "Submission Approved", "Accepted");
+      toast.success("Task marked as complete successfully");
+      // }
     } catch (error) {
       toast.error("Error marking task as complete");
       console.error("Error marking task as complete: ", error);

@@ -23,6 +23,7 @@ export default function TaskModal({ taskId }) {
   const [image, setImage] = useState(null);
   const [comments, setComments] = useState("");
   const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState("");
   const [dragActive, setDragActive] = useState(false);
   const { modalView, setModalView } = useAppContext();
 
@@ -52,7 +53,7 @@ export default function TaskModal({ taskId }) {
         }
       );
       const taskComplete = {
-        status: "completed",
+        status: status,
       };
       if (response.status === 201) {
         toast.success("Task submitted successfully!");
@@ -218,7 +219,18 @@ export default function TaskModal({ taskId }) {
                       </div>
                     </div>
                   </div>
+                  {/* Label */}
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Status
+                  </label>
 
+                  {/* Input Field */}
+                  <input
+                    type="text"
+                    onChange={(e) => setStatus(e.target.value)}
+                    placeholder="Enter status"
+                    className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:border-blue-500 focus:ring-blue-500"
+                  />
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
                       Task Description
