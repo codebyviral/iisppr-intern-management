@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/Components/ui/card";
+import { Button } from "@/Components/ui/button";
 import { useNavigate } from "react-router-dom";
 import {
   Settings,
@@ -22,7 +22,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogClose,
-} from "@/components/ui/dialog";
+} from "@/Components/ui/dialog";
 
 const CoreDashboard = () => {
   const [tasks, setTasks] = useState([]);
