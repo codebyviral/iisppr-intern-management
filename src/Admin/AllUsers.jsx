@@ -52,13 +52,13 @@ function AllUsers() {
   return (
     <>
       <CustomNavbar />
-      <div className="UsersContainer p-4 md:p-8 bg-white shadow-md rounded-md ">
+      <div className="UsersContainer p-4 md:p-8 bg-white shadow-md rounded-md">
         {/* Heading */}
         <h1 className="text-xl md:text-2xl font-semibold text-blue-600 mb-4 text-center">
           All Interns/Users
         </h1>
 
-        {/* Table Header */}
+        {/* Table Header (only for larger screens) */}
         <div className="hidden md:grid md:grid-cols-7 font-semibold border-b-2 pb-2 mb-4 text-gray-700">
           <div>ID</div>
           <div>Name</div>
@@ -78,34 +78,35 @@ function AllUsers() {
           users.map((user) => (
             <div key={user._id} className="mb-4">
               {/* Card View for Small Screens */}
-              <div className="md:hidden bg-gray-50 p-4 rounded shadow-md">
-                <p>
-                  <span className="font-semibold">ID:</span> {user._id}
-                </p>
-                <p>
-                  <span className="font-semibold">Name:</span> {user.name}
-                </p>
-                <p>
-                  <span className="font-semibold">Phone:</span> {user.mnumber}
-                </p>
-                <p>
-                  <span className="font-semibold">Password:</span>{" "}
-                  {user.password}
-                </p>
-                <p>
-                  <span className="font-semibold">Role:</span> {user.role}
-                </p>
-                <p>
-                  <span className="font-semibold">Start Date:</span>{" "}
-                  {new Date(user.startDate).toLocaleDateString()}
-                </p>
-                <button
-                  onClick={() => deleteUser(user._id)}
-                  className="mt-4 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 w-full"
-                >
-                  Delete
-                </button>
-              </div>
+              <div className="md:hidden bg-gray-50 p-4 rounded shadow-md mb-4">
+  <p>
+    <span className="font-semibold">ID:</span> {user._id}
+  </p>
+  <p>
+    <span className="font-semibold">Name:</span> {user.name}
+  </p>
+  <p>
+    <span className="font-semibold">Phone:</span> {user.mnumber}
+  </p>
+  <p>
+    <span className="font-semibold">Password:</span>{" "}
+    <span className="block truncate">{user.password}</span> {/* Apply truncate here */}
+  </p>
+  <p>
+    <span className="font-semibold">Role:</span> {user.role}
+  </p>
+  <p>
+    <span className="font-semibold">Start Date:</span>{" "}
+    {new Date(user.startDate).toLocaleDateString()}
+  </p>
+  <button
+    onClick={() => deleteUser(user._id)}
+    className="mt-4 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 w-full"
+  >
+    Delete
+  </button>
+</div>
+
 
               {/* Grid View for Larger Screens */}
               <div className="hidden md:grid grid-cols-7 py-2 text-gray-800">

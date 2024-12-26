@@ -11,11 +11,9 @@ const InternTasksSubmissions = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch submitted tasks and their corresponding task details
   useEffect(() => {
     const fetchAllData = async () => {
       try {
-        // Fetch submissions first
         const submissionsResponse = await fetch(
           "https://iisppr-backend.vercel.app/getsubmitedtasks"
         );
@@ -24,14 +22,12 @@ const InternTasksSubmissions = () => {
         }
         const submissionsData = await submissionsResponse.json();
 
-        // Get unique user IDs from submissions
         const userIds = [
           ...new Set(
             submissionsData.map((sub) => sub.user?._id).filter(Boolean)
           ),
         ];
 
-        // Fetch tasks for each user and build tasks map
         const tasksMapping = {};
         await Promise.all(
           userIds.map(async (userId) => {
@@ -40,8 +36,6 @@ const InternTasksSubmissions = () => {
                 `https://iisppr-backend.vercel.app/task/get-tasks/${userId}`
               );
               const tasksData = tasksResponse.data.tasksData;
-
-              // Add each task to the mapping
               tasksData.forEach((task) => {
                 tasksMapping[task._id] = task.title;
               });
@@ -157,18 +151,86 @@ const InternTasksSubmissions = () => {
           </Alert>
         </div>
 
-        <div className="overflow-x-auto mt-10">
+        <div className="overflow-x-auto mt-10 sm:hidden">
+          {/* Mobile View: Vertical Layout */}
+          {taskSubmissions.length > 0 ? (
+            taskSubmissions.map((submission) => (
+              <div
+                key={submission._id}
+                className="mb-4 p-4 border border-gray-300 rounded-lg"
+              >
+                <h3 className="font-semibold text-lg">{submission.user?.name}</h3>
+                <p>
+                  <strong>Task:</strong>{" "}
+                  {tasksMap[submission.task] || submission.task || "N/A"}
+                </p>
+                <p>
+                  <strong>Comments:</strong> {submission.comments || "No Comments"}
+                </p>
+                <p>
+                  <strong>Created At:</strong>{" "}
+                  {new Date(submission.createdAt).toLocaleString()}
+                </p>
+                {submission.file && (
+                  <a
+                    href={submission.file}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:underline"
+                  >
+                    View File
+                  </a>
+                )}
+                {submission.image && (
+                  <div
+                    className="mt-2"
+                    onClick={() => redirectToImage(submission.image)}
+                  >
+                    <img
+                      src={submission.image}
+                      alt="Task Submission"
+                      className="w-16 h-16 cursor-pointer object-cover rounded"
+                    />
+                  </div>
+                )}
+                <div className="mt-2 space-x-2">
+                  <button
+                    onClick={() =>
+                      markAsComplete(submission.task, submission.user?._id)
+                    }
+                    className="bg-green-500 text-white px-2 py-1 rounded"
+                  >
+                    Accept
+                  </button>
+                  <button
+                    onClick={() =>
+                      markAsIncomplete(submission.task, submission.user?._id)
+                    }
+                    className="bg-red-500 text-white px-2 py-1 rounded"
+                  >
+                    Reject
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div>No task submissions available.</div>
+          )}
+        </div>
+
+        <div className="overflow-x-auto mt-10 hidden sm:block">
+          {/* Desktop View: Horizontal Table Layout */}
           <table className="min-w-full table-auto border-collapse border border-gray-300">
             <thead>
               <tr>
-                <th className="border-b p-3 text-left">Intern Name</th>
-                <th className="border-b p-3 text-left">Task</th>
-                <th className="border-b p-3 text-left">Comments</th>
-                <th className="border-b p-3 text-left">File</th>
-                <th className="border-b p-3 text-left">Image</th>
-                <th className="border-b p-3 text-left">Created At</th>
-                <th className="border-b p-3 text-left">Approve</th>
-                <th className="border-b p-3 text-left">Resubmit</th>
+                <th className="border-b p-3 text-left text-sm sm:text-base">Intern Name</th>
+                <th className="border-b p-3 text-left text-sm sm:text-base">Task</th>
+                <th className="border-b p-3 text-left text-sm sm:text-base">Comments</th>
+                <th className="border-b p-3 text-left text-sm sm:text-base">File</th>
+                <th className="border-b p-3 text-left text-sm sm:text-base">Image</th>
+                <th className="border-b p-3 text-left text-sm sm:text-base">Created At</th>
+                <th className="border-b p-3 text-left text-sm sm:text-base">Approve</th>
+                <th className="border-b p-3 text-left text-sm sm:text-base">Resubmit</th>
               </tr>
             </thead>
             <tbody>
@@ -176,22 +238,22 @@ const InternTasksSubmissions = () => {
                 taskSubmissions.map((submission) => (
                   <tr key={submission._id}>
                     {/* Intern Name */}
-                    <td className="border-b p-3">
+                    <td className="border-b p-3 text-sm sm:text-base">
                       {submission.user?.name || "N/A"}
                     </td>
 
                     {/* Task Title */}
-                    <td className="border-b p-3">
+                    <td className="border-b p-3 text-sm sm:text-base">
                       {tasksMap[submission.task] || submission.task || "N/A"}
                     </td>
 
                     {/* Comments */}
-                    <td className="border-b capitalize p-3">
+                    <td className="border-b capitalize p-3 text-sm sm:text-base">
                       {submission.comments || "No Comments"}
                     </td>
 
                     {/* File */}
-                    <td className="border-b p-3">
+                    <td className="border-b p-3 text-sm sm:text-base">
                       {submission.file ? (
                         <a
                           href={submission.file}
@@ -207,7 +269,7 @@ const InternTasksSubmissions = () => {
                     </td>
 
                     {/* Image */}
-                    <td className="border-b p-3">
+                    <td className="border-b p-3 text-sm sm:text-base">
                       {submission.image ? (
                         <img
                           onClick={() => redirectToImage(submission.image)}
@@ -221,12 +283,12 @@ const InternTasksSubmissions = () => {
                     </td>
 
                     {/* Created At */}
-                    <td className="border-b p-3">
+                    <td className="border-b p-3 text-sm sm:text-base">
                       {new Date(submission.createdAt).toLocaleString()}
                     </td>
 
-                    {/* mark as complete */}
-                    <td className="border-b p-3">
+                    {/* Approve */}
+                    <td className="border-b p-3 text-sm sm:text-base">
                       <button
                         onClick={() =>
                           markAsComplete(submission.task, submission.user?._id)
@@ -238,13 +300,10 @@ const InternTasksSubmissions = () => {
                     </td>
 
                     {/* Reject */}
-                    <td className="border-b p-3">
+                    <td className="border-b p-3 text-sm sm:text-base">
                       <button
                         onClick={() =>
-                          markAsIncomplete(
-                            submission.task,
-                            submission.user?._id
-                          )
+                          markAsIncomplete(submission.task, submission.user?._id)
                         }
                         className="bg-red-500 text-white px-2 py-1 rounded"
                       >

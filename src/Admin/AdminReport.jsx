@@ -38,7 +38,7 @@ const AdminReport = () => {
     fetchReports();
   }, []);
 
-  //function to show posted project by using fetch api
+
 
   return (
     <>
