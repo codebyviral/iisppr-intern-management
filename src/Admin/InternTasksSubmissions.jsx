@@ -95,9 +95,6 @@ const InternTasksSubmissions = () => {
           "Accepted"
         );
         toast.success("Task marked as complete successfully");
-        setTaskSubmissions((prevTasks) =>
-          prevTasks.filter((task) => task.task !== taskId)
-        );
       }
     } catch (error) {
       toast.error("Error marking task as complete");
@@ -159,13 +156,16 @@ const InternTasksSubmissions = () => {
                 key={submission._id}
                 className="mb-4 p-4 border border-gray-300 rounded-lg"
               >
-                <h3 className="font-semibold text-lg">{submission.user?.name}</h3>
+                <h3 className="font-semibold text-lg">
+                  {submission.user?.name}
+                </h3>
                 <p>
                   <strong>Task:</strong>{" "}
                   {tasksMap[submission.task] || submission.task || "N/A"}
                 </p>
                 <p>
-                  <strong>Comments:</strong> {submission.comments || "No Comments"}
+                  <strong>Comments:</strong>{" "}
+                  {submission.comments || "No Comments"}
                 </p>
                 <p>
                   <strong>Created At:</strong>{" "}
@@ -223,14 +223,30 @@ const InternTasksSubmissions = () => {
           <table className="min-w-full table-auto border-collapse border border-gray-300">
             <thead>
               <tr>
-                <th className="border-b p-3 text-left text-sm sm:text-base">Intern Name</th>
-                <th className="border-b p-3 text-left text-sm sm:text-base">Task</th>
-                <th className="border-b p-3 text-left text-sm sm:text-base">Comments</th>
-                <th className="border-b p-3 text-left text-sm sm:text-base">File</th>
-                <th className="border-b p-3 text-left text-sm sm:text-base">Image</th>
-                <th className="border-b p-3 text-left text-sm sm:text-base">Created At</th>
-                <th className="border-b p-3 text-left text-sm sm:text-base">Approve</th>
-                <th className="border-b p-3 text-left text-sm sm:text-base">Resubmit</th>
+                <th className="border-b p-3 text-left text-sm sm:text-base">
+                  Intern Name
+                </th>
+                <th className="border-b p-3 text-left text-sm sm:text-base">
+                  Task
+                </th>
+                <th className="border-b p-3 text-left text-sm sm:text-base">
+                  Comments
+                </th>
+                <th className="border-b p-3 text-left text-sm sm:text-base">
+                  File
+                </th>
+                <th className="border-b p-3 text-left text-sm sm:text-base">
+                  Image
+                </th>
+                <th className="border-b p-3 text-left text-sm sm:text-base">
+                  Created At
+                </th>
+                <th className="border-b p-3 text-left text-sm sm:text-base">
+                  Approve
+                </th>
+                <th className="border-b p-3 text-left text-sm sm:text-base">
+                  Resubmit
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -303,7 +319,10 @@ const InternTasksSubmissions = () => {
                     <td className="border-b p-3 text-sm sm:text-base">
                       <button
                         onClick={() =>
-                          markAsIncomplete(submission.task, submission.user?._id)
+                          markAsIncomplete(
+                            submission.task,
+                            submission.user?._id
+                          )
                         }
                         className="bg-red-500 text-white px-2 py-1 rounded"
                       >
