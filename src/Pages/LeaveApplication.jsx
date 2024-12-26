@@ -29,7 +29,7 @@ const LeaveApplication = () => {
 
   const leaveTypes = [
     { value: "Sick Leave", label: "Sick Leave" },
-    { value: "Peronal Leave", label: "Peronal Leave" },
+    { value: "Personal Leave", label: "Peronal Leave" },
     { value: "Vacation", label: "Vacation" },
     { value: "Other", label: "Other" },
   ];
