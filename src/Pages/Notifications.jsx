@@ -62,7 +62,6 @@ const Notifications = () => {
       }
     } catch (error) {
       console.error("Error fetching task details:", error);
-      setError("Failed to load task details");
       setTaskDetails(null);
     }
   };
@@ -94,9 +93,13 @@ const Notifications = () => {
 
   const handleNotificationClick = async (notification) => {
     setSelectedNotification(notification);
-    setTaskDetails(null);
     setIsModalOpen(true);
-    await fetchTaskDetails(notification.task);
+
+    // Only fetch task details if task exists
+    if (notification.task) {
+      setTaskDetails(null); // Reset previous details
+      await fetchTaskDetails(notification.task);
+    }
   };
 
   const getNotificationTypeStyles = (type) => {
@@ -124,6 +127,87 @@ const Notifications = () => {
           </div>
         </div>
       ))}
+    </div>
+  );
+
+  const renderTaskDetails = () => (
+    <div className="space-y-6">
+      <div className="space-y-4">
+        <div className="flex justify-between items-start gap-4">
+          <h3 className="text-xl font-semibold text-gray-900">
+            {taskDetails.title}
+          </h3>
+          <Badge
+            className={`${getNotificationTypeStyles(
+              taskDetails.status
+            )} capitalize px-3 py-1`}
+          >
+            {taskDetails.status}
+          </Badge>
+        </div>
+
+        <p className="text-gray-600">
+          {taskDetails.description || "No description available."}
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <Calendar className="h-5 w-5 text-blue-600" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Start Date</p>
+                <p className="text-sm font-medium text-gray-900">
+                  {formatDate(taskDetails.startDate)}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-red-100 rounded-lg">
+                <Calendar className="h-5 w-5 text-red-600" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">End Date</p>
+                <p className="text-sm font-medium text-gray-900">
+                  {formatDate(taskDetails.endDate)}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderSimpleNotification = () => (
+    <div className="space-y-4">
+      <div className="flex items-center gap-3 mb-2">
+        <Badge
+          className={`${getNotificationTypeStyles(
+            selectedNotification?.type
+          )} px-3 py-1`}
+        >
+          {selectedNotification?.type || "Update"}
+        </Badge>
+        <div className="flex items-center gap-2 text-sm text-gray-500">
+          <Clock className="h-4 w-4" />
+          {getTimeAgo(selectedNotification?.createdAt)}
+        </div>
+      </div>
+      <p className="text-gray-900 font-medium">
+        {selectedNotification?.message}
+      </p>
+      {selectedNotification?.description && (
+        <p className="text-sm text-gray-600 mt-2">
+          {selectedNotification.description}
+        </p>
+      )}
+      <p className="text-xs text-gray-400 mt-2">
+        {formatDate(selectedNotification?.createdAt)}
+      </p>
     </div>
   );
 
@@ -237,66 +321,24 @@ const Notifications = () => {
         <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-2xl font-semibold">
-              {taskDetails ? "Task Details" : "Loading Details..."}
+              {selectedNotification?.task
+                ? "Task Details"
+                : "Notification Details"}
             </DialogTitle>
           </DialogHeader>
 
           <div className="mt-6">
-            {taskDetails ? (
-              <div className="space-y-6">
-                <div className="space-y-4">
-                  <div className="flex justify-between items-start gap-4">
-                    <h3 className="text-xl font-semibold text-gray-900">
-                      {taskDetails.title}
-                    </h3>
-                    <Badge
-                      className={`${getNotificationTypeStyles(
-                        taskDetails.status
-                      )} capitalize px-3 py-1`}
-                    >
-                      {taskDetails.status}
-                    </Badge>
-                  </div>
-
-                  <p className="text-gray-600">
-                    {taskDetails.description || "No description available."}
-                  </p>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-blue-100 rounded-lg">
-                          <Calendar className="h-5 w-5 text-blue-600" />
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-500">Start Date</p>
-                          <p className="text-sm font-medium text-gray-900">
-                            {formatDate(taskDetails.startDate)}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-red-100 rounded-lg">
-                          <Calendar className="h-5 w-5 text-red-600" />
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-500">End Date</p>
-                          <p className="text-sm font-medium text-gray-900">
-                            {formatDate(taskDetails.endDate)}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+            {selectedNotification?.task ? (
+              taskDetails ? (
+                renderTaskDetails()
+              ) : (
+                <div className="flex justify-center items-center py-8">
+                  <Loader className="animate-spin h-6 w-6 text-blue-500 mr-3" />
+                  <p className="text-gray-600">Loading...</p>
                 </div>
-              </div>
+              )
             ) : (
-              <div className="flex justify-center items-center py-8">
-                <Loader className="animate-spin h-6 w-6 text-blue-500 mr-3" />
-                <p className="text-gray-600">Loading task details...</p>
-              </div>
+              renderSimpleNotification()
             )}
           </div>
         </DialogContent>
