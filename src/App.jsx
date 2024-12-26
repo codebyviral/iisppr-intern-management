@@ -26,7 +26,7 @@ import {
   AdminHelp,
   InternTasksSubmissions,
 } from "./Pages/pageIndex";
-import InternAttendance from "./Admin/InternAttendance";
+
 import {
   AdminTask,
   CoreDashboard,
