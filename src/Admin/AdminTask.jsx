@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Card, CardHeader, CardTitle, CardContent } from "@/Components/ui/card";
+import { Button } from "@/Components/ui/button";
+import { Alert, AlertDescription } from "@/Components/ui/alert";
 import CustomNavbar from "./CustomNavbar";
 import axios from "axios";
 import { toast } from "react-hot-toast";
