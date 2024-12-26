@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CustomNavbar from "./CustomNavbar";
+import { Loader } from "@/Components/compIndex";
 
 function AllUsers() {
   const [users, setUsers] = useState([]);
@@ -10,7 +11,9 @@ function AllUsers() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await fetch("https://iisppr-backend.vercel.app/allusers");
+      const response = await fetch(
+        "https://iisppr-backend.vercel.app/allusers"
+      );
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
@@ -26,9 +29,12 @@ function AllUsers() {
   // Delete user by ID
   const deleteUser = async (userId) => {
     try {
-      const response = await fetch(`https://iisppr-backend.vercel.app/delete/${userId}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `https://iisppr-backend.vercel.app/delete/${userId}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (!response.ok) {
         throw new Error(`Error deleting user: ${response.status}`);
       }
@@ -67,7 +73,7 @@ function AllUsers() {
         {error ? (
           <p className="text-red-500">{error}</p>
         ) : loading ? (
-          <p className="text-gray-500">Loading users...</p>
+          <Loader />
         ) : users.length > 0 ? (
           users.map((user) => (
             <div key={user._id} className="mb-4">
@@ -83,7 +89,8 @@ function AllUsers() {
                   <span className="font-semibold">Phone:</span> {user.mnumber}
                 </p>
                 <p>
-                  <span className="font-semibold">Password:</span> {user.password}
+                  <span className="font-semibold">Password:</span>{" "}
+                  {user.password}
                 </p>
                 <p>
                   <span className="font-semibold">Role:</span> {user.role}

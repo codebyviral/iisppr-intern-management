@@ -2,24 +2,57 @@ import React, { useEffect, useState } from "react";
 import CustomNavbar from "./CustomNavbar";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert";
+import { Loader } from "@/Components/compIndex";
 
 const InternTasksSubmissions = () => {
   const [taskSubmissions, setTaskSubmissions] = useState([]);
+  const [tasksMap, setTasksMap] = useState({}); // Map to store task ID -> task title
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch submitted tasks from the API
+  // Fetch submitted tasks and their corresponding task details
   useEffect(() => {
-    const fetchTaskSubmissions = async () => {
+    const fetchAllData = async () => {
       try {
-        const response = await fetch(
+        // Fetch submissions first
+        const submissionsResponse = await fetch(
           "https://iisppr-backend.vercel.app/getsubmitedtasks"
         );
-        if (!response.ok) {
+        if (!submissionsResponse.ok) {
           throw new Error("Failed to fetch task submissions");
         }
-        const data = await response.json();
-        setTaskSubmissions(data); // Store the fetched data
+        const submissionsData = await submissionsResponse.json();
+
+        // Get unique user IDs from submissions
+        const userIds = [
+          ...new Set(
+            submissionsData.map((sub) => sub.user?._id).filter(Boolean)
+          ),
+        ];
+
+        // Fetch tasks for each user and build tasks map
+        const tasksMapping = {};
+        await Promise.all(
+          userIds.map(async (userId) => {
+            try {
+              const tasksResponse = await axios.get(
+                `https://iisppr-backend.vercel.app/task/get-tasks/${userId}`
+              );
+              const tasksData = tasksResponse.data.tasksData;
+
+              // Add each task to the mapping
+              tasksData.forEach((task) => {
+                tasksMapping[task._id] = task.title;
+              });
+            } catch (error) {
+              console.error(`Error fetching tasks for user ${userId}:`, error);
+            }
+          })
+        );
+
+        setTasksMap(tasksMapping);
+        setTaskSubmissions(submissionsData);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -27,7 +60,7 @@ const InternTasksSubmissions = () => {
       }
     };
 
-    fetchTaskSubmissions();
+    fetchAllData();
   }, []);
 
   const redirectToImage = (image) => {
@@ -35,23 +68,23 @@ const InternTasksSubmissions = () => {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <div className="flex flex-col items-center">
-          <div className="w-16 h-16 border-t-4 border-b-4 border-red-500 rounded-full animate-spin"></div>
-          <p className="mt-4 text-lg font-semibold text-gray-700">
-            Loading, please wait...
-          </p>
-        </div>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (error) {
     return <div>Error: {error}</div>;
   }
 
-  const markAsComplete = async (taskId) => {
+  const sendAcceptNotification = async (userId, taskId, message, status) => {
+    axios.post("https://iisppr-backend.vercel.app/send/notification", {
+      userId: userId,
+      taskId: taskId,
+      message: message,
+      status: status,
+    });
+  };
+
+  const markAsComplete = async (taskId, userId) => {
     try {
       const reponse = await axios.delete(
         `https://iisppr-backend.vercel.app/task/delete-task/${taskId}`
@@ -61,6 +94,12 @@ const InternTasksSubmissions = () => {
         reponse.status === 204 ||
         reponse.status === 201
       ) {
+        sendAcceptNotification(
+          userId,
+          taskId,
+          "Submission Approved",
+          "Accepted"
+        );
         toast.success("Task marked as complete successfully");
         setTaskSubmissions((prevTasks) =>
           prevTasks.filter((task) => task.task !== taskId)
@@ -72,6 +111,21 @@ const InternTasksSubmissions = () => {
     }
   };
 
+  const markAsIncomplete = async (taskId, userId) => {
+    try {
+      axios.post("https://iisppr-backend.vercel.app/send/notification", {
+        userId: userId,
+        taskId: taskId,
+        message: "Submission Rejected",
+        status: "Rejected",
+      });
+      toast.success("Task marked as incomplete successfully");
+    } catch (error) {
+      toast.error("Error marking task as incomplete");
+      console.error("Error marking task as incomplete: ", error);
+    }
+  };
+
   return (
     <>
       <CustomNavbar />
@@ -79,19 +133,36 @@ const InternTasksSubmissions = () => {
         <h2 className="text-3xl font-semibold text-center mb-6">
           Intern Task Submissions
         </h2>
-        <div className="bg-blue-100 border border-blue-300 text-blue-800 px-4 py-3 rounded relative mb-4">
-          <span className="font-bold">Notice:</span> When you accept a task, the
-          user will be notified that the task has been approved, and it will be
-          removed from their side. If you reject a task, the user will be
-          notified to re-submit their work. Task submissions will remain in the
-          admin panel.
+        <div className="space-y-4">
+          <Alert className="border-blue-200 bg-blue-50">
+            <AlertTitle className="text-blue-800 font-semibold text-lg">
+              Task Review Process
+            </AlertTitle>
+            <AlertDescription className="text-blue-700 mt-2">
+              <div className="space-y-3">
+                <p>
+                  Upon task approval, the submitter will be automatically
+                  notified and the task will be removed from their dashboard. In
+                  case of rejection, they will receive a notification to revise
+                  and resubmit their work. All submissions are permanently
+                  archived in the administrative panel for reference.
+                </p>
+                <p className="border-t border-blue-200 pt-3">
+                  The presence of a Task ID signifies that the submission has
+                  been validated, received administrative approval, and has been
+                  successfully processed from the {`user's`} perspective.
+                </p>
+              </div>
+            </AlertDescription>
+          </Alert>
         </div>
-        <div className="overflow-x-auto">
+
+        <div className="overflow-x-auto mt-10">
           <table className="min-w-full table-auto border-collapse border border-gray-300">
             <thead>
               <tr>
                 <th className="border-b p-3 text-left">Intern Name</th>
-                <th className="border-b p-3 text-left">Task ID</th>
+                <th className="border-b p-3 text-left">Task</th>
                 <th className="border-b p-3 text-left">Comments</th>
                 <th className="border-b p-3 text-left">File</th>
                 <th className="border-b p-3 text-left">Image</th>
@@ -109,8 +180,10 @@ const InternTasksSubmissions = () => {
                       {submission.user?.name || "N/A"}
                     </td>
 
-                    {/* Task ID */}
-                    <td className="border-b p-3">{submission.task || "N/A"}</td>
+                    {/* Task Title */}
+                    <td className="border-b p-3">
+                      {tasksMap[submission.task] || submission.task || "N/A"}
+                    </td>
 
                     {/* Comments */}
                     <td className="border-b capitalize p-3">
@@ -155,27 +228,34 @@ const InternTasksSubmissions = () => {
                     {/* mark as complete */}
                     <td className="border-b p-3">
                       <button
-                        onClick={() => markAsComplete(submission.task)}
+                        onClick={() =>
+                          markAsComplete(submission.task, submission.user?._id)
+                        }
                         className="bg-green-500 text-white px-2 py-1 rounded"
                       >
                         Accept
-                      </button>{" "}
+                      </button>
                     </td>
 
                     {/* Reject */}
                     <td className="border-b p-3">
                       <button
-                        onClick={() => markAsComplete()}
+                        onClick={() =>
+                          markAsIncomplete(
+                            submission.task,
+                            submission.user?._id
+                          )
+                        }
                         className="bg-red-500 text-white px-2 py-1 rounded"
                       >
                         Reject
-                      </button>{" "}
+                      </button>
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6" className="p-3 text-center">
+                  <td colSpan="8" className="p-3 text-center">
                     No task submissions available.
                   </td>
                 </tr>

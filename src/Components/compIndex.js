@@ -14,9 +14,10 @@ import AdminTopNav from "./AdminTopNav";
 import FAQsData from "./FAQsData";
 import TaskModal from "./TaskModal";
 import Footer from "./footer";
-
+import Loader from "./Loader";
 export {
   Navbar,
+  Loader,
   TopNavbar,
   SideNav,
   CoreSettings,

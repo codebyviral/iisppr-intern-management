@@ -1,22 +1,24 @@
 import { useState, useEffect } from "react";
-import { Wrapper } from "@/Components/compIndex";
+import { Loader, Wrapper } from "@/Components/compIndex";
 import CustomNavbar from "./CustomNavbar";
 
 const AdminReport = () => {
-  const [reports, setReports] = useState([]); 
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null); 
+  const [reports, setReports] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     // Function to fetch reports from API
     const fetchReports = async () => {
       try {
-        const response = await fetch("https://iisppr-backend.vercel.app/weeklystatus/reports");
+        const response = await fetch(
+          "https://iisppr-backend.vercel.app/weeklystatus/reports"
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch reports");
         }
         const data = await response.json();
-       
+
         const formattedData = data.map((report) => ({
           employee: report.employee,
           department: report.department,
@@ -36,10 +38,7 @@ const AdminReport = () => {
     fetchReports();
   }, []);
 
-//function to show posted project by using fetch api
-
-
-
+  //function to show posted project by using fetch api
 
   return (
     <>
@@ -51,9 +50,8 @@ const AdminReport = () => {
               Employee Weekly Reports
             </h2>
 
-           
             {loading ? (
-              <p className="text-center text-gray-500">Loading reports...</p>
+              <Loader />
             ) : error ? (
               <p className="text-center text-red-500">Error: {error}</p>
             ) : reports.length === 0 ? (
@@ -65,22 +63,28 @@ const AdminReport = () => {
                     key={index}
                     className="border border-gray-300 rounded-md p-4 sm:p-6 md:p-8 shadow-md hover:bg-gray-100 mb-4"
                   >
-                    <h3 className="text-xl sm:text-2xl font-semibold text-[#007bff]">{report.employee}</h3>
+                    <h3 className="text-xl sm:text-2xl font-semibold text-[#007bff]">
+                      {report.employee}
+                    </h3>
                     <p className="text-sm sm:text-base text-gray-700">
                       <strong>Department:</strong> {report.department}
                     </p>
                     <p className="text-sm sm:text-base text-gray-500">
-                      <strong>Date:</strong> {new Date(report.date).toLocaleDateString()}
+                      <strong>Date:</strong>{" "}
+                      {new Date(report.date).toLocaleDateString()}
                     </p>
                     <div className="mt-4">
                       <p className="text-sm sm:text-base text-gray-700">
-                        <strong>Tasks Completed:</strong> {report.tasksCompleted}
+                        <strong>Tasks Completed:</strong>{" "}
+                        {report.tasksCompleted}
                       </p>
                       <p className="text-sm sm:text-base text-gray-700">
-                        <strong>Tasks to Begin Next Week:</strong> {report.tasksToBegin}
+                        <strong>Tasks to Begin Next Week:</strong>{" "}
+                        {report.tasksToBegin}
                       </p>
                       <p className="text-sm sm:text-base text-gray-700">
-                        <strong>Self-Assessment & Comments:</strong> {report.comments}
+                        <strong>Self-Assessment & Comments:</strong>{" "}
+                        {report.comments}
                       </p>
                     </div>
                   </div>
