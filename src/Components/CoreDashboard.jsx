@@ -2,30 +2,35 @@ import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Settings, ExternalLink, Headset, Loader } from "lucide-react"; // Importing the loader icon
+import { Settings, ExternalLink, Headset, Loader, X } from "lucide-react";
 import axios from "axios";
 import { deleteTaskUri, getTasks } from "./URIs";
 import { useAppContext } from "@/context/AppContext";
 import toast from "react-hot-toast";
 import TaskModal from "./TaskModal";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+} from "@/Components/ui/dialog";
 
 const CoreDashboard = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedTaskId, setSelectedTaskId] = useState(null); // New state to store selected task ID
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const [showAllTasks, setShowAllTasks] = useState(false);
   const navigate = useNavigate();
   const { setDashboard } = useAppContext();
   const currentDate = new Date();
   const currentDay = currentDate.getDate();
   const currentYear = currentDate.getFullYear();
   const weekStart = currentDate.getDate() - currentDate.getDay();
-
-  // Generate the 7 dates based on the start of the week
   const dates = Array.from({ length: 7 }, (_, index) => weekStart + index);
   const { notiCounter, setNotiCounter, modalView, setModalView } =
     useAppContext();
 
-  // Fetch current Tasks
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -35,9 +40,8 @@ const CoreDashboard = () => {
         );
         const fetchedTasks = response.data.tasksData;
         setTasks(fetchedTasks);
-        setNotiCounter(fetchedTasks.length);
       } catch (error) {
-        toast.error(`Error Fetching Tasks`);
+        console.error(`Error Fetching Tasks: ${error.message}`);
       } finally {
         setLoading(false);
       }
@@ -46,7 +50,6 @@ const CoreDashboard = () => {
     fetchTasks();
   }, []);
 
-  // const delete particular task
   const deleteTask = async (taskId) => {
     try {
       const response = await axios.delete(`${deleteTaskUri}/${taskId}`);
@@ -57,9 +60,85 @@ const CoreDashboard = () => {
     }
   };
 
+  const TaskList = ({ tasks, limit = null }) => {
+    const displayTasks = limit ? tasks.slice(0, limit) : tasks;
+
+    return (
+      <div>
+        {displayTasks.map((task, index) => (
+          <div
+            key={task._id || index}
+            className="flex flex-col lg:flex-row items-start lg:items-center gap-4 mb-4 border-b pb-4 last:border-b-0"
+          >
+            <div className="flex-1">
+              <p className="font-medium text-lg">{task.title}</p>
+              <p className="text-sm text-gray-600 mt-2">{task.description}</p>
+              <p className="text-xs text-gray-400 mt-1">
+                Start Date:{" "}
+                <span className="text-blue-500">
+                  {new Date(task.startDate).toLocaleDateString()} <br />
+                </span>
+                End Date:{" "}
+                <span className="text-blue-500">
+                  {new Date(task.endDate).toLocaleDateString()}
+                </span>
+              </p>
+            </div>
+            <div className="flex flex-col items-start lg:items-center gap-2 mt-4 lg:mt-0">
+              <Button
+                onClick={() => {
+                  setSelectedTaskId(task._id);
+                  setModalView(true);
+                  setShowAllTasks(false);
+                }}
+                variant="outline"
+                className="w-full lg:w-auto text-sm"
+              >
+                {task.status === "completed" ? "Resubmit" : "Submit"}
+              </Button>
+              <span
+                className={`text-sm capitalize mt-2 ${
+                  task.status === "completed"
+                    ? "text-green-600"
+                    : "text-red-600"
+                }`}
+              >
+                {task.status}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <>
       {modalView && selectedTaskId && <TaskModal taskId={selectedTaskId} />}
+
+      <Dialog open={showAllTasks} onOpenChange={setShowAllTasks}>
+        <DialogContent className="sm:max-w-2xl">
+          <DialogHeader>
+            <div className="flex justify-between items-center">
+              <DialogTitle className="text-xl font-semibold">
+                All Tasks ({tasks.length})
+              </DialogTitle>
+              <DialogClose className="rounded-full hover:bg-gray-100 p-2"></DialogClose>
+            </div>
+          </DialogHeader>
+          <div className="mt-4 max-h-[60vh] overflow-y-auto">
+            {loading ? (
+              <div className="flex justify-center items-center py-4">
+                <p className="text-gray-600 mr-2">Loading tasks...</p>
+                <Loader className="animate-spin h-5 w-5 text-blue-500" />
+              </div>
+            ) : (
+              <TaskList tasks={tasks} />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <div className="p-6 max-w-7xl mx-auto taskContainer sm:pl-8 md:pl-10 lg:pl-[10rem]">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
@@ -98,57 +177,19 @@ const CoreDashboard = () => {
                 </p>
                 {loading ? (
                   <div className="flex justify-center items-center py-4">
-                    <p className="text-gray-600 mr-2">
-                      Loading tasks, please wait...
-                    </p>
+                    <p className="text-gray-600 mr-2">Loading tasks...</p>
                     <Loader className="animate-spin h-5 w-5 text-blue-500" />
                   </div>
                 ) : (
-                  <div>
-                    {tasks.slice(0, 3).map((task, index) => (
-                      <div
-                        key={task._id || index}
-                        className="flex flex-col lg:flex-row items-start lg:items-center gap-4 mb-4 border-b pb-4 last:border-b-0"
-                      >
-                        <div className="flex-1">
-                          <p className="font-medium text-lg">{task.title}</p>
-                          <p className="text-sm text-gray-600 mt-2">
-                            {task.description}
-                          </p>
-                          <p className="text-xs text-gray-400 mt-1">
-                            Start Date:{" "}
-                            <span className="text-blue-500">
-                              {new Date(task.startDate).toLocaleDateString()}{" "}
-                              <br />
-                            </span>
-                            End Date:{" "}
-                            <span className="text-blue-500">
-                              {new Date(task.endDate).toLocaleDateString()}
-                            </span>
-                          </p>
-                        </div>
-                        <div className="flex flex-col items-start lg:items-center gap-2 mt-4 lg:mt-0">
-                          <Button
-                            onClick={() => {
-                              setSelectedTaskId(task._id); // Set the selected task ID
-                              setModalView(true); // Open the modal
-                            }}
-                            variant="outline"
-                            className="w-full lg:w-auto text-sm"
-                          >
-                            View
-                            <ExternalLink color="#3B81F6" />
-                          </Button>
-                          <span className="text-sm text-red-600 mt-2">
-                            {`${task.status}`}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  <TaskList tasks={tasks} limit={3} />
                 )}
-                <Button variant="outline" className="w-full mt-4">
+                <Button
+                  variant="outline"
+                  className="w-full mt-4"
+                  onClick={() => setShowAllTasks(true)}
+                >
                   View all tasks
+                  <ExternalLink className="h-4 w-4 ml-2" />
                 </Button>
               </CardContent>
             </Card>

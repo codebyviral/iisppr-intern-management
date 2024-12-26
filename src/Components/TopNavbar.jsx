@@ -1,10 +1,18 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/Components/ui/button.jsx";
-import { Menu, Search, X, UserRound, ChevronDown } from "lucide-react";
+import {
+  Menu,
+  Search,
+  X,
+  UserRound,
+  ChevronDown,
+  Building2,
+} from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAppContext } from "@/context/AppContext.jsx";
 import { NotiBadge } from "./compIndex.js";
 import { useAuthContext } from "@/context/AuthContext.jsx";
+import iisspprLogo from "../assets/Images/iisprlogo.png";
 
 const TopNavbar = () => {
   const navigate = useNavigate();
@@ -47,7 +55,12 @@ const TopNavbar = () => {
           </button>
 
           <Link to="/">
-            <span className="text-lg font-semibold">IISPPR Intern Hub</span>
+            <div className="flex flex-row">
+              <Building2 />
+              <span className="text-lg font-semibold ml-4">
+                IISPPR Intern Hub
+              </span>
+            </div>
           </Link>
 
           <Button
@@ -74,7 +87,12 @@ const TopNavbar = () => {
 
         <div className="hidden md:flex items-center justify-between w-full">
           <Link to="/">
-            <span className="text-lg font-semibold">IISPPR Intern Hub</span>
+            <div className="flex flex-row">
+              <Building2 />
+              <span className="text-lg font-semibold ml-4">
+                IISPPR Intern Hub
+              </span>
+            </div>
           </Link>
 
           <div className="relative w-1/3">
