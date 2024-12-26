@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import CustomNavbar from "./CustomNavbar";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert";
+import { Alert, AlertDescription } from "@/Components/ui/alert";
 import { Loader } from "@/Components/compIndex";
+import { InfoIcon } from "lucide-react";
 
 const InternTasksSubmissions = () => {
   const [taskSubmissions, setTaskSubmissions] = useState([]);
@@ -123,27 +124,15 @@ const InternTasksSubmissions = () => {
         <h2 className="text-3xl font-semibold text-center mb-6">
           Intern Task Submissions
         </h2>
-        <div className="space-y-4">
-          <Alert className="border-blue-200 bg-blue-50">
-            <AlertTitle className="text-blue-800 font-semibold text-lg">
-              Task Review Process
-            </AlertTitle>
-            <AlertDescription className="text-blue-700 mt-2">
-              <div className="space-y-3">
-                <p>
-                  Upon task approval, the submitter will be automatically
-                  notified and the task will be removed from their dashboard. In
-                  case of rejection, they will receive a notification to revise
-                  and resubmit their work. All submissions are permanently
-                  archived in the administrative panel for reference.
-                </p>
-                <p className="border-t border-blue-200 pt-3">
-                  The presence of a Task ID signifies that the submission has
-                  been validated, received administrative approval, and has been
-                  successfully processed from the {`user's`} perspective.
-                </p>
-              </div>
-            </AlertDescription>
+        <div className="flex justify-center items-center">
+          <Alert className="w-full bg-blue-50 border-blue-200">
+            <div className="flex flex-col items-center w-full">
+              <AlertDescription className="text-blue-700 text-center">
+                <p>Accept → User notified & notification is sent to user</p>
+                <p>Reject → User notified for revision with resubmit option</p>
+                <p>All submissions are archived in admin panel for reference</p>
+              </AlertDescription>
+            </div>
           </Alert>
         </div>
 
