@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Skeleton } from "@/Components/ui/skeleton";
-import { AlertCircle, Bell } from "lucide-react";
+import { AlertCircle, Bell, Calendar } from "lucide-react";
 import { Alert, AlertDescription } from "@/Components/ui/alert";
 import { Navbar, SideNav, Footer } from "@/Components/compIndex";
 import {
@@ -18,6 +18,7 @@ const Notifications = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedNotification, setSelectedNotification] = useState(null);
+  const [taskDetails, setTaskDetails] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { loggedIn } = useAuthContext();
 
@@ -28,13 +29,8 @@ const Notifications = () => {
         const response = await fetch(
           `https://iisppr-backend.vercel.app/get-notifications?userId=${userId}`
         );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch notifications");
-        }
-
+        if (!response.ok) throw new Error("Failed to fetch notifications");
         const data = await response.json();
-
         if (data?.notifications?.notifications) {
           const sortedNotifications = data.notifications.notifications.sort(
             (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
@@ -50,54 +46,59 @@ const Notifications = () => {
       }
     };
 
-    if (loggedIn) {
-      fetchNotifications();
-    } else {
-      setLoading(false);
-    }
+    if (loggedIn) fetchNotifications();
+    else setLoading(false);
   }, [loggedIn]);
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
-
-    if (diffInHours < 24) {
-      if (diffInHours < 1) {
-        const diffInMinutes = Math.floor((now - date) / (1000 * 60));
-        return `${diffInMinutes} minutes ago`;
+  const fetchTaskDetails = async (taskId) => {
+    try {
+      const response = await fetch(
+        `https://iisppr-backend.vercel.app/task/get-task/${taskId}`
+      );
+      if (!response.ok) throw new Error("Failed to fetch task details");
+      const data = await response.json();
+      if (data.taskDetails) {
+        setTaskDetails(data.taskDetails);
       }
-      return `${diffInHours} hours ago`;
+    } catch (error) {
+      console.error("Error fetching task details:", error);
+      setError("Failed to load task details");
+      setTaskDetails(null);
     }
-    return date.toLocaleDateString("en-US", {
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("en-US", {
       weekday: "long",
       year: "numeric",
       month: "long",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-    });
+    }).format(date);
   };
 
-  const handleNotificationClick = (notification) => {
+  const handleNotificationClick = async (notification) => {
     setSelectedNotification(notification);
+    setTaskDetails(null);
     setIsModalOpen(true);
+
+    if (notification.taskId) {
+      await fetchTaskDetails(notification.taskId);
+    }
   };
 
-
-  const renderNotificationSkeleton = () => (
-    <div className="space-y-4">
-      {[1, 2, 3].map((index) => (
-        <div key={index} className="flex items-start space-x-4 p-4 border-b">
-          <Skeleton className="h-12 w-12 rounded-full" />
-          <div className="space-y-2 flex-1">
-            <Skeleton className="h-4 w-3/4" />
-            <Skeleton className="h-3 w-1/4" />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
+  const getStatusBadgeColor = (status) => {
+    const statusColors = {
+      pending: "warning",
+      completed: "success",
+      inProgress: "info",
+      default: "secondary",
+    };
+    return statusColors[status] || statusColors.default;
+  };
 
   return (
     <>
@@ -106,32 +107,38 @@ const Notifications = () => {
       <div className="relative capitalize bg-gray-50 min-h-screen ml-0 md:ml-32">
         <div className="p-4">
           <Card>
-            <CardHeader className="flex justify-between items-center">
+            <CardHeader>
               <CardTitle className="text-2xl font-bold flex items-center gap-2">
                 <Bell className="h-6 w-6" />
                 Your Notifications
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {!loggedIn ? (
+              {!loggedIn && (
                 <Alert className="bg-yellow-50 border-yellow-200">
                   <AlertCircle className="h-4 w-4 text-yellow-600" />
                   <AlertDescription className="text-yellow-700">
                     Please log in to view your notifications
                   </AlertDescription>
                 </Alert>
-              ) : loading ? (
-                renderNotificationSkeleton()
-              ) : error ? (
+              )}
+
+              {loading && renderNotificationSkeleton()}
+
+              {error && (
                 <Alert variant="destructive">
                   <AlertCircle className="h-4 w-4" />
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
-              ) : notifications.length === 0 ? (
+              )}
+
+              {!loading && !error && notifications.length === 0 && (
                 <div className="text-center py-8 text-gray-500">
-                  <p>No notifications available at the moment</p>
+                  <p>No notifications available</p>
                 </div>
-              ) : (
+              )}
+
+              {!loading && !error && notifications.length > 0 && (
                 <div className="space-y-4">
                   {notifications.map((notification) => (
                     <div
@@ -142,7 +149,9 @@ const Notifications = () => {
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
-                            <Badge variant={notification.type || "default"}>
+                            <Badge
+                              variant={getStatusBadgeColor(notification.type)}
+                            >
                               {notification.type || "Update"}
                             </Badge>
                             <p className="text-sm text-gray-500">
@@ -169,63 +178,84 @@ const Notifications = () => {
       </div>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        {selectedNotification && (
-          <DialogContent className="sm:max-w-lg">
-            <DialogHeader>
-              <div className="flex justify-between items-center">
-                <DialogTitle className="text-xl font-semibold">
-                  Notification Details
-                </DialogTitle>
-              </div>
-            </DialogHeader>
-            <div className="mt-4">
-              <div className="space-y-4">
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-semibold">
+              {taskDetails ? "Task Details" : "Notification Details"}
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="mt-4 space-y-4">
+            {taskDetails ? (
+              <>
                 <div>
                   <Badge
-                    variant={selectedNotification.type || "default"}
+                    variant={getStatusBadgeColor(taskDetails.status)}
                     className="mb-2"
                   >
-                    {selectedNotification.type || "Update"}
+                    {taskDetails.status}
+                  </Badge>
+                  <h3 className="text-lg font-semibold">{taskDetails.title}</h3>
+                </div>
+                <p className="text-gray-600">{taskDetails.description}</p>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Calendar className="h-4 w-4" />
+                    <span>Start: {formatDate(taskDetails.startDate)}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Calendar className="h-4 w-4" />
+                    <span>End: {formatDate(taskDetails.endDate)}</span>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  <Badge
+                    variant={getStatusBadgeColor(selectedNotification?.type)}
+                    className="mb-2"
+                  >
+                    {selectedNotification?.type || "Update"}
                   </Badge>
                   <h3 className="text-lg font-semibold">
-                    {selectedNotification.message}
+                    {selectedNotification?.message}
                   </h3>
                 </div>
-                {selectedNotification.description && (
+                {selectedNotification?.description && (
                   <p className="text-gray-600">
                     {selectedNotification.description}
                   </p>
                 )}
-                {selectedNotification.link && (
-                  <a
-                    href={selectedNotification.link}
-                    className="text-blue-600 hover:underline block"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    View More Details
-                  </a>
-                )}
                 <div className="text-sm text-gray-500">
-                  <p>Received: {formatDate(selectedNotification.createdAt)}</p>
-                  {selectedNotification.sender && (
+                  <p>Received: {formatDate(selectedNotification?.createdAt)}</p>
+                  {selectedNotification?.sender && (
                     <p className="mt-1">From: {selectedNotification.sender}</p>
                   )}
-                  {selectedNotification.category && (
-                    <p className="mt-1">
-                      Category: {selectedNotification.category}
-                    </p>
-                  )}
                 </div>
-              </div>
-            </div>
-          </DialogContent>
-        )}
+              </>
+            )}
+          </div>
+        </DialogContent>
       </Dialog>
 
       <Footer />
     </>
   );
 };
+
+const renderNotificationSkeleton = () => (
+  <div className="space-y-4">
+    {[1, 2, 3].map((index) => (
+      <div key={index} className="flex items-start space-x-4 p-4 border-b">
+        <Skeleton className="h-12 w-12 rounded-full" />
+        <div className="space-y-2 flex-1">
+          <Skeleton className="h-4 w-3/4" />
+          <Skeleton className="h-3 w-1/4" />
+        </div>
+      </div>
+    ))}
+  </div>
+);
 
 export default Notifications;
