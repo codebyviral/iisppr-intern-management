@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="bg-white border-t border-gray-200 text-gray-800">
+    <footer className="bg-white border-t mt-60 border-gray-200 text-gray-800">
       <div className="mx-auto max-w-screen-xl px-4 py-5 sm:px-6 lg:px-28"> {/* Updated lg:px-16 for desktop */}
         {/* Flexbox container for "Company", "Help", "Legal", and Social Media sections */}
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 text-sm sm:text-base">

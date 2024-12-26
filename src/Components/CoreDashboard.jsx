@@ -1,8 +1,17 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent } from "@/Components/ui/card";
-import { Button } from "@/Components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Settings, ExternalLink, Headset, Loader } from "lucide-react";
+import {
+  Settings,
+  ExternalLink,
+  Headset,
+  Loader,
+  Calendar,
+  CheckCircle,
+  Clock,
+  AlertCircle,
+} from "lucide-react";
 import axios from "axios";
 import { getTasks } from "./URIs";
 import { useAppContext } from "@/context/AppContext";
@@ -13,7 +22,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogClose,
-} from "@/Components/ui/dialog";
+} from "@/components/ui/dialog";
 
 const CoreDashboard = () => {
   const [tasks, setTasks] = useState([]);
@@ -48,58 +57,89 @@ const CoreDashboard = () => {
     fetchTasks();
   }, []);
 
-  // eslint-disable-next-line react/prop-types
+  const TaskStatusBadge = ({ status }) => {
+    const statusConfig = {
+      completed: {
+        icon: CheckCircle,
+        className: "bg-green-100 text-green-700",
+      },
+      pending: {
+        icon: Clock,
+        className: "bg-yellow-100 text-yellow-700",
+      },
+      overdue: {
+        icon: AlertCircle,
+        className: "bg-red-100 text-red-700",
+      },
+    };
+
+    const config = statusConfig[status.toLowerCase()] || statusConfig.pending;
+    const Icon = config.icon;
+
+    return (
+      <div
+        className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm capitalize ${config.className}`}
+      >
+        <Icon className="w-4 h-4" />
+        <span>{status}</span>
+      </div>
+    );
+  };
+
   const TaskList = ({ tasks, limit = null }) => {
-    // eslint-disable-next-line react/prop-types
     const displayTasks = limit ? tasks.slice(0, limit) : tasks;
 
     return (
-      <div>
+      <div className="space-y-6">
         {displayTasks
           .slice()
           .reverse()
           .map((task, index) => (
-            <div
+            <Card
               key={task._id || index}
-              className="flex flex-col lg:flex-row items-start lg:items-center gap-4 mb-4 border-b pb-4 last:border-b-0"
+              className="hover:shadow-md transition-shadow"
             >
-              <div className="flex-1">
-                <p className="font-medium text-lg">{task.title}</p>
-                <p className="text-sm text-gray-600 mt-2">{task.description}</p>
-                <p className="text-xs text-gray-400 mt-1">
-                  Start Date:{" "}
-                  <span className="text-blue-500">
-                    {new Date(task.startDate).toLocaleDateString()} <br />
-                  </span>
-                  End Date:{" "}
-                  <span className="text-blue-500">
-                    {new Date(task.endDate).toLocaleDateString()}
-                  </span>
-                </p>
-              </div>
-              <div className="flex flex-col items-start lg:items-center gap-2 mt-4 lg:mt-0">
-                <Button
-                  onClick={() => {
-                    setSelectedTaskId(task._id);
-                    setModalView(true);
-                    setShowAllTasks(false);
-                  }}
-                  variant="outline"
-                  className="w-full lg:w-auto text-sm"
-                >
-                  {task.status === "completed" ? "Resubmit" : "Submit"}
-                </Button>
-                <span
-                  className={`text-sm capitalize mt-2 ${
-                    task.status === "completed"
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  {task.status}
-                </span>
-              </div>
-            </div>
+              <CardContent className="p-6">
+                <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6">
+                  <div className="flex-1 space-y-3">
+                    <div className="flex items-start justify-between">
+                      <h3 className="font-semibold text-lg text-gray-900">
+                        {task.title}
+                      </h3>
+                      <TaskStatusBadge status={task.status} />
+                    </div>
+                    <p className="text-gray-600">{task.description}</p>
+                    <div className="flex flex-wrap gap-4 text-sm text-gray-500">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="w-4 h-4" />
+                        <span>
+                          Start: {new Date(task.startDate).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Calendar className="w-4 h-4" />
+                        <span>
+                          End: {new Date(task.endDate).toLocaleDateString()}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-3 min-w-[120px]">
+                    <Button
+                      onClick={() => {
+                        setSelectedTaskId(task._id);
+                        setModalView(true);
+                        setShowAllTasks(false);
+                      }}
+                      variant="outline"
+                      className="w-full"
+                    >
+                      {task.status === "completed" ? "Resubmit" : "Submit"}
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           ))}
       </div>
     );
@@ -110,20 +150,20 @@ const CoreDashboard = () => {
       {modalView && selectedTaskId && <TaskModal taskId={selectedTaskId} />}
 
       <Dialog open={showAllTasks} onOpenChange={setShowAllTasks}>
-        <DialogContent className="sm:max-w-2xl">
+        <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
             <div className="flex justify-between items-center">
-              <DialogTitle className="text-xl font-semibold">
+              <DialogTitle className="text-2xl font-semibold">
                 All Tasks ({tasks.length})
               </DialogTitle>
-              <DialogClose className="rounded-full hover:bg-gray-100 p-2"></DialogClose>
+              <DialogClose className="rounded-full hover:bg-gray-100 p-2" />
             </div>
           </DialogHeader>
-          <div className="mt-4 max-h-[60vh] overflow-y-auto">
+          <div className="mt-6 max-h-[70vh] overflow-y-auto pr-2">
             {loading ? (
-              <div className="flex justify-center items-center py-4">
-                <p className="text-gray-600 mr-2">Loading tasks...</p>
-                <Loader className="animate-spin h-5 w-5 text-blue-500" />
+              <div className="flex justify-center items-center py-8">
+                <Loader className="animate-spin h-6 w-6 text-blue-500 mr-3" />
+                <p className="text-gray-600">Loading tasks...</p>
               </div>
             ) : (
               <TaskList tasks={tasks} />
@@ -132,25 +172,27 @@ const CoreDashboard = () => {
         </DialogContent>
       </Dialog>
 
-      <div className="p-6 max-w-7xl mx-auto taskContainer sm:pl-8 md:pl-10 lg:pl-[10rem]">
+      <div className="p-6 max-w-7xl mx-auto space-y-8 sm:pl-8 md:pl-10 lg:pl-[10rem]">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-2xl font-bold mb-2">
-              Welcome, {localStorage.getItem("userName") || `Login to Continue`}!
-            </h1>
-            <p className="text-gray-600">
-              Open the panel and watch your progress and growth in knowledge.
-            </p>
-          </div>
-          <div
-            onClick={() => {
-              setDashboard("Settings");
-              navigate("/setting");
-            }}
-            className="hide-mobile"
-          >
-            <Button variant="outline" className="flex items-center gap-2">
+        <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg p-8 text-white">
+          <div className="flex justify-between items-center">
+            <div className="space-y-2">
+              <h1 className="text-3xl font-bold">
+                Welcome,{" "}
+                {localStorage.getItem("userName") || "Login to Continue"}!
+              </h1>
+              <p className="text-blue-100">
+                Track your progress and expand your knowledge journey.
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              className="bg-white text-blue-600 hover:bg-blue-50 hidden lg:flex items-center gap-2"
+              onClick={() => {
+                setDashboard("Settings");
+                navigate("/setting");
+              }}
+            >
               <Settings className="h-4 w-4" />
               Settings
             </Button>
@@ -160,86 +202,115 @@ const CoreDashboard = () => {
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Tasks Section */}
-          <div className="capitalize">
-            <h2 className="text-xl font-bold mb-4">My tasks</h2>
-            <Card>
-              <CardContent className="p-6">
-                <p className="text-sm text-gray-600 mb-4">
-                  {tasks.length} active tasks
-                </p>
-                {loading ? (
-                  <div className="flex justify-center items-center py-4">
-                    <p className="text-gray-600 mr-2">Loading tasks...</p>
-                    <Loader className="animate-spin h-5 w-5 text-blue-500" />
-                  </div>
-                ) : (
-                  <TaskList tasks={tasks} limit={3} />
-                )}
+          <div>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900">My Tasks</h2>
+              <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm">
+                {tasks.length} active
+              </span>
+            </div>
+            {loading ? (
+              <Card>
+                <CardContent className="p-8 flex justify-center items-center">
+                  <Loader className="animate-spin h-6 w-6 text-blue-500 mr-3" />
+                  <p className="text-gray-600">Loading tasks...</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="space-y-4">
+                <TaskList tasks={tasks} limit={3} />
                 <Button
                   variant="outline"
-                  className="w-full mt-4"
+                  className="w-full mt-4 py-6 text-base hover:bg-gray-50"
                   onClick={() => setShowAllTasks(true)}
                 >
                   View all tasks
                   <ExternalLink className="h-4 w-4 ml-2" />
                 </Button>
-              </CardContent>
-            </Card>
+              </div>
+            )}
           </div>
 
-          {/* Calendar Section */}
-          <div>
-            <h2 className="text-xl font-bold mb-4">December {currentYear}</h2>
-            <Card className="mb-8">
-              <CardContent className="p-4">
-                <div className="grid grid-cols-7 gap-2 text-center">
-                  {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
-                    (day) => (
-                      <div key={day} className="text-sm text-gray-600">
-                        {day}
+          {/* Calendar and Quick Actions Section */}
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                December {currentYear}
+              </h2>
+              <Card className="overflow-hidden">
+                <CardContent className="p-6">
+                  <div className="grid grid-cols-7 gap-2 text-center">
+                    {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
+                      (day) => (
+                        <div
+                          key={day}
+                          className="font-medium text-gray-500 py-2"
+                        >
+                          {day}
+                        </div>
+                      )
+                    )}
+                    {dates.map((date) => (
+                      <div
+                        key={date}
+                        className={`p-3 rounded-lg transition-colors ${
+                          date === currentDay
+                            ? "bg-blue-500 text-white font-semibold"
+                            : "hover:bg-gray-100 cursor-pointer"
+                        }`}
+                      >
+                        {date}
                       </div>
-                    )
-                  )}
-                  {dates.map((date) => (
-                    <div
-                      key={date}
-                      className={`p-2 rounded cursor-pointer ${
-                        date === currentDay
-                          ? "bg-gray-200 font-bold text-black"
-                          : ""
-                      }`}
-                    >
-                      {date}
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
-            {/* Metrics Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-              <Card
-                className="bg-blue-500 text-white cursor-pointer"
-                onClick={() => navigate("/frequently-asked-questions")}
-              >
-                <CardContent className="p-6 flex flex-col items-center">
-                  <div className="w-24 h-24 flex items-center justify-center mb-4">
-                    <Settings className="h-12 w-12" />
-                  </div>
-                  <p className="text-center">FAQs</p>
-                </CardContent>
-              </Card>
-              <Card
-                className="bg-blue-500 text-white cursor-pointer"
-                onClick={() => navigate("/help")}
-              >
-                <CardContent className="p-6 flex flex-col items-center">
-                  <div className="w-24 h-24 flex items-center justify-center mb-4">
-                    <Headset className="h-12 w-12" />
-                  </div>
-                  <p className="text-center">Contact Us</p>
-                </CardContent>
-              </Card>
+            {/* Quick Actions */}
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                Quick Actions
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card
+                  className="group cursor-pointer overflow-hidden transition-all hover:shadow-lg"
+                  onClick={() => navigate("/frequently-asked-questions")}
+                >
+                  <CardContent className="p-6 bg-gradient-to-br from-blue-500 to-blue-600 text-white h-full">
+                    <div className="flex flex-col items-center text-center space-y-4">
+                      <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <Settings className="h-8 w-8" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-lg">FAQs</h3>
+                        <p className="text-blue-100 text-sm mt-1">
+                          Find quick answers
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card
+                  className="group cursor-pointer overflow-hidden transition-all hover:shadow-lg"
+                  onClick={() => navigate("/help")}
+                >
+                  <CardContent className="p-6 bg-gradient-to-br from-blue-500 to-blue-600 text-white h-full">
+                    <div className="flex flex-col items-center text-center space-y-4">
+                      <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <Headset className="h-8 w-8" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-lg">Contact Us</h3>
+                        <p className="text-blue-100 text-sm mt-1">
+                          Get support
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </div>
         </div>

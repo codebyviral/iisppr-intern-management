@@ -1,220 +1,284 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
-import { Navbar } from "@/Components/compIndex";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/Components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Calendar, Clock, FileText, Loader2 } from "lucide-react";
+import { Navbar, SideNav, Footer } from "@/Components/compIndex";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/Components/ui/select";
-import { Calendar, Clock, FileText, AlertCircle } from "lucide-react";
-import { Label } from "@/Components/ui/label";
-import { Input } from "@/Components/ui/input";
-import { Textarea } from "@/Components/ui/textarea";
-import { Button } from "@/Components/ui/button";
-import { Checkbox } from "@/Components/ui/checkbox";
-import { Alert, AlertDescription } from "@/Components/ui/alert";
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
 
 const LeaveApplication = () => {
-  const [leaveDetails, setLeaveDetails] = useState({
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  const [formData, setFormData] = useState({
     leaveType: "",
     startDate: "",
     endDate: "",
     reason: "",
-    userId: localStorage.getItem("userId") || "",
   });
 
-  const [acknowledgement, setAcknowledgement] = useState(false);
+  const leaveTypes = [
+    { value: "Sick Leave", label: "Sick Leave" },
+    { value: "Peronal Leave", label: "Peronal Leave" },
+    { value: "Vacation", label: "Vacation" },
+    { value: "Other", label: "Other" },
+  ];
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setLeaveDetails((prevDetails) => ({
-      ...prevDetails,
-      [name]: value,
-    }));
-  };
+  const validateForm = () => {
+    if (!formData.leaveType) {
+      toast.error("Please select a leave type");
+      return false;
+    }
+    if (!formData.startDate) {
+      toast.error("Please select a start date");
+      return false;
+    }
+    if (!formData.endDate) {
+      toast.error("Please select an end date");
+      return false;
+    }
+    if (!formData.reason) {
+      toast.error("Please provide a reason for leave");
+      return false;
+    }
 
-  const handleLeaveTypeChange = (value) => {
-    setLeaveDetails((prevDetails) => ({
-      ...prevDetails,
-      leaveType: value,
-    }));
+    const start = new Date(formData.startDate);
+    const end = new Date(formData.endDate);
+
+    if (end < start) {
+      toast.error("End date cannot be before start date");
+      return false;
+    }
+
+    return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!acknowledgement) {
-      alert("You must acknowledge the leave policy.");
-      return;
-    }
+
+    if (!validateForm()) return;
+
+    const loadingToast = toast.loading("Submitting leave application...");
+    setLoading(true);
 
     try {
-      const response = await fetch("/api/leaves", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(leaveDetails),
-      });
+      const token = localStorage.getItem("token"); // Assuming you store the JWT token
 
-      const data = await response.json();
-      if (data.success) {
-        alert("Leave application submitted successfully!");
-      } else {
-        alert("Error submitting leave application.");
-      }
-    } catch (err) {
-      alert("Error submitting leave application.");
+      const response = await axios.post(
+        "https://iisppr-backend.vercel.app/leave",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      toast.dismiss(loadingToast);
+      toast.success("Leave application submitted successfully!");
+
+      // Clear form
+      setFormData({
+        leaveType: "",
+        startDate: "",
+        endDate: "",
+        reason: "",
+      });
+    } catch (error) {
+      toast.dismiss(loadingToast);
+      const errorMessage =
+        error.response?.data?.message || "Error submitting leave application";
+      toast.error(errorMessage);
+      console.error("Leave application error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
       <Navbar />
-      <div className="container mx-auto py-8 px-4">
-        <Card className="max-w-2xl mx-auto shadow-lg">
-          <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-            <div className="bg-gray-800 text-white px-6 py-2 rounded-full text-sm font-medium">
-              New Request
+      <SideNav />
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 5000,
+          style: {
+            background: "#363636",
+            color: "#fff",
+          },
+          success: {
+            duration: 3000,
+            style: {
+              background: "#22c55e",
+            },
+          },
+          error: {
+            duration: 4000,
+            style: {
+              background: "#ef4444",
+            },
+          },
+        }}
+      />
+
+      <div className="relative bg-gray-50 min-h-screen ml-0 md:ml-32">
+        <div className="p-6">
+          <div className="max-w-2xl mx-auto">
+            <Card className="shadow-lg">
+              <CardHeader className="border-b bg-white">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-blue-100 rounded-lg">
+                    <FileText className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <CardTitle className="text-2xl font-bold">
+                    Leave Application
+                  </CardTitle>
+                </div>
+              </CardHeader>
+
+              <CardContent className="p-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">
+                      Leave Type *
+                    </label>
+                    <Select
+                      value={formData.leaveType}
+                      onValueChange={(value) =>
+                        setFormData({ ...formData, leaveType: value })
+                      }
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select leave type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {leaveTypes.map((type) => (
+                          <SelectItem key={type.value} value={type.value}>
+                            {type.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700">
+                        Start Date *
+                      </label>
+                      <div className="relative">
+                        <div className="absolute left-3 top-3 text-gray-400">
+                          <Calendar className="h-5 w-5" />
+                        </div>
+                        <input
+                          type="date"
+                          value={formData.startDate}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              startDate: e.target.value,
+                            })
+                          }
+                          className="pl-10 w-full h-11 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700">
+                        End Date *
+                      </label>
+                      <div className="relative">
+                        <div className="absolute left-3 top-3 text-gray-400">
+                          <Calendar className="h-5 w-5" />
+                        </div>
+                        <input
+                          type="date"
+                          value={formData.endDate}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              endDate: e.target.value,
+                            })
+                          }
+                          className="pl-10 w-full h-11 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">
+                      Reason for Leave *
+                    </label>
+                    <Textarea
+                      value={formData.reason}
+                      onChange={(e) =>
+                        setFormData({ ...formData, reason: e.target.value })
+                      }
+                      placeholder="Please provide a detailed reason for your leave request..."
+                      className="min-h-[120px]"
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-end gap-4 pt-4">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => navigate(-1)}
+                      className="w-full md:w-auto"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Submitting...
+                        </>
+                      ) : (
+                        "Submit Application"
+                      )}
+                    </Button>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+
+            <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="flex items-start gap-3">
+                <Clock className="h-5 w-5 text-blue-500 mt-0.5" />
+                <div>
+                  <h3 className="font-medium text-blue-900">Processing Time</h3>
+                  <p className="text-sm text-blue-700 mt-1">
+                    Leave applications are typically processed within 24-48
+                    hours. You will receive a notification once your application
+                    has been reviewed.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-
-          <CardHeader className="space-y-1 pb-8">
-            <CardTitle className="text-3xl font-bold text-center text-blue-600">
-              Leave Application
-            </CardTitle>
-            <CardDescription className="text-center text-gray-600">
-              Submit your leave request for approval
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <Label
-                  htmlFor="leaveType"
-                  className="flex items-center gap-2 text-gray-700"
-                >
-                  <FileText className="w-4 h-4" />
-                  Leave Type
-                </Label>
-                <Select onValueChange={handleLeaveTypeChange}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select leave type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="sick">Sick Leave</SelectItem>
-                    <SelectItem value="vacation">Vacation</SelectItem>
-                    <SelectItem value="personal">Personal Leave</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label
-                    htmlFor="startDate"
-                    className="flex items-center gap-2 text-gray-700"
-                  >
-                    <Calendar className="w-4 h-4" />
-                    Start Date
-                  </Label>
-                  <Input
-                    type="date"
-                    id="startDate"
-                    name="startDate"
-                    value={leaveDetails.startDate}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label
-                    htmlFor="endDate"
-                    className="flex items-center gap-2 text-gray-700"
-                  >
-                    <Clock className="w-4 h-4" />
-                    End Date
-                  </Label>
-                  <Input
-                    type="date"
-                    id="endDate"
-                    name="endDate"
-                    value={leaveDetails.endDate}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label
-                  htmlFor="reason"
-                  className="flex items-center gap-2 text-gray-700"
-                >
-                  <FileText className="w-4 h-4" />
-                  Reason for Leave
-                </Label>
-                <Textarea
-                  id="reason"
-                  name="reason"
-                  value={leaveDetails.reason}
-                  onChange={handleChange}
-                  required
-                  className="min-h-[120px]"
-                  placeholder="Please provide detailed reason for your leave request..."
-                />
-              </div>
-
-              <Alert className="bg-gray-50 border-gray-200">
-                <AlertCircle className="h-4 w-4 text-gray-600" />
-                <AlertDescription className="text-gray-600">
-                  Please ensure all details are accurate before submission.
-                </AlertDescription>
-              </Alert>
-
-              <div className="flex items-center space-x-2 bg-gray-50 p-4 rounded-lg">
-                <Checkbox
-                  id="acknowledgement"
-                  checked={acknowledgement}
-                  onCheckedChange={setAcknowledgement}
-                />
-                <Label
-                  htmlFor="acknowledgement"
-                  className="text-sm text-gray-600"
-                >
-                  I acknowledge that I can take a maximum of 5 days leave during
-                  the internship.
-                </Label>
-              </div>
-            </form>
-          </CardContent>
-
-          <CardFooter className="flex flex-col gap-4">
-            <Button
-              type="submit"
-              onClick={handleSubmit}
-              className="w-full bg-blue-600 hover:bg-gray-700 text-white font-medium py-3 rounded-lg transition-all duration-200 transform hover:scale-[1.02]"
-            >
-              Submit Application
-            </Button>
-            <p className="text-center text-sm text-gray-600">
-              Your request will be reviewed within 24-48 hours
-            </p>
-          </CardFooter>
-        </Card>
+        </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 };
 
