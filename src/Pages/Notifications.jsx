@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Skeleton } from "@/Components/ui/skeleton";
 import { AlertCircle, X, Bell } from "lucide-react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertDescription } from "@/Components/ui/alert";
 import { Navbar, SideNav, Footer } from "@/Components/compIndex";
 import {
   Dialog,
