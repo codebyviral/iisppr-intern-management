@@ -12,6 +12,7 @@ import {
   DialogClose,
 } from "@/Components/ui/dialog";
 import { Badge } from "@/Components/ui/badge";
+import { useAuthContext } from "@/context/AuthContext";
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
@@ -19,6 +20,7 @@ const Notifications = () => {
   const [error, setError] = useState(null);
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { loggedIn } = useAuthContext();
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -49,8 +51,12 @@ const Notifications = () => {
       }
     };
 
-    fetchNotifications();
-  }, []);
+    if (loggedIn) {
+      fetchNotifications();
+    } else {
+      setLoading(false);
+    }
+  }, [loggedIn]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -118,7 +124,14 @@ const Notifications = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {loading ? (
+              {!loggedIn ? (
+                <Alert className="bg-yellow-50 border-yellow-200">
+                  <AlertCircle className="h-4 w-4 text-yellow-600" />
+                  <AlertDescription className="text-yellow-700">
+                    Please log in to view your notifications
+                  </AlertDescription>
+                </Alert>
+              ) : loading ? (
                 renderNotificationSkeleton()
               ) : error ? (
                 <Alert variant="destructive">

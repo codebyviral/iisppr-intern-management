@@ -89,14 +89,22 @@ const CoreDashboard = () => {
                 onClick={() => {
                   setSelectedTaskId(task._id);
                   setModalView(true);
-                  setShowAllTasks(false); // Close the all tasks modal when opening task details
+                  setShowAllTasks(false);
                 }}
                 variant="outline"
                 className="w-full lg:w-auto text-sm"
               >
-                Submit
+                {task.status === "completed" ? "Resubmit" : "Submit"}
               </Button>
-              <span className="text-sm text-red-600 mt-2">{`${task.status}`}</span>
+              <span
+                className={`text-sm capitalize mt-2 ${
+                  task.status === "completed"
+                    ? "text-green-600"
+                    : "text-red-600"
+                }`}
+              >
+                {task.status}
+              </span>
             </div>
           </div>
         ))}
@@ -115,8 +123,7 @@ const CoreDashboard = () => {
               <DialogTitle className="text-xl font-semibold">
                 All Tasks ({tasks.length})
               </DialogTitle>
-              <DialogClose className="rounded-full hover:bg-gray-100 p-2">
-              </DialogClose>
+              <DialogClose className="rounded-full hover:bg-gray-100 p-2"></DialogClose>
             </div>
           </DialogHeader>
           <div className="mt-4 max-h-[60vh] overflow-y-auto">
