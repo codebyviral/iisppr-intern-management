@@ -10,7 +10,9 @@ const InternTasksSubmissions = () => {
   useEffect(() => {
     const fetchTaskSubmissions = async () => {
       try {
-        const response = await fetch("https://iisppr-backend.vercel.app/getsubmitedtasks");
+        const response = await fetch(
+          "https://iisppr-backend.vercel.app/getsubmitedtasks"
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch task submissions");
         }
@@ -27,7 +29,16 @@ const InternTasksSubmissions = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="flex flex-col items-center">
+          <div className="w-16 h-16 border-t-4 border-b-4 border-red-500 rounded-full animate-spin"></div>
+          <p className="mt-4 text-lg font-semibold text-gray-700">
+            Loading, please wait...
+          </p>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
@@ -38,7 +49,9 @@ const InternTasksSubmissions = () => {
     <>
       <CustomNavbar />
       <div className="container mx-auto my-6 p-6">
-        <h2 className="text-3xl font-semibold text-center mb-6">Intern Task Submissions</h2>
+        <h2 className="text-3xl font-semibold text-center mb-6">
+          Intern Task Submissions
+        </h2>
         <div className="overflow-x-auto">
           <table className="min-w-full table-auto border-collapse border border-gray-300">
             <thead>
@@ -56,13 +69,17 @@ const InternTasksSubmissions = () => {
                 taskSubmissions.map((submission) => (
                   <tr key={submission._id}>
                     {/* Intern Name */}
-                    <td className="border-b p-3">{submission.user?.name || "N/A"}</td>
+                    <td className="border-b p-3">
+                      {submission.user?.name || "N/A"}
+                    </td>
 
                     {/* Task ID */}
                     <td className="border-b p-3">{submission.task || "N/A"}</td>
 
                     {/* Comments */}
-                    <td className="border-b p-3">{submission.comments || "No Comments"}</td>
+                    <td className="border-b p-3">
+                      {submission.comments || "No Comments"}
+                    </td>
 
                     {/* File */}
                     <td className="border-b p-3">
