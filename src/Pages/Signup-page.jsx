@@ -3,7 +3,6 @@ import { Navbar, SideNav, Footer } from "@/Components/compIndex";
 import { Mail, Lock, UserPlus, Phone } from "lucide-react";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { signupURL, localSignupUrl } from "@/Components/URIs";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = ({ onSwitchToSignin }) => {
@@ -19,6 +18,7 @@ const SignUp = ({ onSwitchToSignin }) => {
   const navigate = useNavigate();
 
   const signUpUser = async () => {
+    const signupURL = `$${import.meta.env.VITE_BASE_URL}/api/auth/signup`;
     setIsLoading(true);
     const num = parseInt(phone);
     try {

@@ -27,7 +27,7 @@ export default function AccountDetails() {
     const fetchUserProfile = async () => {
       try {
         const response = await axios.get(
-          `https://iisppr-backend.vercel.app/api/auth/user/${localStorage.getItem(
+          `${import.meta.env.VITE_BASE_URL}/api/auth/user/${localStorage.getItem(
             "userId"
           )}`
         );

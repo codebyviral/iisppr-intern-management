@@ -10,7 +10,7 @@ const InternAttendance = () => {
   useEffect(() => {
     const fetchAttendanceData = async () => {
       try {
-        const response = await fetch("https://iisppr-backend.vercel.app/attendance");
+        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/attendance`);
         
         if (!response.ok) {
           throw new Error("Failed to fetch attendance data");

@@ -7,7 +7,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Loader } from "@/Components/compIndex";
 
-const API_BASE_URL = "https://iisppr-backend.vercel.app";
+const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const INITIAL_TASK_STATE = {
   assignedTo: "",

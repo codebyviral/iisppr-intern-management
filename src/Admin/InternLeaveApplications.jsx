@@ -13,8 +13,7 @@ const Internleaveapplication = () => {
   useEffect(() => {
     const fetchLeaves = async () => {
       try {
-        const response = await axios.get("https://iisppr-backend.vercel.app/leave");
-        console.log(response.data);
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/leave`);
         setLeaves(response.data.leaves);
       } catch (error) {
         console.log("Error fetching leaves:", error);
@@ -32,7 +31,7 @@ const Internleaveapplication = () => {
 
     try {
       await axios.put(
-        `https://iisppr-backend.vercel.app/leave/${selectedLeave._id}`,
+        `${import.meta.env.VITE_BASE_URL}/leave/${selectedLeave._id}`,
         { status, updatedBy: adminName }
       );
       setMessage({text:"Status updated successfully",type:"success"})

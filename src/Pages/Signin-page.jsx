@@ -2,10 +2,9 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { Navbar, SideNav, Footer } from "@/Components/compIndex";
-import { Mail, Lock, LogIn } from "lucide-react"; 
+import { Mail, Lock, LogIn } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { localLoginUrl, loginUrl } from "@/Components/URIs";
 import axios from "axios";
 import { useAuthContext } from "@/context/AuthContext";
 import { useAppContext } from "@/context/AppContext";
@@ -28,8 +27,9 @@ const Signin = ({ onSwitchToSignup }) => {
 
   const Login = async () => {
     setIsLoading(true);
+    const login = `${import.meta.env.VITE_BASE_URL}/api/auth/login`;
     try {
-      const response = await axios.post(loginUrl, {
+      const response = await axios.post(login, {
         email: email,
         password: password,
       });
@@ -49,7 +49,7 @@ const Signin = ({ onSwitchToSignup }) => {
       setIsLoggedIn(true);
       setIsLoading(false);
       toast.success("Login successful");
-      console.log(token)
+      console.log(token);
       navigate("/");
     } catch (error) {
       console.error("Login error:", error);

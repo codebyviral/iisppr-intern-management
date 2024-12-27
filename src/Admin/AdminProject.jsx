@@ -15,11 +15,11 @@ const AdminProject = () => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    
+
     if (files && files[0]) {
       setProject({
         ...project,
-        [name]: files[0], 
+        [name]: files[0],
       });
     } else {
       setProject({
@@ -32,27 +32,30 @@ const AdminProject = () => {
   const handlePostProject = async () => {
     try {
       setLoading(true);
-  
+
       const formData = new FormData();
       formData.append("title", project.title);
       formData.append("subTitle", project.subTitle);
       formData.append("description", project.description);
-      formData.append("image", project.image); 
+      formData.append("image", project.image);
       formData.append("createdBy", project.createdBy);
-  
-      const response = await fetch("https://iisppr-backend.vercel.app/project/submit", {
-        method: "POST",
-        body: formData,
-      });
-  
+
+      const response = await fetch(
+        `${import.meta.env.VITE_BASE_URL}/project/submit`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
       if (!response.ok) {
         throw new Error("Failed to post the project");
       }
-  
+
       const data = await response.json();
-  
+
       setPostedProjects([...postedProjects, data]);
-  
+
       setProject({
         title: "",
         subTitle: "",
@@ -69,13 +72,18 @@ const AdminProject = () => {
 
   const handleDelete = async (ProjectId) => {
     try {
-      const response = await fetch(`https://iisppr-backend.vercel.app/project/delete/${ProjectId}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BASE_URL}/project/delete/${ProjectId}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to delete project");
       }
-      setPostedProjects(postedProjects.filter((project) => project._id !== ProjectId));
+      setPostedProjects(
+        postedProjects.filter((project) => project._id !== ProjectId)
+      );
     } catch (error) {
       console.error("Error deleting project:", error);
     }
@@ -85,7 +93,9 @@ const AdminProject = () => {
     const fetchProjects = async () => {
       setLoading(true);
       try {
-        const response = await fetch("https://iisppr-backend.vercel.app/project/all");
+        const response = await fetch(
+          `${import.meta.env.VITE_BASE_URL}/project/all`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch projects");
         }
@@ -113,7 +123,9 @@ const AdminProject = () => {
 
           {/* Image URL */}
           <div className="mb-4">
-            <label className="block text-blue-600 font-medium mb-2">Image</label>
+            <label className="block text-blue-600 font-medium mb-2">
+              Image
+            </label>
             <input
               type="file"
               name="image"
@@ -125,7 +137,9 @@ const AdminProject = () => {
 
           {/* Project Title */}
           <div className="mb-4">
-            <label className="block text-blue-600 font-medium mb-2">Project Title</label>
+            <label className="block text-blue-600 font-medium mb-2">
+              Project Title
+            </label>
             <input
               type="text"
               name="title"
@@ -138,7 +152,9 @@ const AdminProject = () => {
 
           {/* Sub Title */}
           <div className="mb-4">
-            <label className="block text-blue-600 font-medium mb-2">Sub Title</label>
+            <label className="block text-blue-600 font-medium mb-2">
+              Sub Title
+            </label>
             <input
               type="text"
               name="subTitle"
@@ -151,7 +167,9 @@ const AdminProject = () => {
 
           {/* Project Description */}
           <div className="mb-4">
-            <label className="block text-blue-600 font-medium mb-2">Description</label>
+            <label className="block text-blue-600 font-medium mb-2">
+              Description
+            </label>
             <textarea
               name="description"
               value={project.description}
@@ -164,7 +182,9 @@ const AdminProject = () => {
 
           {/* Created By (Team Name) */}
           <div className="mb-4">
-            <label className="block text-blue-600 font-medium mb-2">Created By</label>
+            <label className="block text-blue-600 font-medium mb-2">
+              Created By
+            </label>
             <input
               type="text"
               name="createdBy"

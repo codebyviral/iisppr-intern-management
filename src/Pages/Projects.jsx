@@ -8,11 +8,13 @@ const Projects = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch("https://iisppr-backend.vercel.app/project/all");
+        const response = await fetch(
+          `${import.meta.env.VITE_BASE_URL}/project/all`
+        );
         if (response.ok) {
           const data = await response.json();
-          console.log("Fetched data:", data); 
-          setProjects(data); 
+          console.log("Fetched data:", data);
+          setProjects(data);
         } else {
           console.error("Failed to fetch projects");
         }
@@ -45,7 +47,7 @@ const Projects = () => {
                 {/* Left side: Image */}
                 <div className="project-image w-full md:w-1/3">
                   <img
-                    src={project.image}  // Assuming 'image' is the correct field
+                    src={project.image} // Assuming 'image' is the correct field
                     alt="Project"
                     className="w-full h-64 md:h-full object-cover rounded-t-lg md:rounded-l-lg"
                   />
@@ -54,19 +56,25 @@ const Projects = () => {
                 {/* Right side: Description */}
                 <div className="project-description w-full md:w-2/3 p-4 overflow-y-auto">
                   <div className="project-main-heading">
-                    <h3 className="text-2xl font-bold text-white">{project.title}</h3> {/* Assuming 'title' is the correct field */}
+                    <h3 className="text-2xl font-bold text-white">
+                      {project.title}
+                    </h3>{" "}
+                    {/* Assuming 'title' is the correct field */}
                   </div>
 
                   <div className="project-short-description mt-2">
-                    <h5 className="text-lg text-white">{project.subTitle}</h5> {/* Assuming 'subTitle' is the correct field */}
+                    <h5 className="text-lg text-white">{project.subTitle}</h5>{" "}
+                    {/* Assuming 'subTitle' is the correct field */}
                   </div>
 
                   <div className="project-long-description mt-4">
-                    <p className="text-white">{project.description}</p> {/* Assuming 'description' is the correct field */}
+                    <p className="text-white">{project.description}</p>{" "}
+                    {/* Assuming 'description' is the correct field */}
                   </div>
 
                   <div className="project-by mt-4">
-                    <p className="text-white">By: {project.createdBy}</p> {/* Assuming 'createdBy' is the correct field */}
+                    <p className="text-white">By: {project.createdBy}</p>{" "}
+                    {/* Assuming 'createdBy' is the correct field */}
                   </div>
                 </div>
               </div>

@@ -14,7 +14,7 @@ const UserAttendance = () => {
     if (userId) {
       // Fetch the attendance data
       axios
-        .get(`https://iisppr-backend.vercel.app/attendance/${userId}`)
+        .get(`${import.meta.env.VITE_BASE_URL}/attendance/${userId}`)
         .then((response) => {
           const data = response.data;
           setAttendanceData(data);

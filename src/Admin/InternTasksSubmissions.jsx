@@ -16,7 +16,7 @@ const InternTasksSubmissions = () => {
     const fetchAllData = async () => {
       try {
         const submissionsResponse = await fetch(
-          "https://iisppr-backend.vercel.app/getsubmitedtasks"
+          `${import.meta.env.VITE_BASE_URL}/getsubmitedtasks`
         );
         if (!submissionsResponse.ok) {
           throw new Error("Failed to fetch task submissions");
@@ -34,7 +34,7 @@ const InternTasksSubmissions = () => {
           userIds.map(async (userId) => {
             try {
               const tasksResponse = await axios.get(
-                `https://iisppr-backend.vercel.app/task/get-tasks/${userId}`
+                `${import.meta.env.VITE_BASE_URL}/task/get-tasks/${userId}`
               );
               const tasksData = tasksResponse.data.tasksData;
               tasksData.forEach((task) => {
@@ -71,7 +71,7 @@ const InternTasksSubmissions = () => {
   }
 
   const sendAcceptNotification = async (userId, taskId, message, status) => {
-    axios.post("https://iisppr-backend.vercel.app/send/notification", {
+    axios.post(`${import.meta.env.VITE_BASE_URL}/send/notification`, {
       userId: userId,
       taskId: taskId,
       message: message,
@@ -86,7 +86,7 @@ const InternTasksSubmissions = () => {
       ////////////////////////////////
 
       // const reponse = await axios.delete(
-      //   `https://iisppr-backend.vercel.app/task/delete-task/${taskId}`
+      //   `${import.meta.env.VITE_BASE_URL}/task/delete-task/${taskId}`
       // );
       // if (
       //   reponse.status === 200 ||
@@ -104,7 +104,7 @@ const InternTasksSubmissions = () => {
 
   const markAsIncomplete = async (taskId, userId) => {
     try {
-      axios.post("https://iisppr-backend.vercel.app/send/notification", {
+      axios.post(`${import.meta.env.VITE_BASE_URL}/send/notification`, {
         userId: userId,
         taskId: taskId,
         message: "Submission Rejected",

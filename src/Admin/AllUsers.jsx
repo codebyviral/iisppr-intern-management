@@ -12,7 +12,7 @@ function AllUsers() {
     try {
       setLoading(true);
       const response = await fetch(
-        "https://iisppr-backend.vercel.app/allusers"
+        `${import.meta.env.VITE_BASE_URL}/allusers`
       );
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
@@ -30,7 +30,7 @@ function AllUsers() {
   const deleteUser = async (userId) => {
     try {
       const response = await fetch(
-        `https://iisppr-backend.vercel.app/delete/${userId}`,
+        `${import.meta.env.VITE_BASE_URL}/delete/${userId}`,
         {
           method: "DELETE",
         }

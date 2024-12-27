@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Skeleton } from "@/Components/ui/skeleton";
-import { AlertCircle, Bell, Calendar, Loader, Clock, Info } from "lucide-react";
+import { AlertCircle, Bell, Calendar, Trash, Clock, Info } from "lucide-react";
 import { Alert, AlertDescription } from "@/Components/ui/alert";
 import { Navbar, SideNav, Footer } from "@/Components/compIndex";
 import {
@@ -12,6 +12,9 @@ import {
 } from "@/Components/ui/dialog";
 import { Badge } from "@/Components/ui/badge";
 import { useAuthContext } from "@/context/AuthContext";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useAppContext } from "@/context/AppContext";
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
@@ -21,13 +24,14 @@ const Notifications = () => {
   const [taskDetails, setTaskDetails] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { loggedIn } = useAuthContext();
+  const { setNotiCounter } = useAppContext();
 
   useEffect(() => {
     const fetchNotifications = async () => {
       const userId = localStorage.getItem("userId");
       try {
         const response = await fetch(
-          `https://iisppr-backend.vercel.app/get-notifications?userId=${userId}`
+          `${import.meta.env.VITE_BASE_URL}/get-notifications?userId=${userId}`
         );
         if (!response.ok) throw new Error("Failed to fetch notifications");
         const data = await response.json();
@@ -53,7 +57,7 @@ const Notifications = () => {
   const fetchTaskDetails = async (taskId) => {
     try {
       const response = await fetch(
-        `https://iisppr-backend.vercel.app/task/get-task/${taskId}`
+        `${import.meta.env.VITE_BASE_URL}/task/get-task/${taskId}`
       );
       if (!response.ok) throw new Error("Failed to fetch task details");
       const data = await response.json();
@@ -78,6 +82,12 @@ const Notifications = () => {
       minute: "numeric",
     }).format(date);
   };
+
+  ////////////////////////////////
+  //                            //
+  //        TIMINGS AGO         //
+  //                            //
+  ////////////////////////////////
 
   const getTimeAgo = (dateString) => {
     const now = new Date();
@@ -129,6 +139,12 @@ const Notifications = () => {
       ))}
     </div>
   );
+
+  ////////////////////////////////
+  //                            //
+  //  Notification with tasks   //
+  //                            //
+  ////////////////////////////////
 
   const renderTaskDetails = () => (
     <div className="space-y-6">
@@ -182,6 +198,12 @@ const Notifications = () => {
     </div>
   );
 
+  ////////////////////////////////
+  //                            //
+  // Notification without tasks //
+  //                            //
+  ////////////////////////////////
+
   const renderSimpleNotification = () => (
     <div className="space-y-4">
       <div className="flex items-center gap-3 mb-2">
@@ -210,6 +232,39 @@ const Notifications = () => {
       </p>
     </div>
   );
+
+  ////////////////////////////////
+  //                            //
+  //    DELETE NOTIFICATION     //
+  //                            //
+  ////////////////////////////////
+
+  const deleteNoti = async (noteId) => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+    try {
+      const repsonse = await axios.delete(
+        `${import.meta.env.VITE_BASE_URL}/delete-notification/?notificationId=${noteId}&userId=${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (repsonse.status === 200) {
+        toast.success("Notification deleted");
+        setIsModalOpen(false);
+        const updatedNotifications = notifications.filter(
+          (note) => note._id !== noteId
+        );
+        setNotifications(updatedNotifications);
+        setNotiCounter(updatedNotifications.length);
+      }
+    } catch (error) {
+      console.error("Error deleting notification:", error);
+      toast.error("Failed to delete notification");
+    }
+  };
 
   return (
     <>
@@ -322,7 +377,7 @@ const Notifications = () => {
           <DialogHeader>
             <DialogTitle className="text-2xl font-semibold">
               {selectedNotification?.task
-                ? "Task Details"
+                ? "Notification Details"
                 : "Notification Details"}
             </DialogTitle>
           </DialogHeader>
@@ -332,14 +387,26 @@ const Notifications = () => {
               taskDetails ? (
                 renderTaskDetails()
               ) : (
-                <div className="flex justify-center items-center py-8">
-                  <Loader className="animate-spin h-6 w-6 text-blue-500 mr-3" />
-                  <p className="text-gray-600">Loading...</p>
+                <div className="flex capitalize justify-center items-center py-8">
+                  <p className="text-gray-500">
+                    No additional details available.
+                  </p>
                 </div>
               )
             ) : (
               renderSimpleNotification()
             )}
+          </div>
+          <div className="flex justify-center mt-6">
+            <button
+              onClick={() => deleteNoti(selectedNotification._id)}
+              className="flex items-center space-x-2 text-red-500 outline-none"
+            >
+              delete
+              <span className="ml-2">
+                <Trash size={17} />
+              </span>
+            </button>
           </div>
         </DialogContent>
       </Dialog>
