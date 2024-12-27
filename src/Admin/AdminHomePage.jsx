@@ -36,6 +36,7 @@ function AdminHomePage() {
     ],
   };
 
+
   return (
     <>
       <CustomNavbar />
@@ -61,7 +62,7 @@ function AdminHomePage() {
                     Intern Attendance
                   </div>
                 </Link>
-                <Link to="/leaveapplication">
+                <Link to="/internleaveapplication">
                   <div className="bg-blue-950 text-white p-12 rounded-lg shadow-lg hover:bg-blue-900 transition w-80 h-32 mt-5 text-center">
                     Leave Applications
                   </div>
@@ -69,7 +70,7 @@ function AdminHomePage() {
               </div>
 
               <div className="space-y-6 col-span-2 hidden sm:hidden md:block">
-                <div className="bg-white p-12 rounded-lg shadow-lg h-[400px] w-[680px] ml-6">
+                <div className="bg-white p-12 rounded-lg shadow-lg h-[400px] w-[880px] ml-6">
                   <h2 className="text-xl font-semibold mb-2">Interns Chart</h2>
                   <Line
                     data={chartData}

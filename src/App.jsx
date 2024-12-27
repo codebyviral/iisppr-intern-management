@@ -26,6 +26,7 @@ import {
   InternAttendance,
   AdminHelp,
   InternTasksSubmissions,
+  Internleaveapplication,
 } from "./Pages/pageIndex";
 import {
   AdminTask,
@@ -175,6 +176,7 @@ const App = () => {
           </>
         }
       ></Route>
+      <Route path="/Internleaveapplication" element={<Internleaveapplication/>}></Route>
       <Route path="/" element={<CoreDashboard />} />
       <Route
         path="/frequently-asked-questions"

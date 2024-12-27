@@ -49,6 +49,7 @@ const Signin = ({ onSwitchToSignup }) => {
       setIsLoggedIn(true);
       setIsLoading(false);
       toast.success("Login successful");
+      console.log(token)
       navigate("/");
     } catch (error) {
       console.error("Login error:", error);
