@@ -1,4 +1,6 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect, useRef } from "react";
+import toast from "react-hot-toast";
+
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
@@ -11,7 +13,7 @@ export const AppProvider = ({ children }) => {
     localStorage.setItem("userName", name);
     setUsername(name);
   };
-// App
+
   return (
     <AppContext.Provider
       value={{

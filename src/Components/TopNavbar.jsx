@@ -13,17 +13,18 @@ import { useAppContext } from "@/context/AppContext.jsx";
 import { NotiBadge } from "./compIndex.js";
 import { useAuthContext } from "@/context/AuthContext.jsx";
 import iisspprLogo from "../assets/Images/iisprlogo.png";
+import toast from "react-hot-toast";
 
 const TopNavbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { notiCounter } = useAppContext();
+  const { notiCounter, setNotiCounter } = useAppContext();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { loggedIn } = useAuthContext();
-  const { setNotiCounter } = useAppContext();
   useEffect(() => {
+    console.log(localStorage.getItem("token"));
     const fetchNotifications = async () => {
       const userId = localStorage.getItem("userId");
       try {
