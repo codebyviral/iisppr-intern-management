@@ -1,3 +1,13 @@
+# IISPPR's Intern Management System (Frontend)
+
+
+
+
+---
+<br/>
+
+# NOTES FROM THE README.MD CREATED BY REACT :)
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
