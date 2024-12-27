@@ -13,7 +13,7 @@ import AdminPanelMain from "../Admin/AdminHomePage"
 import AdminTopNav from "./AdminTopNav";
 import FAQsData from "./FAQsData";
 import TaskModal from "./TaskModal";
-import Footer from "./Footer";
+import Footer from "./Footer.jsx"
 import Loader from "./Loader";
 import SkeletonLoader from "./SkeletonLoader";
 export {
