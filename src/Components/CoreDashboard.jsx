@@ -42,7 +42,7 @@ const CoreDashboard = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/${localStorage.getItem("userId")}`
+          `${import.meta.env.VITE_BASE_URL}/task/get-tasks/${localStorage.getItem("userId")}`
         );
         const fetchedTasks = response.data.tasksData;
         setTasks(fetchedTasks);
