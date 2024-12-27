@@ -83,6 +83,12 @@ const Notifications = () => {
     }).format(date);
   };
 
+  ////////////////////////////////
+  //                            //
+  //        TIMINGS AGO         //
+  //                            //
+  ////////////////////////////////
+
   const getTimeAgo = (dateString) => {
     const now = new Date();
     const past = new Date(dateString);
@@ -133,6 +139,12 @@ const Notifications = () => {
       ))}
     </div>
   );
+
+  ////////////////////////////////
+  //                            //
+  //  Notification with tasks   //
+  //                            //
+  ////////////////////////////////
 
   const renderTaskDetails = () => (
     <div className="space-y-6">
@@ -186,6 +198,12 @@ const Notifications = () => {
     </div>
   );
 
+  ////////////////////////////////
+  //                            //
+  // Notification without tasks //
+  //                            //
+  ////////////////////////////////
+
   const renderSimpleNotification = () => (
     <div className="space-y-4">
       <div className="flex items-center gap-3 mb-2">
@@ -214,6 +232,12 @@ const Notifications = () => {
       </p>
     </div>
   );
+
+  ////////////////////////////////
+  //                            //
+  //    DELETE NOTIFICATION     //
+  //                            //
+  ////////////////////////////////
 
   const deleteNoti = async (noteId) => {
     const token = localStorage.getItem("token");
