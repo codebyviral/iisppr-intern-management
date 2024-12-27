@@ -18,7 +18,7 @@ const SignUp = ({ onSwitchToSignin }) => {
   const navigate = useNavigate();
 
   const signUpUser = async () => {
-    const signupURL = `$${import.meta.env.VITE_BASE_URL}/api/auth/signup`;
+    const signupURL = `${import.meta.env.VITE_BASE_URL}/api/auth/signup`;
     setIsLoading(true);
     const num = parseInt(phone);
     try {
