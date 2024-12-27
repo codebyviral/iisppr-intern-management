@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CustomNavbar from "./CustomNavbar";
 
-const AdminLeavePage = () => {
+const Internleaveapplication = () => {
   const [leaves, setLeaves] = useState([]);
   const [selectedLeave, setSelectedLeave] = useState(null);
   const [status, setStatus] = useState("");
@@ -14,6 +14,7 @@ const AdminLeavePage = () => {
     const fetchLeaves = async () => {
       try {
         const response = await axios.get("https://iisppr-backend.vercel.app/leave");
+        console.log(response.data);
         setLeaves(response.data.leaves);
       } catch (error) {
         console.log("Error fetching leaves:", error);
@@ -67,26 +68,33 @@ const AdminLeavePage = () => {
             </tr>
           </thead>
           <tbody>
-            {leaves.map((leave) => (
-              <tr key={leave._id} className="hover:bg-gray-100">
-                <td className="border border-gray-300 px-4 py-2">{leave.internid.name}</td>
-                <td className="border border-gray-300 px-4 py-2">{leave.leaveType}</td>
-                <td className="border border-gray-300 px-4 py-2">{new Date(leave.startDate).toLocaleDateString()}</td>
-                <td className="border border-gray-300 px-4 py-2">{new Date(leave.endDate).toLocaleDateString()}</td>
-                <td className="border border-gray-300 px-4 py-2">{leave.reason}</td>
-                <td className="border border-gray-300 px-4 py-2">{leave.status}</td>
-                <td className="border border-gray-300 px-4 py-2">{leave.updatedBy || "Not Updated"}</td>
-                <td className="border border-gray-300 px-4 py-2 text-center">
-                  <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                    onClick={() => setSelectedLeave(leave)}
-                  >
-                    Update Status
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+  {leaves.map((leave) => (
+    <tr key={leave._id} className="hover:bg-gray-100">
+      <td className="border border-gray-300 px-4 py-2">
+        {leave.internid?.name || "Deleted user"} 
+      </td>
+      <td className="border border-gray-300 px-4 py-2">{leave.leaveType}</td>
+      <td className="border border-gray-300 px-4 py-2">
+        {leave.startDate ? new Date(leave.startDate).toLocaleDateString() : "N/A"}
+      </td>
+      <td className="border border-gray-300 px-4 py-2">
+        {leave.endDate ? new Date(leave.endDate).toLocaleDateString() : "N/A"}
+      </td>
+      <td className="border border-gray-300 px-4 py-2">{leave.reason || "N/A"}</td>
+      <td className="border border-gray-300 px-4 py-2">{leave.status || "N/A"}</td>
+      <td className="border border-gray-300 px-4 py-2">{leave.updatedBy || "Not Updated"}</td>
+      <td className="border border-gray-300 px-4 py-2 text-center">
+        <button
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          onClick={() => setSelectedLeave(leave)}
+        >
+          Update Status
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
         </table>
 
       
@@ -98,7 +106,7 @@ const AdminLeavePage = () => {
               key={leave._id}
               className="mb-4 p-4 bg-white rounded shadow-md border border-gray-300"
             >
-              <p><strong>Name:</strong> {leave.internid.name}</p>
+              <p><strong>Name:</strong> {leave.internid?.name}</p>
               <p><strong>Leave Type:</strong> {leave.leaveType}</p>
               <p><strong>Start Date:</strong> {new Date(leave.startDate).toLocaleDateString()}</p>
               <p><strong>End Date:</strong> {new Date(leave.endDate).toLocaleDateString()}</p>
@@ -169,4 +177,4 @@ const AdminLeavePage = () => {
   );
 };
 
-export default AdminLeavePage;
+export default Internleaveapplication;
