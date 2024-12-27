@@ -11,9 +11,9 @@ import AdminTask from "../Admin/AdminTask"
 import AdminSideNav from "./AdminSideNav";
 import AdminPanelMain from "../Admin/AdminHomePage"
 import AdminTopNav from "./AdminTopNav";
+import Footer from "./footer";
 import FAQsData from "./FAQsData";
 import TaskModal from "./TaskModal";
-import Footer from "./Footer.jsx"
 import Loader from "./Loader";
 import SkeletonLoader from "./SkeletonLoader";
 export {
@@ -34,5 +34,5 @@ export {
   AdminSideNav,
   AdminTopNav,
   FAQsData,
-  Footer,
+  Footer
 };
