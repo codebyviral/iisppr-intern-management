@@ -29,7 +29,7 @@ const Reports = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://iisppr-backend.vercel.app/weeklystatus/submit",
+        `${import.meta.env.VITE_BASE_URL}/weeklystatus/submit`,
         {
           method: "POST",
           headers: {

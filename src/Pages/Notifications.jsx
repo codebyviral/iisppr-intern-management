@@ -31,7 +31,7 @@ const Notifications = () => {
       const userId = localStorage.getItem("userId");
       try {
         const response = await fetch(
-          `https://iisppr-backend.vercel.app/get-notifications?userId=${userId}`
+          `${import.meta.env.VITE_BASE_URL}/get-notifications?userId=${userId}`
         );
         if (!response.ok) throw new Error("Failed to fetch notifications");
         const data = await response.json();
@@ -57,7 +57,7 @@ const Notifications = () => {
   const fetchTaskDetails = async (taskId) => {
     try {
       const response = await fetch(
-        `https://iisppr-backend.vercel.app/task/get-task/${taskId}`
+        `${import.meta.env.VITE_BASE_URL}/task/get-task/${taskId}`
       );
       if (!response.ok) throw new Error("Failed to fetch task details");
       const data = await response.json();
@@ -244,7 +244,7 @@ const Notifications = () => {
     const userId = localStorage.getItem("userId");
     try {
       const repsonse = await axios.delete(
-        `http://localhost:8000/delete-notification/?notificationId=${noteId}&userId=${userId}`,
+        `${import.meta.env.VITE_BASE_URL}/delete-notification/?notificationId=${noteId}&userId=${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

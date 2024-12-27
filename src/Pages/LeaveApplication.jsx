@@ -75,7 +75,7 @@ const LeaveApplication = () => {
       const token = localStorage.getItem("token"); // Assuming you store the JWT token
 
       const response = await axios.post(
-        "https://iisppr-backend.vercel.app/leave",
+        `${import.meta.env.VITE_BASE_URL}/leave`,
         formData,
         {
           headers: {

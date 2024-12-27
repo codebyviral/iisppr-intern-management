@@ -61,7 +61,7 @@ const PasswordResetPage = () => {
 
     try {
       const response = await axios.post(
-        "https://iisppr-backend.vercel.app/user/updatepassword",
+        `${import.meta.env.VITE_BASE_URL}/user/updatepassword`,
         {
           email: formData.email,
           oldPassword: formData.oldPassword,

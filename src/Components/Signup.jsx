@@ -1,8 +1,8 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { signupURL } from "./URIs";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
@@ -25,10 +25,11 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const signup = async () => {
+    const signup = `${import.meta.env.VITE_BASE_URL}/api/auth/signup`;
     setLoading(true);
     try {
       const fullName = `${firstName} ${lastName}`;
-      await axios.post(signupURL, {
+      await axios.post(signup, {
         name: fullName,
         email: email,
         password: password,

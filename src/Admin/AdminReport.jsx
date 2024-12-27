@@ -12,7 +12,7 @@ const AdminReport = () => {
     const fetchReports = async () => {
       try {
         const response = await fetch(
-          "https://iisppr-backend.vercel.app/weeklystatus/reports"
+          `${import.meta.env.VITE_BASE_URL}/weeklystatus/reports`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch reports");

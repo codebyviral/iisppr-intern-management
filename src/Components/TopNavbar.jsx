@@ -24,7 +24,6 @@ const TopNavbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { loggedIn } = useAuthContext();
   useEffect(() => {
-    console.log(localStorage.getItem("token"));
     const fetchNotifications = async () => {
       const userId = localStorage.getItem("userId");
       try {

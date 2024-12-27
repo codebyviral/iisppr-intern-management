@@ -13,7 +13,6 @@ import {
   AlertCircle,
 } from "lucide-react";
 import axios from "axios";
-import { getTasks } from "./URIs";
 import { useAppContext } from "@/context/AppContext";
 import TaskModal from "./TaskModal";
 import {
@@ -43,7 +42,7 @@ const CoreDashboard = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `${getTasks}/${localStorage.getItem("userId")}`
+          `${import.meta.env.VITE_BASE_URL}/${localStorage.getItem("userId")}`
         );
         const fetchedTasks = response.data.tasksData;
         setTasks(fetchedTasks);
