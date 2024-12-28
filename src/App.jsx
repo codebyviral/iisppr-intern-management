@@ -36,6 +36,7 @@ import {
 } from "./Components/compIndex";
 import "./App.css";
 import { NotFound } from "./Components/Notfound";
+import AllAttendance from "./Admin/AllAttendance";
 
 const AdminRoute = ({ children }) => {
   const isAdmin = localStorage.getItem("isAdmin") === "true";
@@ -104,7 +105,7 @@ const App = () => {
         }
       />
       <Route
-        path="/internattendance"
+        path="/intern-attendance"
         element={
           <AdminRoute>
             <InternAttendance />
@@ -127,7 +128,14 @@ const App = () => {
           </AdminRoute>
         }
       />
-
+      <Route
+        path="view-attendance-all"
+        element={
+          <AdminRoute>
+            <AllAttendance />
+          </AdminRoute>
+        }
+      />
       {/* User Routes */}
       <Route path="*" element={<NotFound />} />
       <Route path="/" element={<Home />} />
@@ -176,7 +184,10 @@ const App = () => {
           </>
         }
       ></Route>
-      <Route path="/Internleaveapplication" element={<Internleaveapplication/>}></Route>
+      <Route
+        path="/Internleaveapplication"
+        element={<Internleaveapplication />}
+      ></Route>
       <Route path="/" element={<CoreDashboard />} />
       <Route
         path="/frequently-asked-questions"

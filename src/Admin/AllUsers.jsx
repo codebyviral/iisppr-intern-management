@@ -3,6 +3,7 @@ import CustomNavbar from "./CustomNavbar";
 import { Loader } from "@/Components/compIndex";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/Components/ui/alert";
+import toast from "react-hot-toast";
 
 function AllUsers() {
   const [users, setUsers] = useState([]);
@@ -48,7 +49,9 @@ function AllUsers() {
             },
           }
         );
-
+        toast.success(
+          `User ${userName.toUpperCase()} has been successfully deleted.`
+        );
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(
