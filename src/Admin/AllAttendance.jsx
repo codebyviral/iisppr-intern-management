@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Loader2, ArrowUpDown } from "lucide-react";
 import CustomNavbar from "./CustomNavbar";
 
