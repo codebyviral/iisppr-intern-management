@@ -32,7 +32,10 @@ function AllUsers() {
   };
 
   const deleteUser = async (userId, userName) => {
-    const message = `Are you sure you want to delete ${userName}?`;
+    const message =
+      `Are you sure you want to delete user ${userName.toUpperCase()}?` +
+      ` This action cannot be undone.` +
+      ` Do you want to proceed?`;
     if (window.confirm(message)) {
       try {
         setLoading(true);
