@@ -83,6 +83,7 @@ const InternAttendance = () => {
         response.status == 204 ||
         response.status == 205
       ) {
+        toast.success("Attendance marked successfully");
         return "success";
       }
       return "error";
@@ -191,8 +192,12 @@ const InternAttendance = () => {
 
           <div className="flex justify-center">
             <div
-              onClick={() => navigate("/view-attendance-all")}
-              className="flex text-blue-500 underline items-center cursor-pointer space-x-4"
+              onClick={() =>
+                toast("Page under development!", {
+                  icon: " ⏳ ",
+                })
+              }
+              className="flex text-blue-500 underline cursor-pointer items-center space-x-4"
             >
               Click here to view attendance of all users.
             </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, ArrowUpDown } from "lucide-react";
 import CustomNavbar from "./CustomNavbar";
 
@@ -24,18 +24,27 @@ const AllAttendance = () => {
         const usersData = usersResponse.data.data;
         setUsers(usersData);
 
-        const attendancePromises = usersData.map((user) =>
-          axios
-            .get(`${import.meta.env.VITE_BASE_URL}/attendance/${user._id}`)
-            .then((response) => ({
+        // Fetch attendance data for each user
+        const attendancePromises = usersData.map(async (user) => {
+          try {
+            const response = await axios.get(
+              `${import.meta.env.VITE_BASE_URL}/attendance/${user._id}`
+            );
+            return {
               userId: user._id,
-              attendance: response.data,
-            }))
-            .catch(() => ({
+              attendance: response.data.data || [], // Access the data property
+            };
+          } catch (error) {
+            console.error(
+              `Error fetching attendance for user ${user._id}:`,
+              error
+            );
+            return {
               userId: user._id,
               attendance: [],
-            }))
-        );
+            };
+          }
+        });
 
         const allAttendance = await Promise.all(attendancePromises);
         const attendanceMap = {};
@@ -46,7 +55,8 @@ const AllAttendance = () => {
         setAttendanceData(attendanceMap);
         setLoading(false);
       } catch (err) {
-        setError("Failed to fetch data");
+        console.error("Failed to fetch data:", err);
+        setError("Failed to fetch data. Please try again later.");
         setLoading(false);
       }
     };
@@ -55,19 +65,32 @@ const AllAttendance = () => {
   }, []);
 
   const calculateAttendancePercentage = (userId) => {
-    const userStartDate = new Date(
-      users.find((user) => user._id === userId)?.startDate
-    );
+    const user = users.find((u) => u._id === userId);
+    if (!user || !user.startDate) return 0;
+
+    const userStartDate = new Date(user.startDate);
     const today = new Date();
-    const totalDays = Math.max(
-      1,
-      Math.floor((today - userStartDate) / (1000 * 60 * 60 * 24)) + 1
-    );
-    const presentDays =
-      attendanceData[userId]?.filter(
-        (record) => record.status.toLowerCase() === "present"
-      ).length || 0;
-    return ((presentDays / totalDays) * 100).toFixed(1);
+
+    // Calculate working days (excluding weekends)
+    let totalWorkingDays = 0;
+    let currentDate = new Date(userStartDate);
+
+    while (currentDate <= today) {
+      // Check if it's not a weekend (0 = Sunday, 6 = Saturday)
+      if (currentDate.getDay() !== 0 && currentDate.getDay() !== 6) {
+        totalWorkingDays++;
+      }
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    const userAttendance = attendanceData[userId] || [];
+    const presentDays = userAttendance.filter(
+      (record) => record.status?.toLowerCase() === "present"
+    ).length;
+
+    return totalWorkingDays === 0
+      ? 0
+      : ((presentDays / totalWorkingDays) * 100).toFixed(1);
   };
 
   const sortData = (key) => {
@@ -79,26 +102,30 @@ const AllAttendance = () => {
   };
 
   const getSortedData = () => {
-    const filteredUsers = users.filter(
-      (user) =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.department?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.role.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredUsers = users.filter((user) => {
+      const searchLower = searchTerm.toLowerCase();
+      return (
+        user.name?.toLowerCase().includes(searchLower) ||
+        user.department?.toLowerCase().includes(searchLower) ||
+        user.role?.toLowerCase().includes(searchLower)
+      );
+    });
 
     return [...filteredUsers].sort((a, b) => {
       if (sortConfig.key === "attendance") {
+        const aValue = parseFloat(calculateAttendancePercentage(a._id));
+        const bValue = parseFloat(calculateAttendancePercentage(b._id));
         return sortConfig.direction === "asc"
-          ? calculateAttendancePercentage(a._id) -
-              calculateAttendancePercentage(b._id)
-          : calculateAttendancePercentage(b._id) -
-              calculateAttendancePercentage(a._id);
+          ? aValue - bValue
+          : bValue - aValue;
       }
 
-      if (sortConfig.direction === "asc") {
-        return a[sortConfig.key] > b[sortConfig.key] ? 1 : -1;
-      }
-      return a[sortConfig.key] < b[sortConfig.key] ? 1 : -1;
+      const aValue = a[sortConfig.key] || "";
+      const bValue = b[sortConfig.key] || "";
+
+      return sortConfig.direction === "asc"
+        ? aValue.toString().localeCompare(bValue.toString())
+        : bValue.toString().localeCompare(aValue.toString());
     });
   };
 
@@ -111,7 +138,17 @@ const AllAttendance = () => {
   }
 
   if (error) {
-    return <div className="text-red-500 text-center p-4">{error}</div>;
+    return (
+      <div className="text-red-500 text-center p-4">
+        <p>{error}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Retry
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -174,51 +211,50 @@ const AllAttendance = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {getSortedData().map((user) => (
-                    <tr key={user._id} className="border-b hover:bg-gray-50">
-                      <td className="p-2">{user.name}</td>
-                      <td className="p-2">
-                        {user.department || "Not Assigned"}
-                      </td>
-                      <td className="p-2">{user.role}</td>
-                      <td className="p-2">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-24 bg-gray-200 rounded-full h-2">
-                            <div
-                              className={`h-2 rounded-full ${
-                                parseFloat(
-                                  calculateAttendancePercentage(user._id)
-                                ) >= 75
-                                  ? "bg-green-600"
-                                  : "bg-red-600"
-                              }`}
-                              style={{
-                                width: `${calculateAttendancePercentage(
-                                  user._id
-                                )}%`,
-                              }}
-                            />
+                  {getSortedData().map((user) => {
+                    const attendancePercentage = calculateAttendancePercentage(
+                      user._id
+                    );
+                    const presentDays = (attendanceData[user._id] || []).filter(
+                      (record) => record.status?.toLowerCase() === "present"
+                    ).length;
+
+                    return (
+                      <tr key={user._id} className="border-b hover:bg-gray-50">
+                        <td className="p-2">{user.name || "N/A"}</td>
+                        <td className="p-2">
+                          {user.department || "Not Assigned"}
+                        </td>
+                        <td className="p-2">{user.role || "N/A"}</td>
+                        <td className="p-2">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-24 bg-gray-200 rounded-full h-2">
+                              <div
+                                className={`h-2 rounded-full ${
+                                  parseFloat(attendancePercentage) >= 75
+                                    ? "bg-green-600"
+                                    : "bg-red-600"
+                                }`}
+                                style={{
+                                  width: `${attendancePercentage}%`,
+                                }}
+                              />
+                            </div>
+                            <span
+                              className={
+                                parseFloat(attendancePercentage) >= 75
+                                  ? "text-green-600"
+                                  : "text-red-600"
+                              }
+                            >
+                              {attendancePercentage}%
+                            </span>
                           </div>
-                          <span
-                            className={
-                              parseFloat(
-                                calculateAttendancePercentage(user._id)
-                              ) >= 75
-                                ? "text-green-600"
-                                : "text-red-600"
-                            }
-                          >
-                            {calculateAttendancePercentage(user._id)}%
-                          </span>
-                        </div>
-                      </td>
-                      <td className="p-2">
-                        {attendanceData[user._id]?.filter(
-                          (record) => record.status.toLowerCase() === "present"
-                        ).length || 0}
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                        <td className="p-2">{presentDays}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
