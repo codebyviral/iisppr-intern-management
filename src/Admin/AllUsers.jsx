@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import CustomNavbar from "./CustomNavbar";
 import { Loader } from "@/Components/compIndex";
 import { AlertCircle } from "lucide-react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertDescription } from "@/Components/ui/alert";
 
 function AllUsers() {
   const [users, setUsers] = useState([]);
@@ -121,7 +121,7 @@ function AllUsers() {
           {/* Header Section */}
           <div className="flex flex-col md:flex-row justify-between items-center mb-6">
             <h1 className="text-2xl font-bold text-blue-600 mb-4 md:mb-0">
-              IISPPR InternHub User Directory 
+              IISPPR InternHub User Directory
             </h1>
             <div className="w-full md:w-64">
               <input
