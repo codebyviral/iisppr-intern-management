@@ -1,36 +1,52 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Navbar, SideNav } from "@/Components/compIndex";
 import axios from "axios";
-import { Navbar } from "@/Components/compIndex";
-import { SideNav } from "@/Components/compIndex";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import {
+  Calendar,
+  Clock,
+  CheckCircle,
+  XCircle,
+  Users,
+  Percent,
+} from "lucide-react";
 
 const UserAttendance = () => {
   const [attendanceData, setAttendanceData] = useState([]);
   const [attendancePercentage, setAttendancePercentage] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch userId from localStorage
-    const userId = localStorage.getItem("userId");
+    const fetchData = async () => {
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+        setError("User ID not found");
+        setLoading(false);
+        return;
+      }
 
-    if (userId) {
-      // Fetch the attendance data
-      axios
-        .get(`${import.meta.env.VITE_BASE_URL}/attendance/${userId}`)
-        .then((response) => {
-          const data = response.data;
-          setAttendanceData(data);
+      try {
+        const response = await axios.get(
+          `https://iisppr-backend.vercel.app/attendance/${userId}`
+        );
+        setAttendanceData(response.data);
 
-          // Calculate attendance percentage
-          const totalDays = data.length;
-          const presentDays = data.filter(
-            (record) => record.status === "Present"
-          ).length;
-          const percentage = ((presentDays / totalDays) * 100).toFixed(2);
-          setAttendancePercentage(percentage);
-        })
-        .catch((error) => {
-          console.error("Error fetching attendance data:", error);
-        });
-    }
+        const totalDays = response.data.length;
+        const presentDays = response.data.filter(
+          (record) => record.status.toLowerCase() === "present"
+        ).length;
+        const percentage =
+          totalDays > 0 ? ((presentDays / totalDays) * 100).toFixed(2) : 0;
+        setAttendancePercentage(percentage);
+        setLoading(false);
+      } catch (err) {
+        setError("Error fetching attendance data");
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const getDayOfWeek = (date) => {
@@ -47,130 +63,162 @@ const UserAttendance = () => {
     return days[dayIndex];
   };
 
-  // Function to format date to DD/MM/YYYY
   const formatDate = (date) => {
     const d = new Date(date);
-    const day = String(d.getDate()).padStart(2, "0"); // Pad day with leading zero if needed
-    const month = String(d.getMonth() + 1).padStart(2, "0"); // Pad month with leading zero if needed
-    const year = d.getFullYear();
-    return `${day}/${month}/${year}`;
+    return d.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
   };
 
+  const formatTime = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen">
+        <SideNav />
+        <div className="flex-1">
+          <Navbar />
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="text-xl text-gray-600">
+              Loading attendance data...
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex min-h-screen">
+        <SideNav />
+        <div className="flex-1">
+          <Navbar />
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="text-xl text-red-600">{error}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex bg-gray-100 min-h-screen">
-      {/* Sidebar */}
+    <div className="flex min-h-screen bg-gray-50">
       <SideNav />
-
       <div className="flex-1">
-        {/* Navbar */}
         <Navbar />
+        <div className="max-w-6xl mx-auto px-4 py-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+            Attendance Dashboard
+          </h1>
 
-        {/* Page Content */}
-        <div className="p-6 max-w-6xl mx-auto space-y-8">
-          {/* Title Section */}
-          <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg shadow-lg p-8">
-            <h1 className="text-3xl font-bold mb-2">
-              IISPPR Attendance Tracker
-            </h1>
-            <p className="text-lg">
-              Stay on top of your attendance and make sure you're always hitting
-              your targets.
-              <span className="font-semibold"> Attendance really matters!</span>
-            </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg text-gray-600 flex items-center gap-2">
+                  <Percent className="w-5 h-5" />
+                  Attendance Rate
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-4xl font-bold text-blue-600">
+                  {attendancePercentage}%
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg text-gray-600 flex items-center gap-2">
+                  <Users className="w-5 h-5" />
+                  Total Records
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-4xl font-bold text-blue-600">
+                  {attendanceData.length}
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
-          {/* Attendance Overview */}
-          <div className="bg-white shadow-lg rounded-lg p-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
-              Attendance Overview
-            </h2>
-            <p className="text-lg text-gray-700 mb-4">
-              Your Attendance Percentage:{" "}
-              <span
-                className={`font-semibold ${
-                  attendancePercentage >= 75 ? "text-green-600" : "text-red-600"
-                }`}
-              >
-                {attendancePercentage}%
-              </span>
-            </p>
-            {attendancePercentage >= 75 ? (
-              <p className="text-sm text-green-600 font-medium">
-                Great job! Keep up the awesome work and maintain your streak. 🎉
-              </p>
-            ) : (
-              <p className="text-sm text-red-600 font-medium">
-                You’ve got this! Keep pushing to improve your attendance. 💪
-              </p>
-            )}
-          </div>
-
-          {/* Attendance Table */}
-          <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-            <table className="table-auto w-full border-collapse border border-gray-200">
-              <thead>
-                <tr className="bg-gray-200 text-gray-700 uppercase text-sm">
-                  <th className="px-4 py-3 border-b">Date</th>
-                  <th className="px-4 py-3 border-b">Day</th>
-                  <th className="px-4 py-3 border-b">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {attendanceData.map((record, index) => (
-                  <tr
-                    key={index}
-                    className={`${
-                      index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                    } hover:bg-gray-100`}
-                  >
-                    <td className="px-4 py-3 text-center border-b">
-                      {formatDate(record.date)}{" "}
-                      {/* Updated to DD/MM/YYYY format */}
-                    </td>
-                    <td className="px-4 py-3 text-center border-b">
-                      {getDayOfWeek(record.date)}
-                    </td>
-                    <td
-                      className={`px-4 py-3 text-center border-b font-semibold ${
-                        record.status === "Present"
-                          ? "text-green-600"
-                          : "text-red-600"
-                      }`}
-                    >
-                      {record.status}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Attendance Stats */}
-          <div className="bg-white shadow-lg rounded-lg p-6">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">
-              Total Attendance:
-              <span className="font-semibold">
-                {
-                  attendanceData.filter((record) => record.status === "Present")
-                    .length
-                }{" "}
-                /{attendanceData.length} Days
-              </span>
-            </h3>
-            <p className="text-lg text-gray-700 mb-4">
-              Keep up the good work and aim for that 100% attendance!
-            </p>
-          </div>
-
-          {/* Motivational Footer */}
-          <div className="bg-blue-100 text-blue-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold">Why Attendance Matters?</h3>
-            <p className="text-sm mt-2">
-              Consistent attendance {`isn't`} just about showing up – {`it's`}{" "}
-              about building habits, gaining knowledge, and setting yourself up
-              for success.
-            </p>
-          </div>
+          <Card className="bg-white shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-xl text-gray-800">
+                Attendance History
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="bg-gray-50">
+                      <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">
+                        Date
+                      </th>
+                      <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">
+                        Day
+                      </th>
+                      <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">
+                        Check-in Time
+                      </th>
+                      <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">
+                        Status
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {attendanceData.map((record) => (
+                      <tr
+                        key={record._id}
+                        className="border-b hover:bg-gray-50 transition-colors"
+                      >
+                        <td className="px-6 py-4 flex items-center gap-2">
+                          <Calendar className="w-4 h-4 text-gray-400" />
+                          {formatDate(record.date)}
+                        </td>
+                        <td className="px-6 py-4 text-gray-600">
+                          {getDayOfWeek(record.date)}
+                        </td>
+                        <td className="px-6 py-4 flex items-center gap-2">
+                          <Clock className="w-4 h-4 text-gray-400" />
+                          {formatTime(record.CheckInTime)}
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-2">
+                            {record.status.toLowerCase() === "present" ? (
+                              <>
+                                <CheckCircle className="w-5 h-5 text-green-500" />
+                                <span className="text-green-500 font-medium">
+                                  Present
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <XCircle className="w-5 h-5 text-red-500" />
+                                <span className="text-red-500 font-medium">
+                                  Absent
+                                </span>
+                              </>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

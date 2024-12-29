@@ -31,8 +31,8 @@ import InternAttendance from "@/Admin/InternAttendance";
 import AdminHelp from "@/Admin/AdminHelp";
 import InternTasksSubmissions from "@/Admin/InternTasksSubmissions";
 import Internleaveapplication from "@/Admin/InternLeaveApplications";
+import LandingPage from "./LandingPage";
 
 
 
-
-export { Home, Notifications, Settings, ResetPassword, Reports, UserAttendance, NotAuthorized, Projects, FAQ, SettingsPage, Categories, Dashboard, Stores, Signin, SignUp, Logout, Profile, Aboutus, CustomNavbar, AdminHomePage, AdminProject, AdminTask, AdminReport, PrivacyPolicy, Help, AllUsers, AdminHelpPage, InternAttendance, AdminHelp, InternTasksSubmissions, LeaveApplication,Internleaveapplication}
+export { Home, Notifications, Settings, ResetPassword, LandingPage, Reports, UserAttendance, NotAuthorized, Projects, FAQ, SettingsPage, Categories, Dashboard, Stores, Signin, SignUp, Logout, Profile, Aboutus, CustomNavbar, AdminHomePage, AdminProject, AdminTask, AdminReport, PrivacyPolicy, Help, AllUsers, AdminHelpPage, InternAttendance, AdminHelp, InternTasksSubmissions, LeaveApplication, Internleaveapplication }

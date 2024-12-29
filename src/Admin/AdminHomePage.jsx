@@ -57,7 +57,7 @@ function AdminHomePage() {
                   </div>
                 </Link>
 
-                <Link to="/internattendance">
+                <Link to="/intern-attendance">
                   <div className="bg-blue-950 text-white p-12 rounded-lg shadow-lg hover:bg-blue-900 transition w-80 h-32 mt-5 text-center">
                     Intern Attendance
                   </div>

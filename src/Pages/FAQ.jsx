@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { FAQsData, SideNav } from "../Components/compIndex";
+import { FAQsData, Navbar, SideNav, TopNavbar } from "../Components/compIndex";
 
 const FAQ = () => {
   return (
@@ -41,7 +41,7 @@ const FAQ = () => {
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,7 +1,7 @@
 const Loader = () => {
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <div className="flex flex-col items-center justify-center">
         <div className="flex items-center space-x-4">
           <svg
             className="w-12 h-12 animate-spin text-blue-500"
@@ -27,9 +27,6 @@ const Loader = () => {
             Please wait...
           </h1>
         </div>
-        <p className="mt-2 text-sm text-gray-500">
-          Loading, this might take a moment.
-        </p>
       </div>
     </>
   );

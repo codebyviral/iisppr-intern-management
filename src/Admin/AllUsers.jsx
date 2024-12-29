@@ -1,24 +1,30 @@
 import React, { useState, useEffect } from "react";
 import CustomNavbar from "./CustomNavbar";
 import { Loader } from "@/Components/compIndex";
+import { AlertCircle } from "lucide-react";
+import { Alert, AlertDescription } from "@/Components/ui/alert";
+import toast from "react-hot-toast";
 
 function AllUsers() {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortConfig, setSortConfig] = useState({
+    key: null,
+    direction: "ascending",
+  });
 
-  // Fetch all users from the API
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        `${import.meta.env.VITE_BASE_URL}/allusers`
-      );
+      setError("");
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/allusers`);
       if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
+        throw new Error(`Failed to fetch users (Status: ${response.status})`);
       }
       const result = await response.json();
-      setUsers(result.data);
+      setUsers(result.data || []);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -26,113 +32,251 @@ function AllUsers() {
     }
   };
 
-  // Delete user by ID
-  const deleteUser = async (userId) => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_BASE_URL}/delete/${userId}`,
-        {
-          method: "DELETE",
+  const deleteUser = async (userId, userName) => {
+    const message =
+      `Are you sure you want to delete user ${userName.toUpperCase()}?` +
+      ` This action cannot be undone.` +
+      ` Do you want to proceed?`;
+    if (window.confirm(message)) {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          `${import.meta.env.VITE_BASE_URL}/delete/${userId}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        toast.success(
+          `User ${userName.toUpperCase()} has been successfully deleted.`
+        );
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(
+            errorData.message ||
+              `Failed to delete user (Status: ${response.status})`
+          );
         }
-      );
-      if (!response.ok) {
-        throw new Error(`Error deleting user: ${response.status}`);
+
+        setUsers((prevUsers) =>
+          prevUsers.filter((user) => user._id !== userId)
+        );
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-      // Remove the deleted user from the list
-      setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
-    } catch (err) {
-      setError(err.message);
     }
+  };
+
+  const requestSort = (key) => {
+    let direction = "ascending";
+    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const getSortedUsers = () => {
+    let filteredUsers = [...users];
+
+    if (searchTerm) {
+      filteredUsers = filteredUsers.filter(
+        (user) =>
+          user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.role?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.department?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    if (sortConfig.key) {
+      filteredUsers.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+
+    return filteredUsers;
   };
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
   return (
-    <>
+    <div className="min-h-screen bg-gray-50">
       <CustomNavbar />
-      <div className="UsersContainer p-4 md:p-8 bg-white shadow-md rounded-md">
-        {/* Heading */}
-        <h1 className="text-xl md:text-2xl font-semibold text-blue-600 mb-4 text-center">
-          All Interns/Users
-        </h1>
-
-        {/* Table Header (only for larger screens) */}
-        <div className="hidden md:grid md:grid-cols-7 font-semibold border-b-2 pb-2 mb-4 text-gray-700">
-          <div>ID</div>
-          <div>Name</div>
-          <div>Phone</div>
-          <div>Password</div>
-          <div>Role</div>
-          <div>Start Date</div>
-          <div>Action</div>
-        </div>
-
-        {/* User List */}
-        {error ? (
-          <p className="text-red-500">{error}</p>
-        ) : loading ? (
-          <Loader />
-        ) : users.length > 0 ? (
-          users.map((user) => (
-            <div key={user._id} className="mb-4">
-              {/* Card View for Small Screens */}
-              <div className="md:hidden bg-gray-50 p-4 rounded shadow-md mb-4">
-  <p>
-    <span className="font-semibold">ID:</span> {user._id}
-  </p>
-  <p>
-    <span className="font-semibold">Name:</span> {user.name}
-  </p>
-  <p>
-    <span className="font-semibold">Phone:</span> {user.mnumber}
-  </p>
-  <p>
-    <span className="font-semibold">Password:</span>{" "}
-    <span className="block truncate">{user.password}</span> {/* Apply truncate here */}
-  </p>
-  <p>
-    <span className="font-semibold">Role:</span> {user.role}
-  </p>
-  <p>
-    <span className="font-semibold">Start Date:</span>{" "}
-    {new Date(user.startDate).toLocaleDateString()}
-  </p>
-  <button
-    onClick={() => deleteUser(user._id)}
-    className="mt-4 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 w-full"
-  >
-    Delete
-  </button>
-</div>
-
-
-              {/* Grid View for Larger Screens */}
-              <div className="hidden md:grid grid-cols-7 py-2 text-gray-800">
-                <div className="truncate">{user._id}</div>
-                <div>{user.name}</div>
-                <div>{user.mnumber}</div>
-                <div className="truncate">{user.password}</div>
-                <div>{user.role}</div>
-                <div>{new Date(user.startDate).toLocaleDateString()}</div>
-                <div>
-                  <button
-                    onClick={() => deleteUser(user._id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-              <hr className="border-gray-300" />
+      <div className="max-w-full mx-auto p-4">
+        <div className="bg-white shadow-md rounded-lg p-6">
+          {/* Header Section */}
+          <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+            <h1 className="text-2xl font-bold text-blue-600 mb-4 md:mb-0">
+              IISPPR InternHub User Directory
+            </h1>
+            <div className="w-full md:w-64">
+              <input
+                type="text"
+                placeholder="Search users..."
+                className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
-          ))
-        ) : (
-          <p className="text-gray-500 text-center">No users found.</p>
-        )}
+          </div>
+
+          {error && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+
+          {loading ? (
+            <div className="flex justify-center items-center h-32">
+              <Loader />
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      ID
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Name
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Phone
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Email
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Role
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Admin
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Department
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      GitHub
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      LinkedIn
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Start Date
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {getSortedUsers().map((user) => (
+                    <tr key={user._id} className="hover:bg-gray-50">
+                      <td className="px-4 py-3 text-sm text-gray-900">
+                        {user._id}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-900">
+                        {user.name}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-900">
+                        {user.mnumber}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-900">
+                        {user.email}
+                      </td>
+                      <td className="px-4 capitalize py-3 text-sm text-gray-900">
+                        {user.role}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-900">
+                        {user.isAdmin ? (
+                          <span className="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded-full">
+                            Yes
+                          </span>
+                        ) : (
+                          <span className="px-2 py-1 text-xs font-semibold text-red-800 bg-red-100 rounded-full">
+                            No
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-900">
+                        {user.department}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-900">
+                        {user.githubURL ? (
+                          <a
+                            href={user.githubURL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800"
+                          >
+                            Link
+                          </a>
+                        ) : (
+                          "-"
+                        )}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-900">
+                        {user.linkedInURL ? (
+                          <a
+                            href={user.linkedInURL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800"
+                          >
+                            Link
+                          </a>
+                        ) : (
+                          "-"
+                        )}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-900">
+                        {formatDate(user.startDate)}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-900">
+                        <button
+                          onClick={() => deleteUser(user._id, user.name)}
+                          className="text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded-md transition-colors duration-200"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              {getSortedUsers().length === 0 && (
+                <div className="text-center py-8 text-gray-500">
+                  No users found.
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 
