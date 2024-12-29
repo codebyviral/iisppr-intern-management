@@ -15,6 +15,7 @@ const Logout = () => {
     toast.success(`Logged out`);
     navigate("/");
   }, []);
+  return <Navigate to="/" />;
 };
 
 export default Logout;
