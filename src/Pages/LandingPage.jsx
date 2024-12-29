@@ -1,12 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/context/AuthContext";
+import { TopNavbar, Footer } from "../Components/compIndex";
 
 const LandingPage = () => {
   const { loggedIn } = useAuthContext();
   const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-gray-50">
+            <TopNavbar />
       {/* Hero Section */}
       <div className="px-4 py-20 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="text-center">
@@ -87,6 +89,9 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
+            <Footer />
+
     </div>
   );
 };
