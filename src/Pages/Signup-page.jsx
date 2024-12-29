@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Navbar, SideNav, Footer } from "@/Components/compIndex";
+import { TopNavbar, Footer } from "@/Components/compIndex";
 import { Mail, Lock, UserPlus, Phone } from "lucide-react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import iispprLogo from "../assets/Images/iisprlogo.png";
 
 const SignUp = ({ onSwitchToSignin }) => {
   const [fullName, setFullName] = useState("");
@@ -84,12 +85,18 @@ const SignUp = ({ onSwitchToSignin }) => {
   // verify redirect issue
   return (
     <>
-      <Navbar />
-      <SideNav />
-      <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 px-4">
-        <div className="bg-white p-8 rounded-xl w-full max-w-md shadow-2xl border border-gray-100 transition-all duration-300 hover:shadow-3xl">
-          <div className="text-center mb-6">
-            <h1 className="text-3xl font-bold text-blue-800 mb-2">
+      <TopNavbar />
+      <div className="flex items-center justify-center min-h-screen px-4 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div className="w-full max-w-md p-8 transition-all duration-300 bg-white border border-gray-100 shadow-2xl rounded-xl hover:shadow-3xl">
+          <div className="mb-6 text-center">
+          <div className="mx-auto mb-4 w-28 h-28">
+            <img
+              src={iispprLogo}
+              alt="IISPPR Logo"
+              className="object-contain w-full h-full"
+            />
+          </div>
+            <h1 className="mb-2 text-3xl font-bold text-blue-800">
               Create Your Account
             </h1>
             <p className="text-sm text-gray-500">
@@ -102,13 +109,13 @@ const SignUp = ({ onSwitchToSignin }) => {
             <div className="relative">
               <label
                 htmlFor="fullName"
-                className="block text-sm text-gray-600 mb-1"
+                className="block mb-1 text-sm text-gray-600"
               >
                 Full Name
               </label>
               <div className="relative">
                 <UserPlus
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  className="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2"
                   size={20}
                 />
                 <input
@@ -117,7 +124,7 @@ const SignUp = ({ onSwitchToSignin }) => {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="Enter your full name"
-                  className="pl-10 p-3 border border-gray-200 rounded-lg text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300"
+                  className="w-full p-3 pl-10 text-sm transition-all duration-300 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
                 />
               </div>
             </div>
@@ -126,13 +133,13 @@ const SignUp = ({ onSwitchToSignin }) => {
             <div className="relative">
               <label
                 htmlFor="email"
-                className="block text-sm text-gray-600 mb-1"
+                className="block mb-1 text-sm text-gray-600"
               >
                 Email Address
               </label>
               <div className="relative">
                 <Mail
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  className="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2"
                   size={20}
                 />
                 <input
@@ -141,7 +148,7 @@ const SignUp = ({ onSwitchToSignin }) => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="pl-10 p-3 border border-gray-200 rounded-lg text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300"
+                  className="w-full p-3 pl-10 text-sm transition-all duration-300 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
                 />
               </div>
             </div>
@@ -150,13 +157,13 @@ const SignUp = ({ onSwitchToSignin }) => {
             <div className="relative">
               <label
                 htmlFor="phone"
-                className="block text-sm text-gray-600 mb-1"
+                className="block mb-1 text-sm text-gray-600"
               >
                 Phone
               </label>
               <div className="relative">
                 <Phone
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  className="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2"
                   size={20}
                 />
                 <input
@@ -167,7 +174,7 @@ const SignUp = ({ onSwitchToSignin }) => {
                     setPhone(e.target.value);
                   }}
                   placeholder="Enter your Phone"
-                  className="pl-10 p-3 border border-gray-200 rounded-lg text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300"
+                  className="w-full p-3 pl-10 text-sm transition-all duration-300 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
                 />
               </div>
             </div>
@@ -176,13 +183,13 @@ const SignUp = ({ onSwitchToSignin }) => {
             <div className="relative">
               <label
                 htmlFor="password"
-                className="block text-sm text-gray-600 mb-1"
+                className="block mb-1 text-sm text-gray-600"
               >
                 Password
               </label>
               <div className="relative">
                 <Lock
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  className="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2"
                   size={20}
                 />
                 <input
@@ -191,12 +198,12 @@ const SignUp = ({ onSwitchToSignin }) => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  className="pl-10 p-3 border border-gray-200 rounded-lg text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300"
+                  className="w-full p-3 pl-10 text-sm transition-all duration-300 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-blue-500 transition-colors"
+                  className="absolute text-gray-400 transition-colors transform -translate-y-1/2 right-3 top-1/2 hover:text-blue-500"
                 >
                   {showPassword ? "Hide" : "Show"}
                 </button>
@@ -207,13 +214,13 @@ const SignUp = ({ onSwitchToSignin }) => {
             <div className="relative">
               <label
                 htmlFor="confirmPassword"
-                className="block text-sm text-gray-600 mb-1"
+                className="block mb-1 text-sm text-gray-600"
               >
                 Confirm Password
               </label>
               <div className="relative">
                 <Lock
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  className="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2"
                   size={20}
                 />
                 <input
@@ -222,14 +229,14 @@ const SignUp = ({ onSwitchToSignin }) => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm your password"
-                  className="pl-10 p-3 border border-gray-200 rounded-lg text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300"
+                  className="w-full p-3 pl-10 text-sm transition-all duration-300 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
                 />
               </div>
             </div>
 
             {/* Error message */}
             {error && (
-              <p className="text-red-500 text-sm text-center bg-red-50 p-2 rounded-md">
+              <p className="p-2 text-sm text-center text-red-500 rounded-md bg-red-50">
                 {error}
               </p>
             )}
@@ -238,15 +245,12 @@ const SignUp = ({ onSwitchToSignin }) => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-blue-600 text-white p-3 rounded-lg text-sm font-semibold 
-              hover:bg-blue-700 transition-all duration-300 flex items-center justify-center gap-2
-              transform hover:-translate-y-1 hover:shadow-lg
-              disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center justify-center w-full gap-2 p-3 text-sm font-semibold text-white transition-all duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-700 hover:-translate-y-1 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
                 <>
                   <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    className="w-5 h-5 mr-3 -ml-1 text-white animate-spin"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -277,13 +281,13 @@ const SignUp = ({ onSwitchToSignin }) => {
           </form>
 
           {/* Switch to Signin */}
-          <div className="text-center mt-6">
+          <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               Already have an account?{" "}
               <a
                 href="/login"
                 onClick={onSwitchToSignin}
-                className="text-blue-700 font-semibold hover:underline"
+                className="font-semibold text-blue-700 hover:underline"
               >
                 Log In
               </a>
@@ -291,7 +295,6 @@ const SignUp = ({ onSwitchToSignin }) => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

@@ -133,14 +133,14 @@ const LeaveApplication = () => {
         }}
       />
 
-      <div className="relative bg-gray-50 min-h-screen ml-0 md:ml-32">
+      <div className="relative min-h-screen ml-0 bg-gray-50 md:ml-32">
         <div className="p-6">
           <div className="max-w-2xl mx-auto">
             <Card className="shadow-lg">
-              <CardHeader className="border-b bg-white">
+              <CardHeader className="bg-white border-b">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-blue-100 rounded-lg">
-                    <FileText className="h-6 w-6 text-blue-600" />
+                    <FileText className="w-6 h-6 text-blue-600" />
                   </div>
                   <CardTitle className="text-2xl font-bold">
                     Leave Application
@@ -173,14 +173,14 @@ const LeaveApplication = () => {
                     </Select>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700">
                         Start Date *
                       </label>
                       <div className="relative">
-                        <div className="absolute left-3 top-3 text-gray-400">
-                          <Calendar className="h-5 w-5" />
+                        <div className="absolute text-gray-400 left-3 top-3">
+                          <Calendar className="w-5 h-5" />
                         </div>
                         <input
                           type="date"
@@ -191,7 +191,7 @@ const LeaveApplication = () => {
                               startDate: e.target.value,
                             })
                           }
-                          className="pl-10 w-full h-11 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full pl-10 border border-gray-200 rounded-md h-11 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
                       </div>
                     </div>
@@ -201,8 +201,8 @@ const LeaveApplication = () => {
                         End Date *
                       </label>
                       <div className="relative">
-                        <div className="absolute left-3 top-3 text-gray-400">
-                          <Calendar className="h-5 w-5" />
+                        <div className="absolute text-gray-400 left-3 top-3">
+                          <Calendar className="w-5 h-5" />
                         </div>
                         <input
                           type="date"
@@ -213,7 +213,7 @@ const LeaveApplication = () => {
                               endDate: e.target.value,
                             })
                           }
-                          className="pl-10 w-full h-11 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full pl-10 border border-gray-200 rounded-md h-11 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
                       </div>
                     </div>
@@ -244,12 +244,12 @@ const LeaveApplication = () => {
                     </Button>
                     <Button
                       type="submit"
-                      className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+                      className="w-full bg-blue-600 md:w-auto hover:bg-blue-700"
                       disabled={loading}
                     >
                       {loading ? (
                         <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                           Submitting...
                         </>
                       ) : (
@@ -261,12 +261,12 @@ const LeaveApplication = () => {
               </CardContent>
             </Card>
 
-            <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="p-4 mt-6 border border-blue-200 rounded-lg bg-blue-50">
               <div className="flex items-start gap-3">
                 <Clock className="h-5 w-5 text-blue-500 mt-0.5" />
                 <div>
                   <h3 className="font-medium text-blue-900">Processing Time</h3>
-                  <p className="text-sm text-blue-700 mt-1">
+                  <p className="mt-1 text-sm text-blue-700">
                     Leave applications are typically processed within 24-48
                     hours. You will receive a notification once your application
                     has been reviewed.
@@ -277,7 +277,6 @@ const LeaveApplication = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

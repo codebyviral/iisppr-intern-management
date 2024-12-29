@@ -5,15 +5,15 @@ import { faFacebook, faLinkedin, faInstagram } from "@fortawesome/free-brands-sv
 
 const Footer = () => {
   return (
-    <footer className="bg-white border-t mt-60 border-gray-200 text-gray-800">
-      <div className="mx-auto max-w-screen-xl px-4 py-5 sm:px-6 lg:px-28">
+    <footer className="text-gray-800 bg-white border-t border-gray-200 mt-60">
+      <div className="max-w-screen-xl px-4 py-5 mx-auto sm:px-6 lg:px-28">
         {" "}
         {/* Updated lg:px-16 for desktop */}
         {/* Flexbox container for "Company", "Help", "Legal", and Social Media sections */}
-        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 text-sm sm:text-base">
+        <div className="grid grid-cols-1 mt-12 text-sm sm:grid-cols-2 lg:grid-cols-4 gap-x-8 sm:text-base">
           {/* Company Section */}
           <div>
-            <p className="font-semibold text-lg text-gray-900">Company</p>
+            <p className="text-lg font-semibold text-gray-900">Company</p>
             <ul className="mt-6 space-y-4">
               <li>
                 <Link
@@ -44,7 +44,7 @@ const Footer = () => {
 
           {/* Help Section */}
           <div>
-            <p className="font-semibold text-lg text-gray-900">Help</p>
+            <p className="text-lg font-semibold text-gray-900">Help</p>
             <ul className="mt-6 space-y-4">
               <li>
                 <Link
@@ -67,7 +67,7 @@ const Footer = () => {
 
           {/* Legal Section */}
           <div>
-            <p className="font-semibold text-lg text-gray-900">Legal</p>
+            <p className="text-lg font-semibold text-gray-900">Legal</p>
             <ul className="mt-6 space-y-4">
               <li>
                 <Link
@@ -98,30 +98,30 @@ const Footer = () => {
 
           {/* Social Media Section */}
           <div>
-            <p className="font-semibold text-lg text-gray-900">Follow Us</p>
+            <p className="text-lg font-semibold text-gray-900">Follow Us</p>
             <ul className="mt-6 space-y-4">
               <li className="flex items-center space-x-2">
-                <FontAwesomeIcon icon={faFacebook} className="text-blue-600 w-5 h-5" />
+                <FontAwesomeIcon icon={faFacebook} className="w-5 h-5 text-blue-600" />
                 <span>Facebook</span>
               </li>
               <li className="flex items-center space-x-2">
-                <FontAwesomeIcon icon={faLinkedin} className="text-blue-700 w-5 h-5" />
+                <FontAwesomeIcon icon={faLinkedin} className="w-5 h-5 text-blue-700" />
                 <span>LinkedIn</span>
               </li>
               <li className="flex items-center space-x-2">
-                <FontAwesomeIcon icon={faInstagram} className="text-pink-500 w-5 h-5" />
+                <FontAwesomeIcon icon={faInstagram} className="w-5 h-5 text-pink-500" />
                 <span>Instagram</span>
               </li>
             </ul>
           </div>
         </div>
         {/* Footer Bottom Section */}
-        <div className="mt-4 border-t border-gray-200 pt-4 sm:text-center">
+        <div className="pt-4 mt-4 border-t border-gray-200 sm:text-center">
           <div className="sm:flex sm:justify-between">
-            <p className="text-xs sm:text-sm  text-gray-600 ">
+            <p className="text-xs text-gray-600 sm:text-sm ">
               &copy; 2024 Intern Management System. All rights reserved.
             </p>
-            <ul className="mt-2 sm:mt-0 flex flex-wrap justify-start gap-6 text-xs sm:text-sm lg:justify-end">
+            <ul className="flex flex-wrap justify-start gap-6 mt-2 text-xs sm:mt-0 sm:text-sm lg:justify-end">
               <li>
                 <Link
                   to="/terms-and-conditions"

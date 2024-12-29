@@ -12,7 +12,7 @@ const Logout = () => {
     LogoutUser();
     toast.success(`Logged out`);
   }, []);
-  return <Navigate to="/login" />;
+  return <Navigate to="/" />;
 };
 
 export default Logout;

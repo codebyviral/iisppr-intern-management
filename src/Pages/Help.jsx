@@ -46,33 +46,33 @@ function Help() {
 
   return (
     <>
-    <SideNav/>
-    <Navbar></Navbar>
-    <div className="flex flex-col min-h-screen">
-      {/* Content starts after upper navbar */}
-      <div className="flex-grow ml-64">
-        {/* Help Content */}
-        <main className=" min-h-screen py-8 px-4">
-          <div className="text-center py-14 px-8 bg-blue-400 rounded-md mb-8">
-            <h2 className="text-3xl font-semibold mb-4">Hello, How can we Help?</h2>
-          </div>
+      <SideNav />
+      <Navbar />
+      <div className="flex flex-col min-h-screen">
+        {/* Content starts after upper navbar */}
+        <div className="flex-grow ml-0 lg:ml-36">
+          {/* Help Content */}
+          <main className="min-h-screen px-4 py-8">
+            <div className="px-8 mb-8 text-center bg-blue-400 rounded-md py-14">
+              <h2 className="mb-4 text-3xl font-semibold">Hello, How can we Help?</h2>
+            </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-            {cards.map((card, index) => (
-              <div
-                key={index}
-                className="bg-white shadow-md rounded-lg p-6 flex flex-col items-center text-center h-60"
-              >
-                <div className="text-4xl mb-4">{card.icon}</div>
-                <h3 className="text-xl font-semibold mb-2">{card.title}</h3>
-                <p className="text-gray-600">{card.description}</p>
-              </div>
-            ))}
-          </div>
-        </main>
+            <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 lg:grid-cols-3">
+              {cards.map((card, index) => (
+                <div
+                  key={index}
+                  className="flex flex-col items-center p-6 text-center bg-white rounded-lg shadow-md h-60"
+                >
+                  <div className="mb-4 text-4xl">{card.icon}</div>
+                  <h3 className="mb-2 text-xl font-semibold">{card.title}</h3>
+                  <p className="text-gray-600">{card.description}</p>
+                </div>
+              ))}
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
-   </>
+    </>
   );
 }
 

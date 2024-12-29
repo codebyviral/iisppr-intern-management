@@ -7,6 +7,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { Toaster } from "react-hot-toast";
 import { Analytics } from "@vercel/analytics/react";
 
+
 createRoot(document.getElementById("root")).render(
   <>
     <AuthProvider>

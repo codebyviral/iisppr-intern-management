@@ -71,6 +71,14 @@ const AdminProject = () => {
   };
 
   const handleDelete = async (ProjectId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this project? This action cannot be undone."
+    );
+  
+    if (!confirmDelete) {
+      return; // Exit the function if the user cancels the delete operation
+    }
+  
     try {
       const response = await fetch(
         `${import.meta.env.VITE_BASE_URL}/project/delete/${ProjectId}`,
@@ -78,9 +86,11 @@ const AdminProject = () => {
           method: "DELETE",
         }
       );
+  
       if (!response.ok) {
         throw new Error("Failed to delete project");
       }
+  
       setPostedProjects(
         postedProjects.filter((project) => project._id !== ProjectId)
       );
@@ -114,16 +124,16 @@ const AdminProject = () => {
   return (
     <>
       <CustomNavbar />
-      <div className="flex flex-col md:flex-row w-full h-auto md:h-screen">
+      <div className="flex flex-col w-full h-auto md:flex-row md:h-screen">
         {/* Left Side (Form for Admin) */}
-        <div className="w-full md:w-1/2 p-6 bg-white shadow-lg rounded-lg mx-auto mt-6 border-2 md:ml-5 md:mr-2">
-          <h2 className="text-2xl font-semibold text-blue-600 mb-4 text-center">
+        <div className="w-full p-6 mx-auto mt-6 bg-white border-2 rounded-lg shadow-lg md:w-1/2 md:ml-5 md:mr-2">
+          <h2 className="mb-4 text-2xl font-semibold text-center text-blue-600">
             Create New Project
           </h2>
 
           {/* Image URL */}
           <div className="mb-4">
-            <label className="block text-blue-600 font-medium mb-2">
+            <label className="block mb-2 font-medium text-blue-600">
               Image
             </label>
             <input
@@ -137,7 +147,7 @@ const AdminProject = () => {
 
           {/* Project Title */}
           <div className="mb-4">
-            <label className="block text-blue-600 font-medium mb-2">
+            <label className="block mb-2 font-medium text-blue-600">
               Project Title
             </label>
             <input
@@ -152,7 +162,7 @@ const AdminProject = () => {
 
           {/* Sub Title */}
           <div className="mb-4">
-            <label className="block text-blue-600 font-medium mb-2">
+            <label className="block mb-2 font-medium text-blue-600">
               Sub Title
             </label>
             <input
@@ -167,7 +177,7 @@ const AdminProject = () => {
 
           {/* Project Description */}
           <div className="mb-4">
-            <label className="block text-blue-600 font-medium mb-2">
+            <label className="block mb-2 font-medium text-blue-600">
               Description
             </label>
             <textarea
@@ -182,7 +192,7 @@ const AdminProject = () => {
 
           {/* Created By (Team Name) */}
           <div className="mb-4">
-            <label className="block text-blue-600 font-medium mb-2">
+            <label className="block mb-2 font-medium text-blue-600">
               Created By
             </label>
             <input
@@ -199,7 +209,7 @@ const AdminProject = () => {
           <div className="text-center">
             <button
               onClick={handlePostProject}
-              className="bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 transition duration-300"
+              className="px-6 py-3 text-white transition duration-300 bg-blue-600 rounded-md hover:bg-blue-700"
             >
               Post Project
             </button>
@@ -207,8 +217,8 @@ const AdminProject = () => {
         </div>
 
         {/* Right Side (Posted Projects) */}
-        <div className="w-full md:w-1/2 p-6 bg-white shadow-lg rounded-lg mx-auto mt-6 overflow-auto border-2 md:ml-2 md:mr-5">
-          <h2 className="text-2xl font-semibold text-blue-600 mb-4 text-center ">
+        <div className="w-full p-6 mx-auto mt-6 overflow-auto bg-white border-2 rounded-lg shadow-lg md:w-1/2 md:ml-2 md:mr-5">
+          <h2 className="mb-4 text-2xl font-semibold text-center text-blue-600 ">
             Posted Projects
           </h2>
 
@@ -229,7 +239,7 @@ const AdminProject = () => {
                   <div className="flex justify-start space-x-2 ">
                     <button
                       onClick={() => handleDelete(project._id)}
-                      className="bg-red-500 text-white py-1 px-4 rounded-md  hover:bg-red-600 transition duration-300"
+                      className="px-4 py-1 text-white transition duration-300 bg-red-500 rounded-md hover:bg-red-600"
                     >
                       Delete
                     </button>
