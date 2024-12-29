@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useActionData } from "react-router-dom";
 import {
   Aboutus,
   FAQ,
@@ -27,6 +27,7 @@ import {
   AdminHelp,
   InternTasksSubmissions,
   Internleaveapplication,
+  LandingPage,
 } from "./Pages/pageIndex";
 import {
   AdminTask,
@@ -36,18 +37,32 @@ import {
 } from "./Components/compIndex";
 import "./App.css";
 import { NotFound } from "./Components/Notfound";
+import { useAuthContext } from "./context/AuthContext";
 import AllAttendance from "./Admin/AllAttendance";
 
 const AdminRoute = ({ children }) => {
   const isAdmin = localStorage.getItem("isAdmin") === "true";
-  console.log(`Admin route state ${isAdmin}`);
   return isAdmin ? children : <NotAuthorized />;
+};
+
+const PrivateRoute = ({ children }) => {
+  const { loggedIn } = useAuthContext();
+  return loggedIn ? children : <LandingPage />;
 };
 
 const App = () => {
   return (
     <Routes>
-      {/* Admin Routes */}
+      {/* Public Routes */}
+      <Route path="/login" element={<Signin />} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/reset-account-password" element={<ResetPassword />} />
+      <Route path="/aboutus" element={<Aboutus />} />
+      <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+      <Route path="/frequently-asked-questions" element={<FAQ />} />
+      <Route path="*" element={<NotFound />} />
+
+      {/* Admin Routes - Already Protected */}
       <Route
         path="/Adminhomepage"
         element={
@@ -113,14 +128,6 @@ const App = () => {
         }
       />
       <Route
-        path="/adminhelppage"
-        element={
-          <AdminRoute>
-            <AdminHelp />
-          </AdminRoute>
-        }
-      />
-      <Route
         path="/interntasksubmissions"
         element={
           <AdminRoute>
@@ -136,66 +143,110 @@ const App = () => {
           </AdminRoute>
         }
       />
-      {/* User Routes */}
-      <Route path="*" element={<NotFound />} />
-      <Route path="/" element={<Home />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/login" element={<Signin />} />
-      <Route path="/logout" element={<Logout />} />
-      <Route path="/reset-account-password" element={<ResetPassword />} />
+
+      {/* Protected User Routes */}
+      <Route
+        path="/"
+        element={
+          <PrivateRoute>
+            <Home />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/dashboard"
+        element={
+          <PrivateRoute>
+            <Home />
+          </PrivateRoute>
+        }
+      />
       <Route
         path="/your-profile"
         element={
-          <>
+          <PrivateRoute>
             <Profile />
-          </>
-        }
-      />
-      <Route path="/notifications" element={<Notifications />} />
-      <Route path="/reports" element={<Reports />} />
-      <Route path="/projects" element={<Projects />} />
-      <Route
-        path="/aboutus"
-        element={
-          <>
-            <Aboutus />
-            <Footer />
-          </>
+          </PrivateRoute>
         }
       />
       <Route
-        path="/privacypolicy"
+        path="/notifications"
         element={
-          <>
-            <PrivacyPolicy />
-            <Footer />{" "}
-          </>
+          <PrivateRoute>
+            <Notifications />
+          </PrivateRoute>
         }
-      ></Route>
-      <Route path="/help" element={<Help />}></Route>
-      <Route path="/my-attendance" element={<UserAttendance />} />
-      <Route path="/stores" element={<Stores />} />
-      <Route path="/leave-application" element={<LeaveApplication />} />
+      />
+      <Route
+        path="/reports"
+        element={
+          <PrivateRoute>
+            <Reports />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/projects"
+        element={
+          <PrivateRoute>
+            <Projects />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/help"
+        element={
+          <PrivateRoute>
+            <Help />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/my-attendance"
+        element={
+          <PrivateRoute>
+            <UserAttendance />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/stores"
+        element={
+          <PrivateRoute>
+            <Stores />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/leave-application"
+        element={
+          <PrivateRoute>
+            <LeaveApplication />
+          </PrivateRoute>
+        }
+      />
       <Route
         path="/setting"
         element={
-          <>
+          <PrivateRoute>
             <SettingsPage />
-          </>
+          </PrivateRoute>
         }
-      ></Route>
+      />
       <Route
         path="/Internleaveapplication"
-        element={<Internleaveapplication />}
-      ></Route>
-      <Route path="/" element={<CoreDashboard />} />
-      <Route
-        path="/frequently-asked-questions"
         element={
-          <>
-            <Navbar />
-            <FAQ />
-          </>
+          <PrivateRoute>
+            <Internleaveapplication />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/logout"
+        element={
+          <PrivateRoute>
+            <Logout />
+          </PrivateRoute>
         }
       />
     </Routes>

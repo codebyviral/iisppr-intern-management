@@ -79,8 +79,8 @@ const Signin = ({ onSwitchToSignup }) => {
     <>
       <Navbar />
       <SideNav />
-      <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 px-4">
-        <div className="bg-white p-8 rounded-xl w-full max-w-md shadow-2xl border border-gray-100 transition-all duration-300 hover:shadow-3xl">
+      <div className="flex justify-center items-center min-h-screen px-4">
+        <div className="bg-white p-8 rounded-xl w-full max-w-md shadow-2xl border transition-all duration-300 hover:shadow-3xl">
           <div className="text-center mb-6">
             <h1 className="text-3xl font-bold text-blue-800 mb-2">
               Welcome Back

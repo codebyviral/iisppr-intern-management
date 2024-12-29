@@ -28,7 +28,7 @@ const Signin = () => {
       storeTokenInLocalStorage(response.data.token);
       storeUserId(response.data.user.id);
       storeIsAdminState(response.data.user.isAdmin);
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       console.log(err);
       toast.error(`Error Logging in.`);
