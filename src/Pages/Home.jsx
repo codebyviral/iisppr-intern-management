@@ -3,7 +3,7 @@ import React from "react";
 import { SideNav, TopNavbar , Footer } from "../Components/compIndex";
 import { Dashboard } from "./pageIndex";
 import { useAuthContext } from "@/context/AuthContext";
-import LandingPage from "./Landingpage";
+import LandingPage from "./LandingPage";
 
 const Home = () => {
   const { loggedIn } = useAuthContext(); // Get the logged-in status from AuthContext
