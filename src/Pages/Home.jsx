@@ -1,9 +1,8 @@
 import React from "react";
-
-import { SideNav, TopNavbar , Footer } from "../Components/compIndex";
+import { SideNav, TopNavbar, Footer } from "../Components/compIndex";
 import { Dashboard } from "./pageIndex";
 import { useAuthContext } from "@/context/AuthContext";
-import LandingPage from "./LandingPage";
+import { IntroPage } from "./pageIndex";
 
 const Home = () => {
   const { loggedIn } = useAuthContext(); // Get the logged-in status from AuthContext
@@ -11,7 +10,7 @@ const Home = () => {
   return (
     <>
       <TopNavbar />
-      
+
       {loggedIn ? (
         <div className="flex">
           {/* Sidebar */}
@@ -22,8 +21,7 @@ const Home = () => {
           </div>
         </div>
       ) : (
-        // Landing Page for non-logged-in users
-        <LandingPage />
+        <IntroPage />
       )}
       <Footer />
     </>

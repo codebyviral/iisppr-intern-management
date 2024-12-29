@@ -1,14 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/context/AuthContext";
-import { TopNavbar, Footer } from "../Components/compIndex";
 
-const LandingPage = () => {
+const IntroPage = () => {
   const { loggedIn } = useAuthContext();
   const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-gray-50">
-            <TopNavbar />
       {/* Hero Section */}
       <div className="px-4 py-20 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="text-center">
@@ -61,39 +59,8 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Testimonials Section */}
-      <section className="py-16 bg-gray-100">
-        <div className="container px-4 mx-auto text-center">
-          <h2 className="mb-8 text-3xl font-bold">What Our Users Say</h2>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            <div className="p-6 bg-white rounded-lg shadow">
-              <p className="italic">
-                "Intern Hub simplified our internship management like never
-                before!"
-              </p>
-              <p className="mt-4 font-bold">- Ashish Patel</p>
-            </div>
-            <div className="p-6 bg-white rounded-lg shadow">
-              <p className="italic">
-                "The best platform for managing interns efficiently."
-              </p>
-              <p className="mt-4 font-bold">- Viral Vaghela </p>
-            </div>
-            <div className="p-6 bg-white rounded-lg shadow">
-              <p className="italic">
-                "User-friendly and feature-rich! Highly recommended."
-              </p>
-              <p className="mt-4 font-bold">- Ishika Ranjan</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-            <Footer />
-
     </div>
   );
 };
 
-export default LandingPage;
+export default IntroPage;

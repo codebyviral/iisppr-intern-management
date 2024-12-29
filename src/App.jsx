@@ -27,7 +27,7 @@ import {
   AdminHelp,
   InternTasksSubmissions,
   Internleaveapplication,
-  LandingPage,
+  IntroPage,
 } from "./Pages/pageIndex";
 import {
   AdminTask,
@@ -47,7 +47,7 @@ const AdminRoute = ({ children }) => {
 
 const PrivateRoute = ({ children }) => {
   const { loggedIn } = useAuthContext();
-  return loggedIn ? children : <LandingPage />;
+  return loggedIn ? children : <IntroPage />;
 };
 
 const App = () => {
