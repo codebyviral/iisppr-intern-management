@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Navbar, SideNav } from "@/Components/compIndex";
 import axios from "axios";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import {
   Calendar,
   Clock,
