@@ -20,9 +20,15 @@ export default function AccountDetails() {
     currentRole: "",
     linkedinLink: "",
     phoneNumber: "",
+
     countryCode: "+91",
     profilePicture: "",
     bio: "",
+
+    countryCode: "+1", // Default country code
+    profilePicture: "",
+    bio: "", // New field for user bio
+
   });
   const [profilePreview, setProfilePreview] = useState(null);
 
@@ -208,6 +214,7 @@ export default function AccountDetails() {
                       <SelectValue placeholder="Code" />
                     </SelectTrigger>
                     <SelectContent>
+
                     
                     <SelectItem value="+1">+1 (US)</SelectItem>
                     <SelectItem value="+91">+91 (IN)</SelectItem>
@@ -224,6 +231,12 @@ export default function AccountDetails() {
                     <SelectItem value="+27">+27 (South Africa)</SelectItem>
                     <SelectItem value="+82">+82 (South Korea)</SelectItem>
   
+
+                      <SelectItem value="+1">+1 (US)</SelectItem>
+                      <SelectItem value="+44">+44 (UK)</SelectItem>
+                      <SelectItem value="+91">+91 (IN)</SelectItem>
+                      {/* Add more country codes as needed */}
+
                     </SelectContent>
                   </Select>
                   <Input
@@ -270,4 +283,6 @@ export default function AccountDetails() {
       </div>
     </>
   );
+
 }
+
