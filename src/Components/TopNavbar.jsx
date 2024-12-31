@@ -110,12 +110,16 @@ const TopNavbar = () => {
         {/* Desktop Header */}
         <div className="hidden md:flex items-center justify-between w-full">
           <Link to="/">
+
             <div className="flex flex-row">
               <Building2 />
               <span className="text-lg font-semibold ml-4">
                 IISPPR Intern Hub
               </span>
             </div>
+
+            <span className="text-lg font-semibold"></span>
+
           </Link>
 
           <div className="relative w-1/3">

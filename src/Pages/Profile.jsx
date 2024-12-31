@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
-import { Input } from "@/Components/ui/input";
-import { Label } from "@/Components/ui/label";
-import { Avatar } from "@/Components/ui/avatar";
-import { Button } from "@/Components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Avatar } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SideNav, Navbar } from "../Components/compIndex";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -20,15 +21,17 @@ export default function AccountDetails() {
     currentRole: "",
     linkedinLink: "",
     phoneNumber: "",
+    countryCode: "+91",
+    profilePicture: "",
+    bio: "studying btech 2nd year",
   });
+  const [profilePreview, setProfilePreview] = useState(null);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/api/auth/user/${localStorage.getItem(
-            "userId"
-          )}`
+          `${import.meta.env.VITE_BASE_URL}/api/auth/user/${localStorage.getItem("userId")}`
         );
         const data = response.data;
 
@@ -112,9 +115,7 @@ export default function AccountDetails() {
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
         <div className="flex flex-col items-center text-center space-y-4">
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-600 border-opacity-75"></div>
-          <p className="text-lg font-medium text-gray-700">
-            Loading account details...
-          </p>
+          <p className="text-lg font-medium text-gray-700">Loading account details...</p>
         </div>
       </div>
     );
@@ -127,12 +128,8 @@ export default function AccountDetails() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-8 px-4">
         <Card className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-8">
           <CardHeader className="text-center mb-6">
-            <CardTitle className="text-3xl font-bold text-gray-800">
-              Account Details
-            </CardTitle>
-            <p className="text-gray-500">
-              Manage your account information below.
-            </p>
+            <CardTitle className="text-3xl font-bold text-gray-800">Account Details</CardTitle>
+            <p className="text-gray-500">Manage your account information below.</p>
           </CardHeader>
           <CardContent className="space-y-8">
             <div className="flex flex-col items-center">
@@ -177,16 +174,11 @@ export default function AccountDetails() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="flex flex-col">
-                <Label className="text-sm font-medium text-gray-700">
-                  College Study Year
-                </Label>
+                <Label className="text-sm font-medium text-gray-700">Full Name</Label>
                 <Input
                   type="text"
-                  value={formDetails.studying}
-                  placeholder="E.g., 2nd Year"
-                  onChange={(e) =>
-                    handleInputChange("studying", e.target.value)
-                  }
+                  value={formDetails.fullName}
+                  onChange={(e) => handleInputChange("fullName", e.target.value)}
                   className="mt-2 bg-gray-50 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-md"
                 />
               </div>
@@ -252,9 +244,7 @@ export default function AccountDetails() {
               {saveStatus && (
                 <p
                   className={`mt-4 text-sm ${
-                    saveStatus.includes("successfully")
-                      ? "text-green-600"
-                      : "text-red-600"
+                    saveStatus.includes("successfully") ? "text-green-600" : "text-red-600"
                   }`}
                 >
                   {saveStatus}
