@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/Components/ui/card";
 
 const DynamicCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
