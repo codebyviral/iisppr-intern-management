@@ -14,6 +14,7 @@ import AdminTopNav from "./AdminTopNav";
 import Footer from "./footer";
 import FAQsData from "./FAQsData";
 import TaskModal from "./TaskModal";
+import DynamicCalendar from "./DynamicCalendar";
 import Loader from "./Loader";
 import SkeletonLoader from "./SkeletonLoader";
 export {
@@ -23,6 +24,7 @@ export {
   TopNavbar,
   SideNav,
   CoreSettings,
+  DynamicCalendar,
   AdminPanelMain,
   AdminTask,
   CoreDashboard,

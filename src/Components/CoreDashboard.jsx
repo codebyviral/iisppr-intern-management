@@ -22,6 +22,7 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/Components/ui/dialog";
+import { DynamicCalendar } from "./compIndex";
 
 const CoreDashboard = () => {
   const [tasks, setTasks] = useState([]);
@@ -42,7 +43,9 @@ const CoreDashboard = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/task/get-tasks/${localStorage.getItem("userId")}`
+          `${
+            import.meta.env.VITE_BASE_URL
+          }/task/get-tasks/${localStorage.getItem("userId")}`
         );
         const fetchedTasks = response.data.tasksData;
         setTasks(fetchedTasks);
@@ -209,12 +212,64 @@ const CoreDashboard = () => {
               </span>
             </div>
             {loading ? (
-              <Card>
-                <CardContent className="p-8 flex justify-center items-center">
-                  <Loader className="animate-spin h-6 w-6 text-blue-500 mr-3" />
-                  <p className="text-gray-600">Loading tasks...</p>
-                </CardContent>
-              </Card>
+              <>
+                <div>
+                  <div className="p-6 animate-pulse">
+                    <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6">
+                      <div className="flex-1 space-y-3">
+                        <div className="flex items-start justify-between">
+                          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                        </div>
+                        <div className="h-4 bg-gray-200 rounded w-full"></div>
+                        <div className="flex flex-wrap gap-4 text-sm text-gray-500">
+                          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+                          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-3 min-w-[120px]">
+                        <div className="h-10 bg-gray-200 rounded w-full"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-6 animate-pulse">
+                    <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6">
+                      <div className="flex-1 space-y-3">
+                        <div className="flex items-start justify-between">
+                          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                        </div>
+                        <div className="h-4 bg-gray-200 rounded w-full"></div>
+                        <div className="flex flex-wrap gap-4 text-sm text-gray-500">
+                          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+                          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-3 min-w-[120px]">
+                        <div className="h-10 bg-gray-200 rounded w-full"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-6 animate-pulse">
+                    <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6">
+                      <div className="flex-1 space-y-3">
+                        <div className="flex items-start justify-between">
+                          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                        </div>
+                        <div className="h-4 bg-gray-200 rounded w-full"></div>
+                        <div className="flex flex-wrap gap-4 text-sm text-gray-500">
+                          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+                          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-3 min-w-[120px]">
+                        <div className="h-10 bg-gray-200 rounded w-full"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </>
             ) : (
               <div className="space-y-4">
                 <TaskList tasks={tasks} limit={3} />
@@ -233,37 +288,7 @@ const CoreDashboard = () => {
           {/* Calendar and Quick Actions Section */}
           <div className="space-y-8">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                December {currentYear}
-              </h2>
-              <Card className="overflow-hidden">
-                <CardContent className="p-6">
-                  <div className="grid grid-cols-7 gap-2 text-center">
-                    {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
-                      (day) => (
-                        <div
-                          key={day}
-                          className="font-medium text-gray-500 py-2"
-                        >
-                          {day}
-                        </div>
-                      )
-                    )}
-                    {dates.map((date) => (
-                      <div
-                        key={date}
-                        className={`p-3 rounded-lg transition-colors ${
-                          date === currentDay
-                            ? "bg-blue-500 text-white font-semibold"
-                            : "hover:bg-gray-100 cursor-pointer"
-                        }`}
-                      >
-                        {date}
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              <DynamicCalendar />
             </div>
 
             {/* Quick Actions */}

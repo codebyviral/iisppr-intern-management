@@ -1,34 +1,132 @@
-const Loader = () => {
-  return (
-    <>
-      <div className="flex flex-col items-center justify-center">
-        <div className="flex items-center space-x-4">
-          <svg
-            className="w-12 h-12 animate-spin text-blue-500"
-            viewBox="0 0 100 100"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle
-              className="opacity-25"
-              cx="50"
-              cy="50"
-              r="40"
-              stroke="currentColor"
-              strokeWidth="10"
-              fill="none"
-            ></circle>
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M50 10a40 40 0 0 1 0 80 40 40 0 0 1 0-80zm0-10C22.39 0 0 22.39 0 50s22.39 50 50 50 50-22.39 50-50S77.61 0 50 0z"
-            ></path>
-          </svg>
-          <h1 className="text-lg font-semibold text-gray-700">
-            Please wait...
-          </h1>
-        </div>
+import React from "react";
+
+const Loader = ({
+  size = "medium",
+  type = "spinner",
+  text = "Loading...",
+  fullScreen = false,
+  overlay = false,
+  color = "primary",
+  containerClassName = "",
+}) => {
+  // Size variants mapping
+  const sizeMap = {
+    small: "w-4 h-4",
+    medium: "w-8 h-8",
+    large: "w-12 h-12",
+  };
+
+  // Color variants mapping
+  const colorMap = {
+    primary: "border-blue-600",
+    secondary: "border-gray-600",
+    success: "border-green-600",
+    danger: "border-red-600",
+    warning: "border-yellow-600",
+  };
+
+  // Loading spinner component
+  const Spinner = () => (
+    <div
+      className={`
+      ${sizeMap[size]} 
+      border-4 
+      border-t-transparent 
+      rounded-full 
+      animate-spin 
+      ${colorMap[color]}
+    `}
+    />
+  );
+
+  // Pulse dots component
+  const PulseDots = () => (
+    <div className="flex space-x-2">
+      {[1, 2, 3].map((dot) => (
+        <div
+          key={dot}
+          className={`
+            ${
+              size === "small"
+                ? "w-2 h-2"
+                : size === "large"
+                ? "w-4 h-4"
+                : "w-3 h-3"
+            }
+            rounded-full
+            bg-current
+            animate-pulse
+          `}
+        />
+      ))}
+    </div>
+  );
+
+  // Progress bar component
+  const ProgressBar = () => (
+    <div className="w-full max-w-md h-2 bg-gray-200 rounded-full overflow-hidden">
+      <div className={`h-full ${colorMap[color]} animate-loading-bar`} />
+    </div>
+  );
+
+  // Content wrapper for consistent spacing
+  const ContentWrapper = ({ children }) => (
+    <div className="flex flex-col items-center justify-center space-y-4">
+      {children}
+    </div>
+  );
+
+  if (fullScreen) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center z-50">
+        {overlay && <div className="absolute inset-0 bg-black/50" />}
+        <ContentWrapper>
+          {type === "spinner" && <Spinner />}
+          {type === "dots" && <PulseDots />}
+          {type === "progress" && <ProgressBar />}
+          {text && (
+            <p
+              className={`text-${color === "primary" ? "blue" : color}-600 
+              ${
+                size === "small"
+                  ? "text-sm"
+                  : size === "large"
+                  ? "text-lg"
+                  : "text-base"
+              }`}
+            >
+              {text}
+            </p>
+          )}
+        </ContentWrapper>
       </div>
-    </>
+    );
+  }
+
+  return (
+    <div
+      className={`absolute inset-0 flex items-center justify-center ${containerClassName}`}
+    >
+      <ContentWrapper>
+        {type === "spinner" && <Spinner />}
+        {type === "dots" && <PulseDots />}
+        {type === "progress" && <ProgressBar />}
+        {text && (
+          <p
+            className={`text-${color === "primary" ? "blue" : color}-600 
+            ${
+              size === "small"
+                ? "text-sm"
+                : size === "large"
+                ? "text-lg"
+                : "text-base"
+            }`}
+          >
+            {text}
+          </p>
+        )}
+      </ContentWrapper>
+    </div>
   );
 };
 
