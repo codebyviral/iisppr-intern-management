@@ -4,49 +4,53 @@ import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
 import { Avatar } from "@/Components/ui/avatar";
 import { Button } from "@/Components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select";
 import { SideNav, Navbar } from "../Components/compIndex";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function AccountDetails() {
-  const [user, setUser] = useState(null); // Holds raw API response
-  const [loading, setLoading] = useState(true); // Loading state for API call
-  const [saveStatus, setSaveStatus] = useState(""); // Status after save attempt
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [saveStatus, setSaveStatus] = useState("");
+  const [profilePicture, setProfilePicture] = useState(null);
   const [formDetails, setFormDetails] = useState({
     fullName: "",
     email: "",
     studying: "",
     currentRole: "",
-    githubLink: "",
     linkedinLink: "",
     phoneNumber: "",
+    countryCode: "+91",
+    profilePicture: "",
+    bio: "studying btech 2nd year",
   });
+  const [profilePreview, setProfilePreview] = useState(null);
 
-  // Fetch user details and set form state
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/api/auth/user/${localStorage.getItem(
-            "userId"
-          )}`
+          `${import.meta.env.VITE_BASE_URL}/api/auth/user/${localStorage.getItem("userId")}`
         );
         const data = response.data;
 
-        setUser(data); // Set raw user data
+        setUser(data);
         setFormDetails({
           fullName: data.name || "",
           email: data.email || "",
-          studying: "", // Field not in API response
+          studying: "",
           currentRole: data.role || "",
-          githubLink: data.githubLink || "",
           linkedinLink: data.linkedinLink || "",
-          phoneNumber: data.mnumber?.toString() || "",
+          phoneNumber: data.mnumber ? `+91 ${data.mnumber.toString()}` : "+91 ",
         });
+        if (data.profilePicture) {
+          setProfilePicture(data.profilePicture);
+        }
       } catch (error) {
         console.error(`Error fetching user details: ${error}`);
       } finally {
-        setLoading(false); // Stop loading spinner
+        setLoading(false);
       }
     };
 
@@ -55,7 +59,6 @@ export default function AccountDetails() {
 
   const navigate = useNavigate();
 
-  // Function to generate initials
   const getInitials = (name) => {
     const words = name?.trim().split(" ") || [];
     if (words.length < 2) return words[0]?.[0]?.toUpperCase() || "";
@@ -69,17 +72,23 @@ export default function AccountDetails() {
   };
 
   const handleSave = async () => {
-    setSaveStatus(""); // Reset save status
+    setSaveStatus("");
     try {
-      const response = await fetch("/api/save-account-details", {
-        method: "POST",
+      const formData = new FormData();
+      Object.keys(formDetails).forEach(key => {
+        formData.append(key, formDetails[key]);
+      });
+      if (profilePicture instanceof File) {
+        formData.append('profilePicture', profilePicture);
+      }
+
+      const response = await axios.post("/api/save-account-details", formData, {
         headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formDetails),
+          'Content-Type': 'multipart/form-data'
+        }
       });
 
-      if (response.ok) {
+      if (response.status === 200) {
         setSaveStatus("Details saved successfully!");
       } else {
         setSaveStatus("Failed to save changes. Please try again.");
@@ -90,14 +99,23 @@ export default function AccountDetails() {
     }
   };
 
+  const handleUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setProfilePicture(file);
+    }
+  };
+
+  const handleRemove = () => {
+    setProfilePicture(null);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
         <div className="flex flex-col items-center text-center space-y-4">
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-600 border-opacity-75"></div>
-          <p className="text-lg font-medium text-gray-700">
-            Loading account details...
-          </p>
+          <p className="text-lg font-medium text-gray-700">Loading account details...</p>
         </div>
       </div>
     );
@@ -110,64 +128,102 @@ export default function AccountDetails() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-8 px-4">
         <Card className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-8">
           <CardHeader className="text-center mb-6">
-            <CardTitle className="text-3xl font-bold text-gray-800">
-              Account Details
-            </CardTitle>
-            <p className="text-gray-500">
-              Manage your account information below.
-            </p>
+            <CardTitle className="text-3xl font-bold text-gray-800">Account Details</CardTitle>
+            <p className="text-gray-500">Manage your account information below.</p>
           </CardHeader>
           <CardContent className="space-y-8">
-            {/* Profile Photo Section */}
             <div className="flex flex-col items-center">
-              <Avatar className="w-32 h-32 bg-gray-200 text-gray-600 flex items-center justify-center font-bold text-3xl rounded-full">
-                {getInitials(formDetails.fullName)}
+              <Avatar className="w-32 h-32 bg-gray-200 text-gray-600 flex items-center justify-center font-bold text-3xl rounded-full overflow-hidden">
+                {profilePicture ? (
+                  <img
+                    src={profilePicture instanceof File ? URL.createObjectURL(profilePicture) : profilePicture}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  getInitials(formDetails.fullName)
+                )}
               </Avatar>
+              <div className="mt-4 space-x-2">
+                <Button
+                  onClick={() => document.getElementById('fileInput').click()}
+                  className="bg-green-500 text-white hover:bg-green-600"
+                >
+                  Upload Picture
+                </Button>
+                <input
+                  id="fileInput"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleUpload}
+                  style={{ display: 'none' }}
+                />
+                <Button
+                  onClick={handleRemove}
+                  className="bg-red-500 text-white hover:bg-red-600"
+                  disabled={!profilePicture}
+                >
+                  Remove Picture
+                </Button>
+              </div>
               <p className="mt-4 text-xl font-semibold text-gray-800">
                 {formDetails.fullName || "Your Name"}
               </p>
               <p className="text-gray-600">{formDetails.email}</p>
             </div>
 
-            {/* Input Fields */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="flex flex-col">
-                <Label className="text-sm font-medium text-gray-700">
-                  College Study Year
-                </Label>
+                <Label className="text-sm font-medium text-gray-700">Full Name</Label>
                 <Input
                   type="text"
-                  value={formDetails.studying}
-                  placeholder="E.g., 2nd Year"
-                  onChange={(e) =>
-                    handleInputChange("studying", e.target.value)
-                  }
+                  value={formDetails.fullName}
+                  onChange={(e) => handleInputChange("fullName", e.target.value)}
                   className="mt-2 bg-gray-50 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-md"
                 />
               </div>
 
-              {/* Other Input Fields */}
-              {["currentRole", "githubLink", "linkedinLink", "phoneNumber"].map(
+              {["currentRole", "linkedinLink", "phoneNumber"].map(
                 (key) => (
-                  <div key={key} className="flex flex-col">
-                    <Label className="text-sm font-medium text-gray-700 capitalize">
-                      {key.replace(/([A-Z])/g, " $1").trim()}
-                    </Label>
-                    <Input
-                      type="text"
-                      value={formDetails[key]}
-                      placeholder={`Enter your ${key
-                        .replace(/([A-Z])/g, " $1")
-                        .trim()}`}
-                      onChange={(e) => handleInputChange(key, e.target.value)}
-                      className="mt-2 bg-gray-50 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-md"
-                    />
-                  </div>
+                  key === "phoneNumber" ? (
+                    <div key={key} className="flex flex-col">
+                      <Label className="text-sm font-medium text-gray-700">
+                        Phone Number
+                      </Label>
+                      <Input
+                        type="tel"
+                        value={formDetails.phoneNumber}
+                        placeholder="Enter your phone number"
+                        onChange={(e) => {
+                          let value = e.target.value;
+                          if (!value.startsWith('+91 ')) {
+                            value = '+91 ' + value.replace('+91 ', '');
+                          }
+                          handleInputChange('phoneNumber', value);
+                        }}
+                        className="mt-2 bg-gray-50 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-md"
+                      />
+                    </div>
+                  ) : (
+                    <div key={key} className="flex flex-col">
+                      <Label className="text-sm font-medium text-gray-700 capitalize">
+                        {key.replace(/([A-Z])/g, " $1").trim()}
+                      </Label>
+                      <Input
+                        type="text"
+                        value={formDetails[key]}
+                        placeholder={`Enter your ${key
+                          .replace(/([A-Z])/g, " $1")
+                          .trim()}`}
+                        onChange={(e) => handleInputChange(key, e.target.value)}
+                        className="mt-2 bg-gray-50 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-md"
+                      />
+                    </div>
+                  )
                 )
               )}
             </div>
 
-            {/* Change Password Button */}
             <div className="flex justify-center mt-4">
               <Button
                 onClick={() => navigate("/reset-account-password")}
@@ -177,7 +233,6 @@ export default function AccountDetails() {
               </Button>
             </div>
 
-            {/* Save All Changes Button */}
             <div className="flex flex-col items-center mt-8">
               <Button
                 type="submit"
@@ -189,9 +244,7 @@ export default function AccountDetails() {
               {saveStatus && (
                 <p
                   className={`mt-4 text-sm ${
-                    saveStatus.includes("successfully")
-                      ? "text-green-600"
-                      : "text-red-600"
+                    saveStatus.includes("successfully") ? "text-green-600" : "text-red-600"
                   }`}
                 >
                   {saveStatus}
@@ -204,3 +257,4 @@ export default function AccountDetails() {
     </>
   );
 }
+
