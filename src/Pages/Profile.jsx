@@ -20,15 +20,9 @@ export default function AccountDetails() {
     currentRole: "",
     linkedinLink: "",
     phoneNumber: "",
-
     countryCode: "+91",
     profilePicture: "",
-    bio: "",
-
-    countryCode: "+1", // Default country code
-    profilePicture: "",
-    bio: "", // New field for user bio
-
+    bio: "studying btech 2nd year",
   });
   const [profilePreview, setProfilePreview] = useState(null);
 
@@ -214,29 +208,10 @@ export default function AccountDetails() {
                       <SelectValue placeholder="Code" />
                     </SelectTrigger>
                     <SelectContent>
-
-                    
-                    <SelectItem value="+1">+1 (US)</SelectItem>
-                    <SelectItem value="+91">+91 (IN)</SelectItem>
-                    <SelectItem value="+44">+44 (UK)</SelectItem>
-                    <SelectItem value="+61">+61 (Australia)</SelectItem>
-                    <SelectItem value="+81">+81 (Japan)</SelectItem>
-                    <SelectItem value="+49">+49 (Germany)</SelectItem>
-                    <SelectItem value="+33">+33 (France)</SelectItem>
-                    <SelectItem value="+39">+39 (Italy)</SelectItem>
-                    <SelectItem value="+34">+34 (Spain)</SelectItem>
-                    <SelectItem value="+86">+86 (China)</SelectItem>
-                    <SelectItem value="+7">+7 (Russia)</SelectItem>
-                    <SelectItem value="+55">+55 (Brazil)</SelectItem>
-                    <SelectItem value="+27">+27 (South Africa)</SelectItem>
-                    <SelectItem value="+82">+82 (South Korea)</SelectItem>
-  
-
                       <SelectItem value="+1">+1 (US)</SelectItem>
                       <SelectItem value="+44">+44 (UK)</SelectItem>
                       <SelectItem value="+91">+91 (IN)</SelectItem>
-                      {/* Add more country codes as needed */}
-
+                    
                     </SelectContent>
                   </Select>
                   <Input
@@ -283,6 +258,5 @@ export default function AccountDetails() {
       </div>
     </>
   );
-
 }
 
