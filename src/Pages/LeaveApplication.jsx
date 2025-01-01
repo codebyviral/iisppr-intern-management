@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Button } from "@/Components/ui/button";
 import {
   Calendar,
   Clock,
@@ -17,8 +17,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
+} from "@/Components/ui/select";
+import { Textarea } from "@/Components/ui/textarea";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
