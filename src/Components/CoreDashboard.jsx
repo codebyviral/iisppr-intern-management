@@ -214,59 +214,37 @@ const CoreDashboard = () => {
             {loading ? (
               <>
                 <div>
-                  <div className="p-6 animate-pulse">
-                    <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6">
-                      <div className="flex-1 space-y-3">
-                        <div className="flex items-start justify-between">
-                          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-                          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-                        </div>
-                        <div className="h-4 bg-gray-200 rounded w-full"></div>
-                        <div className="flex flex-wrap gap-4 text-sm text-gray-500">
-                          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
-                          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
-                        </div>
-                      </div>
-                      <div className="flex flex-col gap-3 min-w-[120px]">
-                        <div className="h-10 bg-gray-200 rounded w-full"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-6 animate-pulse">
-                    <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6">
-                      <div className="flex-1 space-y-3">
-                        <div className="flex items-start justify-between">
-                          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-                          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-                        </div>
-                        <div className="h-4 bg-gray-200 rounded w-full"></div>
-                        <div className="flex flex-wrap gap-4 text-sm text-gray-500">
-                          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
-                          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
-                        </div>
-                      </div>
-                      <div className="flex flex-col gap-3 min-w-[120px]">
-                        <div className="h-10 bg-gray-200 rounded w-full"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-6 animate-pulse">
-                    <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6">
-                      <div className="flex-1 space-y-3">
-                        <div className="flex items-start justify-between">
-                          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-                          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-                        </div>
-                        <div className="h-4 bg-gray-200 rounded w-full"></div>
-                        <div className="flex flex-wrap gap-4 text-sm text-gray-500">
-                          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
-                          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
-                        </div>
-                      </div>
-                      <div className="flex flex-col gap-3 min-w-[120px]">
-                        <div className="h-10 bg-gray-200 rounded w-full"></div>
-                      </div>
-                    </div>
+                  <div className="space-y-4">
+                    {[1, 2, 3].map((index) => (
+                      <Card key={index} className="w-full">
+                        <CardContent className="p-4">
+                          <div className="flex flex-col space-y-4 animate-pulse">
+                            {/* Header - Title and Status */}
+                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                              <div className="h-6 bg-gray-200 rounded w-2/3 sm:w-1/3"></div>
+                              <div className="h-6 bg-gray-200 rounded w-24"></div>
+                            </div>
+
+                            {/* Description */}
+                            <div className="space-y-2">
+                              <div className="h-4 bg-gray-200 rounded w-full"></div>
+                              <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                            </div>
+
+                            {/* Dates */}
+                            <div className="flex flex-col sm:flex-row gap-3">
+                              <div className="h-4 bg-gray-200 rounded w-32"></div>
+                              <div className="h-4 bg-gray-200 rounded w-32"></div>
+                            </div>
+
+                            {/* Submit Button */}
+                            <div className="flex justify-start sm:justify-end mt-2">
+                              <div className="h-9 bg-gray-200 rounded w-full sm:w-28"></div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
                   </div>
                 </div>
               </>
