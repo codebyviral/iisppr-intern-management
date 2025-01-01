@@ -1,64 +1,129 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/context/AuthContext";
+import {
+  ArrowRight,
+  Users,
+  Calendar,
+  BookOpen,
+  Award,
+  CheckCircle,
+  MessageCircle,
+} from "lucide-react";
 
 const IntroPage = () => {
   const { loggedIn } = useAuthContext();
   const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <div className="px-4 py-20 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 sm:text-5xl md:text-6xl">
-            IISPPR Intern Management
-          </h1>
-          <p className="max-w-md mx-auto mt-3 text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-            Streamline your internship program with our comprehensive management
-            platform. Track progress, manage assignments, and foster growth.
-          </p>
-          <div className="max-w-md mx-auto mt-5 sm:flex sm:justify-center md:mt-8">
-            <div className="rounded-md shadow">
-              <button
-                onClick={() => navigate("/login")}
-                className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 md:py-4 md:text-lg md:px-10"
-              >
-                Login to Access Dashboard
-              </button>
+      <div className="relative overflow-hidden">
+        <div className="bg-gradient-to-r from-blue-600 to-blue-800">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="pt-16 pb-20 text-center lg:pt-24">
+              <h1 className="text-4xl font-extrabold text-white sm:text-5xl md:text-6xl">
+                IISPPR Intern Management
+              </h1>
+              <p className="mt-6 max-w-2xl mx-auto text-xl text-gray-100">
+                Empowering future professionals through structured internships
+                at the Indian Institute of Sugarcane & Power Plant Research
+              </p>
+              <div className="mt-10 flex justify-center space-x-4">
+                <button
+                  onClick={() => navigate("/login")}
+                  className="flex items-center px-8 py-3 text-base font-medium text-blue-700 bg-white rounded-md hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
+                >
+                  Login to Dashboard
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats Section */}
+      <div className="bg-white py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 bg-white rounded-lg shadow divide-y sm:divide-y-0 sm:divide-x divide-gray-200">
+            <div className="p-6 text-center">
+              <p className="text-3xl font-bold text-blue-600">500+</p>
+              <p className="mt-2 text-sm text-gray-600">Active Interns</p>
+            </div>
+            <div className="p-6 text-center">
+              <p className="text-3xl font-bold text-blue-600">50+</p>
+              <p className="mt-2 text-sm text-gray-600">Research Projects</p>
+            </div>
+            <div className="p-6 text-center">
+              <p className="text-3xl font-bold text-blue-600">15+</p>
+              <p className="mt-2 text-sm text-gray-600">Departments</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Features Section */}
-      <section className="py-16">
-        <div className="container px-4 mx-auto text-center">
-          <h2 className="mb-8 text-3xl font-bold">Why Choose Intern Hub?</h2>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            <div className="p-6 bg-white rounded-lg shadow">
-              <div className="mb-4 text-4xl text-blue-600">📁</div>
-              <h3 className="text-xl font-bold">Internship Tracking</h3>
-              <p className="mt-2 text-gray-600">
-                Manage and track internship progress with ease.
-              </p>
-            </div>
-            <div className="p-6 bg-white rounded-lg shadow">
-              <div className="mb-4 text-4xl text-blue-600">✅</div>
-              <h3 className="text-xl font-bold">Attendance Management</h3>
-              <p className="mt-2 text-gray-600">
-                Keep track of attendance seamlessly in one place.
-              </p>
-            </div>
-            <div className="p-6 bg-white rounded-lg shadow">
-              <div className="mb-4 text-4xl text-blue-600">💬</div>
-              <h3 className="text-xl font-bold">Collaborative Platform</h3>
-              <p className="mt-2 text-gray-600">
-                Foster teamwork and collaboration among interns.
-              </p>
-            </div>
+      <div className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+            Comprehensive Internship Management
+          </h2>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                icon: <Users className="h-8 w-8 text-blue-600" />,
+                title: "Profile Management",
+                description:
+                  "Complete intern profiles with academic records, projects, and performance tracking",
+              },
+              {
+                icon: <Calendar className="h-8 w-8 text-blue-600" />,
+                title: "Attendance System",
+                description:
+                  "Digital attendance tracking with automated reports and analytics",
+              },
+              {
+                icon: <BookOpen className="h-8 w-8 text-blue-600" />,
+                title: "Project Tracking",
+                description:
+                  "Monitor research projects, milestones, and deliverables",
+              },
+              {
+                icon: <MessageCircle className="h-8 w-8 text-blue-600" />,
+                title: "Communication Hub",
+                description:
+                  "Integrated messaging system for mentors and interns",
+              },
+              {
+                icon: <CheckCircle className="h-8 w-8 text-blue-600" />,
+                title: "Progress Reports",
+                description:
+                  "Generate detailed progress reports and performance evaluations",
+              },
+              {
+                icon: <Award className="h-8 w-8 text-blue-600" />,
+                title: "Certificate Generation",
+                description:
+                  "Automated internship completion certificates with verification",
+              },
+            ].map((feature, index) => (
+              <div
+                key={index}
+                className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+              >
+                <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg mb-4">
+                  {feature.icon}
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600">{feature.description}</p>
+              </div>
+            ))}
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

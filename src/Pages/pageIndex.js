@@ -32,7 +32,8 @@ import AdminHelp from "@/Admin/AdminHelp";
 import InternTasksSubmissions from "@/Admin/InternTasksSubmissions";
 import Internleaveapplication from "@/Admin/InternLeaveApplications";
 import IntroPage from "./IntroPage";
+import AdminNotify from "@/Admin/AdminNotify";
 
 
 
-export { Home, Notifications, Settings, IntroPage, ResetPassword, Reports, UserAttendance, NotAuthorized, Projects, FAQ, SettingsPage, Categories, Dashboard, Stores, Signin, SignUp, Logout, Profile, Aboutus, CustomNavbar, AdminHomePage, AdminProject, AdminTask, AdminReport, PrivacyPolicy, Help, AllUsers, AdminHelpPage, InternAttendance, AdminHelp, InternTasksSubmissions, LeaveApplication, Internleaveapplication }
+export { Home, Notifications, Settings, AdminNotify, IntroPage, ResetPassword, Reports, UserAttendance, NotAuthorized, Projects, FAQ, SettingsPage, Categories, Dashboard, Stores, Signin, SignUp, Logout, Profile, Aboutus, CustomNavbar, AdminHomePage, AdminProject, AdminTask, AdminReport, PrivacyPolicy, Help, AllUsers, AdminHelpPage, InternAttendance, AdminHelp, InternTasksSubmissions, LeaveApplication, Internleaveapplication }

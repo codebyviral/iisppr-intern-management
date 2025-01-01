@@ -99,10 +99,10 @@ function AdminHomePage() {
                 Projects
               </Link>
               <Link
-                to="/logout"
+                to="/notify-all"
                 className="bg-blue-950 text-white p-12 rounded-lg shadow-lg hover:bg-blue-900 transition block w-80 h-32 text-center"
               >
-                Login as User
+                Send Notifications
               </Link>
             </div>
           </div>

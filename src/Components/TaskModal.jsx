@@ -14,6 +14,7 @@ import {
   X,
   AlertCircle,
 } from "lucide-react";
+import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import axios from "axios";
 
@@ -28,68 +29,81 @@ export default function TaskModal({ taskId }) {
   const { modalView, setModalView } = useAppContext();
 
   const handleSubmit = async () => {
-    if (!comments.trim()) {
-      toast.error("Please add a description before submitting");
-      return;
-    }
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to submit the task?",
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonColor: "#2A6AED",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, submit it!",
+      cancelButtonText: "No, cancel",
+    });
 
-    try {
-      setLoading(true);
-      const token = localStorage.getItem("token");
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("image", image);
-      formData.append("comments", comments);
-      formData.append("taskId", taskId);
+    if (result.isConfirmed) {
+      if (!comments.trim()) {
+        toast.error("Please add a description before submitting");
+        return;
+      }
 
-      const response = await axios.post(
-        "https://iisppr-backend.vercel.app/submitTask",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
+      try {
+        setLoading(true);
+        const token = localStorage.getItem("token");
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("image", image);
+        formData.append("comments", comments);
+        formData.append("taskId", taskId);
+
+        const response = await axios.post(
+          "https://iisppr-backend.vercel.app/submitTask",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const taskComplete = {
+          status: status,
+        };
+        if (response.status === 201) {
+          toast.success("Task submitted successfully!");
+          axios
+            .put(
+              `https://iisppr-backend.vercel.app/task/update-task/${taskId}`,
+              taskComplete,
+              {
+                headers: { Authorization: `Bearer ${token}` },
+              }
+            )
+            .then((response) => {
+              console.log("Task status updated successfully:", response.data);
+            })
+            .catch((error) => {
+              console.error("Error updating task status:", error);
+            });
+        } else {
+          toast.error("Something went wrong. Please try again.");
         }
-      );
-      const taskComplete = {
-        status: status,
-      };
-      if (response.status === 201) {
-        toast.success("Task submitted successfully!");
-        axios
-          .put(
-            `https://iisppr-backend.vercel.app/task/update-task/${taskId}`,
-            taskComplete,
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          )
-          .then((response) => {
-            console.log("Task status updated successfully:", response.data);
-          })
-          .catch((error) => {
-            console.error("Error updating task status:", error);
-          });
-      } else {
-        toast.error("Something went wrong. Please try again.");
+      } catch (error) {
+        console.error("Error submitting task:", error);
+        if (error.response) {
+          toast.error(
+            `Server Error: ${error.response.data.message || "Please try again"}`
+          );
+        } else if (error.request) {
+          toast.error(
+            "No response from server. Please check your network connection."
+          );
+        } else {
+          toast.error(`Error: ${error.message}`);
+        }
+      } finally {
+        setLoading(false);
+        setModalView(false);
       }
-    } catch (error) {
-      console.error("Error submitting task:", error);
-      if (error.response) {
-        toast.error(
-          `Server Error: ${error.response.data.message || "Please try again"}`
-        );
-      } else if (error.request) {
-        toast.error(
-          "No response from server. Please check your network connection."
-        );
-      } else {
-        toast.error(`Error: ${error.message}`);
-      }
-    } finally {
-      setLoading(false);
-      setModalView(false);
     }
   };
 
@@ -228,7 +242,8 @@ export default function TaskModal({ taskId }) {
                   <input
                     type="text"
                     onChange={(e) => setStatus(e.target.value)}
-                    placeholder="Enter status"
+                    maxLength={20}
+                    placeholder="Eg. completed or pending ..."
                     className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:border-blue-500 focus:ring-blue-500"
                   />
                   <div>
