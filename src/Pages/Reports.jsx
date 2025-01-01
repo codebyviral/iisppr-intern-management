@@ -9,7 +9,7 @@ const Reports = () => {
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    employee: "",
+    intern: "",
     department: "",
     date: "",
     tasksCompleted: "",
@@ -43,7 +43,7 @@ const Reports = () => {
         const data = await response.json();
         setMessage({ type: "success", text: data.message });
         setFormData({
-          employee: "",
+          intern: "",
           department: "",
           date: "",
           tasksCompleted: "",
@@ -74,7 +74,7 @@ const Reports = () => {
           <Card className="max-w-4xl mx-auto transition-all duration-300 border shadow-xl hover:shadow-2xl">
             <CardHeader className="space-y-4 text-white rounded-t-lg bg-gradient-to-r from-blue-600 to-blue-700">
               <CardTitle className="text-3xl font-bold tracking-tight text-center">
-                Employee Weekly Status Report
+                Internship  Report
               </CardTitle>
               <p className="text-center text-blue-100">
                 Track your progress and plan ahead
@@ -84,7 +84,7 @@ const Reports = () => {
             <div className="p-6 mb-6 space-y-6">
               <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                 {[
-                  { name: "employee", label: "Employee Name", type: "text" },
+                  { name: "Intern", label: "Intern Name", type: "text" },
                   { name: "department", label: "Department", type: "text" },
                   { name: "date", label: "Report Date", type: "date" },
                 ].map(({ name, label, type }) => (
