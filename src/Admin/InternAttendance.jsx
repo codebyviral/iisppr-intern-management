@@ -66,6 +66,29 @@ const InternAttendance = () => {
     day: "numeric",
   });
 
+  const sendNotification = async (userId, status) => {
+    try {
+      await axios.post(`${import.meta.env.VITE_BASE_URL}/send/notify-single`, {
+        userId: userId,
+        message: `Your attendance for ${displayDate} has been marked as ${status}`,
+        status: status.toLowerCase(),
+      });
+    } catch (error) {
+      console.error("Error sending notification:", error);
+    }
+  };
+
+  const sendBulkNotification = async (status) => {
+    try {
+      await axios.post(`${import.meta.env.VITE_BASE_URL}/send/notify-all`, {
+        message: `Your attendance for ${displayDate} has been marked as ${status}`,
+        status: status.toLowerCase(),
+      });
+    } catch (error) {
+      console.error("Error sending bulk notification:", error);
+    }
+  };
+
   const updateStatus = async (id, status) => {
     const attendanceStatus = {
       userId: id,
@@ -77,19 +100,32 @@ const InternAttendance = () => {
         `${import.meta.env.VITE_BASE_URL}/attendance`,
         attendanceStatus
       );
-      if (response.status == 409) toast.error(`Attendance already marked`);
+      if (response.status == 409) {
+        toast.error(`Attendance already marked`, {
+          position: "top-left",
+        });
+        return "already_marked";
+      }
       if (
         response.status == 201 ||
         response.status == 204 ||
         response.status == 205
       ) {
-        toast.success("Attendance marked successfully");
+        await sendNotification(id, status);
+        toast.success(`Attendance marked as ${status}`, {
+          position: "top-left",
+        });
         return "success";
       }
+      toast.error(`Failed to mark attendance`, {
+        position: "top-left",
+      });
       return "error";
     } catch (error) {
       if (error.status == 409) {
-        toast.error(`Attendance already marked`);
+        toast.error(`Attendance already marked`, {
+          position: "top-left",
+        });
       }
       return "error";
     }
@@ -113,6 +149,10 @@ const InternAttendance = () => {
       else errorCount++;
     }
 
+    if (successCount > 0) {
+      await sendBulkNotification(bulkAction);
+    }
+
     let message = `Updated ${successCount} users successfully.`;
     if (alreadyMarkedCount > 0) {
       message += ` ${alreadyMarkedCount} users were already marked.`;
@@ -120,7 +160,9 @@ const InternAttendance = () => {
     if (errorCount > 0) {
       message += ` Failed to update ${errorCount} users.`;
     }
-    toast(message);
+    toast(message, {
+      position: "top-left",
+    });
 
     setProcessing(false);
     setShowConfirmDialog(false);
@@ -185,6 +227,22 @@ const InternAttendance = () => {
                   >
                     Mark All Absent
                   </Button>
+                </div>
+                <div>
+                  <Alert className="w-full bg-blue-50 border-blue-200">
+                    <div className="flex flex-col items-center w-full">
+                      <AlertDescription className="text-blue-700 text-center">
+                        <p>
+                          Click on the buttons above to mark all users as
+                          present or absent for the current date.
+                        </p>
+                        <p>
+                          This action cannot be undone. Please proceed with
+                          caution. Bulk Action may take time to complete.
+                        </p>
+                      </AlertDescription>
+                    </div>
+                  </Alert>
                 </div>
               </div>
             </CardContent>

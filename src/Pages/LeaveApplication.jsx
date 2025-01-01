@@ -1,8 +1,15 @@
-/* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
-import { Calendar, Clock, FileText, Loader2 } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  FileText,
+  Loader2,
+  CheckCircle,
+  XCircle,
+  Clock3,
+} from "lucide-react";
 import { Navbar, SideNav, Footer } from "@/Components/compIndex";
 import {
   Select,
@@ -19,7 +26,7 @@ import axios from "axios";
 const LeaveApplication = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
+  const [leaveHistory, setLeaveHistory] = useState([]);
   const [formData, setFormData] = useState({
     leaveType: "",
     startDate: "",
@@ -33,6 +40,25 @@ const LeaveApplication = () => {
     { value: "Vacation", label: "Vacation" },
     { value: "Other", label: "Other" },
   ];
+
+  useEffect(() => {
+    fetchLeaveHistory();
+  }, []);
+
+  const fetchLeaveHistory = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/leave/history`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setLeaveHistory(response.data);
+    } catch (error) {
+      console.error("Error fetching leave history:", error);
+    }
+  };
 
   const validateForm = () => {
     if (!formData.leaveType) {
@@ -65,218 +91,258 @@ const LeaveApplication = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) return;
 
     const loadingToast = toast.loading("Submitting leave application...");
     setLoading(true);
 
     try {
-      const token = localStorage.getItem("token"); // Assuming you store the JWT token
-
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/leave`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const token = localStorage.getItem("token");
+      await axios.post(`${import.meta.env.VITE_BASE_URL}/leave`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       toast.dismiss(loadingToast);
       toast.success("Leave application submitted successfully!");
-
-      // Clear form
       setFormData({
         leaveType: "",
         startDate: "",
         endDate: "",
         reason: "",
       });
+      fetchLeaveHistory();
     } catch (error) {
       toast.dismiss(loadingToast);
-      const errorMessage =
-        error.response?.data?.message || "Error submitting leave application";
-      toast.error(errorMessage);
-      console.error("Leave application error:", error);
+      toast.error(
+        error.response?.data?.message || "Error submitting application"
+      );
     } finally {
       setLoading(false);
     }
+  };
+
+  const getStatusBadge = (status) => {
+    const styles = {
+      Approved: "bg-green-100 text-green-800",
+      Pending: "bg-yellow-100 text-yellow-800",
+      Rejected: "bg-red-100 text-red-800",
+    };
+
+    const icons = {
+      Approved: <CheckCircle className="w-4 h-4 mr-1" />,
+      Pending: <Clock3 className="w-4 h-4 mr-1" />,
+      Rejected: <XCircle className="w-4 h-4 mr-1" />,
+    };
+
+    return (
+      <div
+        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium ${styles[status]}`}
+      >
+        {icons[status]}
+        {status}
+      </div>
+    );
   };
 
   return (
     <>
       <Navbar />
       <SideNav />
-      <Toaster
-        position="top-center"
-        toastOptions={{
-          duration: 5000,
-          style: {
-            background: "#363636",
-            color: "#fff",
-          },
-          success: {
-            duration: 3000,
-            style: {
-              background: "#22c55e",
-            },
-          },
-          error: {
-            duration: 4000,
-            style: {
-              background: "#ef4444",
-            },
-          },
-        }}
-      />
+      <Toaster position="top-center" />
 
       <div className="relative min-h-screen ml-0 bg-gray-50 md:ml-32">
         <div className="p-6">
-          <div className="max-w-2xl mx-auto">
-            <Card className="shadow-lg">
-              <CardHeader className="bg-white border-b">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-blue-100 rounded-lg">
-                    <FileText className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <CardTitle className="text-2xl font-bold">
-                    Leave Application
-                  </CardTitle>
-                </div>
-              </CardHeader>
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Leave Application Form */}
+              <div className="lg:col-span-2">
+                <Card className="shadow-lg">
+                  <CardHeader className="border-b bg-white">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-blue-100 rounded-lg">
+                        <FileText className="w-6 h-6 text-blue-600" />
+                      </div>
+                      <CardTitle className="text-2xl font-bold">
+                        Leave Application
+                      </CardTitle>
+                    </div>
+                  </CardHeader>
 
-              <CardContent className="p-6">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">
-                      Leave Type *
-                    </label>
-                    <Select
-                      value={formData.leaveType}
-                      onValueChange={(value) =>
-                        setFormData({ ...formData, leaveType: value })
-                      }
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select leave type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {leaveTypes.map((type) => (
-                          <SelectItem key={type.value} value={type.value}>
-                            {type.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-700">
-                        Start Date *
-                      </label>
-                      <div className="relative">
-                        <div className="absolute text-gray-400 left-3 top-3">
-                          <Calendar className="w-5 h-5" />
+                  <CardContent className="p-6">
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium text-gray-700">
+                            Leave Type *
+                          </label>
+                          <Select
+                            value={formData.leaveType}
+                            onValueChange={(value) =>
+                              setFormData({ ...formData, leaveType: value })
+                            }
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select leave type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {leaveTypes.map((type) => (
+                                <SelectItem key={type.value} value={type.value}>
+                                  {type.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                         </div>
-                        <input
-                          type="date"
-                          value={formData.startDate}
+
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium text-gray-700">
+                            Duration *
+                          </label>
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="relative">
+                              <Calendar className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                              <input
+                                type="date"
+                                value={formData.startDate}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    startDate: e.target.value,
+                                  })
+                                }
+                                className="w-full pl-10 border rounded-md h-11"
+                              />
+                            </div>
+                            <div className="relative">
+                              <Calendar className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                              <input
+                                type="date"
+                                value={formData.endDate}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    endDate: e.target.value,
+                                  })
+                                }
+                                className="w-full pl-10 border rounded-md h-11"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-700">
+                          Reason for Leave *
+                        </label>
+                        <Textarea
+                          value={formData.reason}
                           onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              startDate: e.target.value,
-                            })
+                            setFormData({ ...formData, reason: e.target.value })
                           }
-                          className="w-full pl-10 border border-gray-200 rounded-md h-11 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="Please provide a detailed reason for your leave request..."
+                          className="min-h-[120px]"
                         />
                       </div>
-                    </div>
 
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-700">
-                        End Date *
-                      </label>
-                      <div className="relative">
-                        <div className="absolute text-gray-400 left-3 top-3">
-                          <Calendar className="w-5 h-5" />
+                      <div className="flex justify-end gap-4">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => navigate(-1)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          type="submit"
+                          className="bg-blue-600 hover:bg-blue-700"
+                          disabled={loading}
+                        >
+                          {loading ? (
+                            <>
+                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                              Submitting...
+                            </>
+                          ) : (
+                            "Submit Application"
+                          )}
+                        </Button>
+                      </div>
+                    </form>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Leave Status Section */}
+              <div className="lg:col-span-1">
+                <Card className="shadow-lg">
+                  <CardHeader className="border-b">
+                    <CardTitle className="text-xl font-semibold">
+                      Leave Status
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <div className="space-y-6">
+                      {leaveHistory.map((leave) => (
+                        <div
+                          key={leave.id}
+                          className="p-4 border rounded-lg space-y-3"
+                        >
+                          <div className="flex justify-between items-start">
+                            <div className="space-y-1">
+                              <h3 className="font-medium">{leave.type}</h3>
+                              <p className="text-sm text-gray-500">
+                                {new Date(leave.startDate).toLocaleDateString()}{" "}
+                                - {new Date(leave.endDate).toLocaleDateString()}
+                              </p>
+                            </div>
+                            {getStatusBadge(leave.status)}
+                          </div>
+
+                          {leave.status === "Approved" && leave.approvedBy && (
+                            <div className="pt-2 border-t">
+                              <p className="text-sm text-gray-600">
+                                Approved by{" "}
+                                <span className="font-medium">
+                                  {leave.approvedBy}
+                                </span>
+                                <br />
+                                <span className="text-gray-500">
+                                  {leave.approverRole}
+                                </span>
+                              </p>
+                            </div>
+                          )}
                         </div>
-                        <input
-                          type="date"
-                          value={formData.endDate}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              endDate: e.target.value,
-                            })
-                          }
-                          className="w-full pl-10 border border-gray-200 rounded-md h-11 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        />
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="mt-6 shadow-lg bg-blue-50 border-blue-200">
+                  <CardContent className="p-4">
+                    <div className="flex gap-3">
+                      <Clock className="w-5 h-5 text-blue-500 mt-0.5" />
+                      <div>
+                        <h3 className="font-medium text-blue-900">
+                          Processing Time
+                        </h3>
+                        <p className="mt-1 text-sm text-blue-700">
+                          Leave applications are typically processed within
+                          24-48 hours.
+                        </p>
                       </div>
                     </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">
-                      Reason for Leave *
-                    </label>
-                    <Textarea
-                      value={formData.reason}
-                      onChange={(e) =>
-                        setFormData({ ...formData, reason: e.target.value })
-                      }
-                      placeholder="Please provide a detailed reason for your leave request..."
-                      className="min-h-[120px]"
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-end gap-4 pt-4">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => navigate(-1)}
-                      className="w-full md:w-auto"
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      type="submit"
-                      className="w-full bg-blue-600 md:w-auto hover:bg-blue-700"
-                      disabled={loading}
-                    >
-                      {loading ? (
-                        <>
-                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                          Submitting...
-                        </>
-                      ) : (
-                        "Submit Application"
-                      )}
-                    </Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-
-            <div className="p-4 mt-6 border border-blue-200 rounded-lg bg-blue-50">
-              <div className="flex items-start gap-3">
-                <Clock className="h-5 w-5 text-blue-500 mt-0.5" />
-                <div>
-                  <h3 className="font-medium text-blue-900">Processing Time</h3>
-                  <p className="mt-1 text-sm text-blue-700">
-                    Leave applications are typically processed within 24-48
-                    hours. You will receive a notification once your application
-                    has been reviewed.
-                  </p>
-                </div>
+                  </CardContent>
+                </Card>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };
