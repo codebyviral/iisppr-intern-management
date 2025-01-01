@@ -28,6 +28,7 @@ import {
   InternTasksSubmissions,
   Internleaveapplication,
   IntroPage,
+  AdminNotify,
 } from "./Pages/pageIndex";
 import {
   AdminTask,
@@ -246,6 +247,14 @@ const App = () => {
         element={
           <PrivateRoute>
             <Logout />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/notify-all"
+        element={
+          <PrivateRoute>
+            <AdminNotify />
           </PrivateRoute>
         }
       />
