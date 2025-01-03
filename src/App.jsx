@@ -41,16 +41,16 @@ import { NotFound } from "./Components/Notfound";
 import { useAuthContext } from "./context/AuthContext";
 import AllAttendance from "./Admin/AllAttendance";
 import Navbar from './Pages/Navbar';
-import Hero from './components/Hero';
-import Features from './components/Features';
-import TechStack from './components/TechStack';
-import Stats from './components/Stats';
-import Testimonials from './components/Testimonials';
-import FloatingIcons from './components/FloatingIcons';
-import ScrollingLogos from './components/ScrollingLogos';
-import SuccessStories from './components/SuccessStories';
-import CompanyMetrics from './components/CompanyMetrics';
-import GradientBackground from './components/GradientBackground';
+import Hero from './Components/Hero';
+import Features from './Components/Features';
+import TechStack from './Components/TechStack';
+import Stats from './Components/Stats';
+import Testimonials from './Components/Testimonials';
+import FloatingIcons from './Components/FloatingIcons';
+import ScrollingLogos from './Components/ScrollingLogos';
+import SuccessStories from './Components/SuccessStories';
+import CompanyMetrics from './Components/CompanyMetrics';
+import GradientBackground from './Components/GradientBackground';
 
 const AdminRoute = ({ children }) => {
   const isAdmin = localStorage.getItem("isAdmin") === "true";
