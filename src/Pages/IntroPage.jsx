@@ -10,7 +10,7 @@ import {
   CheckCircle,
   MessageCircle,
 } from "lucide-react";
-
+//fix
 const IntroPage = () => {
   const { loggedIn } = useAuthContext();
   const navigate = useNavigate();
